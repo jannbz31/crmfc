@@ -44,7 +44,7 @@
             border: 1px solid #f1f5f9;
         }
 
-        /* Fullscreen button pulse */
+        /* Fullscreen button active */
         .btn-fullscreen.active {
             color: #2563eb;
             background-color: #eff6ff;
@@ -166,7 +166,7 @@
                         </div>
                         <div class="bg-blue-50 p-4 rounded-2xl text-blue-500 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                     </div>
@@ -184,12 +184,27 @@
                 </div>
 
                 <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mt-6">
-                    <h3 class="text-sm font-bold text-slate-800 mb-4">Export Data</h3>
-                    <button onclick="exportCSV()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-green-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                        <span>Ekspor ke Excel (CSV)</span>
-                    </button>
-                    <p class="text-[10px] text-center text-slate-400 mt-4 font-medium uppercase tracking-widest">Offline Database Active</p>
+                    <h3 class="text-sm font-bold text-slate-800 mb-4">Export & Backup</h3>
+                    
+                    <div class="space-y-3">
+                        <button onclick="exportCSV()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                            <span>Ekspor Excel (CSV)</span>
+                        </button>
+
+                        <button onclick="exportBackup()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+                            <span>Ekspor Backup (JSON)</span>
+                        </button>
+
+                        <button onclick="triggerImport()" class="w-full bg-slate-800 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            <span>Impor Backup (JSON)</span>
+                        </button>
+                        <input type="file" id="import-file" class="hidden" accept=".json" onchange="handleImport(event)">
+                    </div>
+
+                    <p class="text-[10px] text-center text-slate-400 mt-6 font-medium uppercase tracking-widest">Gunakan file JSON untuk pindah HP</p>
                 </div>
             </div>
         </section>
@@ -200,17 +215,17 @@
     <nav class="fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-100 flex justify-around p-4 z-50 rounded-t-[32px] shadow-lg">
         <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-blue-600 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-            <span class="text-[9px] font-black mt-1 uppercase">Database</span>
+            <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Database</span>
         </button>
         <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center text-slate-300 transition-all">
             <div class="bg-slate-100 p-3 rounded-2xl -mt-8 shadow-lg text-slate-400 transition-all" id="add-icon-bg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             </div>
-            <span class="text-[9px] font-black mt-1 uppercase">Baru</span>
+            <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Baru</span>
         </button>
         <button onclick="switchTab('data')" id="nav-data" class="flex flex-col items-center text-slate-300 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
-            <span class="text-[9px] font-black mt-1 uppercase">Laporan</span>
+            <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Laporan</span>
         </button>
     </nav>
 
@@ -230,12 +245,12 @@
             try {
                 if (!document.fullscreenElement) {
                     await document.documentElement.requestFullscreen();
-                    document.getElementById('btn-fs').classList.add('active');
+                    document.getElementById('btn-fs').classList.add('active', 'text-blue-600');
                     requestWakeLock();
                 } else {
                     if (document.exitFullscreen) {
                         await document.exitFullscreen();
-                        document.getElementById('btn-fs').classList.remove('active');
+                        document.getElementById('btn-fs').classList.remove('active', 'text-blue-600');
                         releaseWakeLock();
                     }
                 }
@@ -261,13 +276,13 @@
             }
         }
 
-        // Handle visibility change to re-request wake lock if needed
         document.addEventListener('visibilitychange', async () => {
             if (wakeLock !== null && document.visibilityState === 'visible') {
                 await requestWakeLock();
             }
         });
 
+        // CORE CRM LOGIC
         function isBirthdayToday(dobString) {
             const today = new Date();
             const dob = new Date(dobString);
@@ -416,7 +431,7 @@
                     <div class="p-6 border-b border-black/5 flex justify-between items-start">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-slate-800 text-base tracking-tight">${m.name}</h3>
+                                <h3 class="font-bold text-slate-800 text-base tracking-tight leading-none">${m.name}</h3>
                                 ${isBDay ? '<span>🎂</span>' : ''}
                                 ${m.usePT ? '<span class="bg-blue-600 text-white text-[7px] px-2 py-0.5 rounded-full font-black uppercase shadow-sm">PT</span>' : ''}
                             </div>
@@ -492,6 +507,7 @@
             document.getElementById('stat-monthly').innerText = monthly;
         }
 
+        // IMPORT & EXPORT LOGIC
         function exportCSV() {
             if (members.length === 0) return alert('Data masih kosong');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Mulai,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Terakhir Chat\n";
@@ -499,16 +515,54 @@
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
                 csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.lastChat || '-'}"\n`;
             });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('hidden', '');
-            a.setAttribute('href', url);
-            a.setAttribute('download', `JANWILLFITNESS_REPORT_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(a);
+            downloadFile(csv, `JANWILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
+        }
+
+        function exportBackup() {
+            if (members.length === 0) return alert('Data masih kosong');
+            const dataStr = JSON.stringify(members);
+            downloadFile(dataStr, `JANWILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
+        }
+
+        function triggerImport() {
+            document.getElementById('import-file').click();
+        }
+
+        function handleImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        if (confirm(`Anda akan mengimpor ${importedData.length} data. Ganti data saat ini?`)) {
+                            members = importedData;
+                            saveData();
+                            renderMembers();
+                            renderStats();
+                            alert('Impor Berhasil!');
+                        }
+                    } else {
+                        alert('Format file tidak valid!');
+                    }
+                } catch (err) {
+                    alert('Gagal membaca file backup!');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
             a.click();
-            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
         }
     </script>
 </body>
 </html>
+
