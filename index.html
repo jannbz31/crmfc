@@ -131,8 +131,11 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">No. WhatsApp</label>
-                            <input type="tel" id="whatsapp" placeholder="08..." class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none" required>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">No. WhatsApp (Angka Saja)</label>
+                            <input type="tel" id="whatsapp" placeholder="Contoh: 0812345678" 
+                                class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 outline-none" 
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                required>
                         </div>
                     </div>
 
@@ -204,7 +207,7 @@
                         <input type="file" id="import-file" class="hidden" accept=".json" onchange="handleImport(event)">
                     </div>
 
-                    <p class="text-[10px] text-center text-slate-400 mt-6 font-medium uppercase tracking-widest">Gunakan file JSON untuk pindah HP</p>
+                    <p class="text-[10px] text-center text-slate-400 mt-6 font-medium uppercase tracking-widest leading-relaxed">Gunakan file JSON untuk pindah perangkat.<br>Pastikan layar stay awake saat Fullscreen.</p>
                 </div>
             </div>
         </section>
@@ -255,7 +258,7 @@
                     }
                 }
             } catch (err) {
-                console.error(`Error toggling fullscreen: ${err.message}`);
+                console.error(`Gagal fullscreen: ${err.message}`);
             }
         }
 
@@ -451,7 +454,7 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-[9px] text-slate-400 uppercase font-extrabold mb-1">Berakhir</p>
-                                <p class="text-sm font-black text-slate-900 uppercase italic">${formatDisplayDate(expiryDate)}</p>
+                                <p class="text-sm font-black text-slate-900 uppercase italic leading-none">${formatDisplayDate(expiryDate)}</p>
                             </div>
                         </div>
                         <div class="flex items-end justify-between">
@@ -462,7 +465,7 @@
                                 </p>
                             </div>
                             <div class="flex flex-col items-end gap-3">
-                                <span class="text-[10px] font-medium italic text-slate-400">
+                                <span class="text-[10px] font-medium italic text-slate-400 leading-none">
                                     ${m.lastChat ? '💬 ' + m.lastChat : '⚪ Belum dichat'}
                                 </span>
                                 <div class="flex gap-2">
@@ -537,18 +540,18 @@
                 try {
                     const importedData = JSON.parse(e.target.result);
                     if (Array.isArray(importedData)) {
-                        if (confirm(`Anda akan mengimpor ${importedData.length} data. Ganti data saat ini?`)) {
+                        if (confirm(`Anda akan mengimpor ${importedData.length} data member. Data saat ini akan diganti. Lanjutkan?`)) {
                             members = importedData;
                             saveData();
                             renderMembers();
                             renderStats();
-                            alert('Impor Berhasil!');
+                            alert('Data berhasil diimpor!');
                         }
                     } else {
-                        alert('Format file tidak valid!');
+                        alert('Format file cadangan tidak valid!');
                     }
                 } catch (err) {
-                    alert('Gagal membaca file backup!');
+                    alert('Gagal memproses file impor!');
                 }
             };
             reader.readAsText(file);
