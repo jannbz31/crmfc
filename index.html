@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JAN.WILLFITNESS - CRM</title>
+    <title>WILLFITNESS MEMBER LIST</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap');
@@ -17,56 +17,71 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Status Badge Colors */
-        .status-active { background-color: #ecfdf5; color: #065f46; border: 1px solid #10b981; }
-        .status-warning { background-color: #fffbeb; color: #92400e; border: 1px solid #f59e0b; }
-        .status-expired { background-color: #fef2f2; color: #991b1b; border: 1px solid #ef4444; }
+        /* Status Badge Colors - Dark Theme Optimized */
+        .status-active { background-color: #064e3b; color: #a7f3d0; border: 1px solid #10b981; }
+        .status-warning { background-color: #78350f; color: #fde68a; border: 1px solid #f59e0b; }
+        .status-expired { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
         
-        /* Birthday Style */
+        /* Premium Glow Birthday Card - Inspired by Neon Logo */
         .card-birthday { 
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-            border: 2px solid #f59e0b;
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.2);
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 2px solid #d946ef;
+            box-shadow: 0 0 20px rgba(217, 70, 239, 0.35);
         }
 
-        /* Glassmorphism Effect */
+        /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
         .stat-card {
-            background: white;
+            background: #0f172a;
             border-radius: 24px;
             padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+            border: 1px solid #1e293b;
         }
 
-        /* Fullscreen button active */
+        /* Fullscreen button active styling */
         .btn-fullscreen.active {
-            color: #2563eb;
-            background-color: #eff6ff;
+            color: #38bdf8;
+            background-color: #0c4a6e;
+        }
+
+        /* Custom Scrollbar for modern look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 10px;
         }
     </style>
 </head>
-<body class="bg-slate-50 pb-28">
+<body class="bg-[#020617] text-slate-100 pb-28 min-h-screen">
 
-    <!-- Header -->
-    <header class="bg-white border-b sticky top-0 z-40 px-5 py-5 shadow-sm">
+    <!-- Header Utama (Premium Dark Theme) -->
+    <header class="bg-[#090d22]/90 border-b border-slate-800/80 sticky top-0 z-40 px-5 py-5 shadow-lg backdrop-blur-md">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-extrabold text-slate-900 tracking-tighter">JAN.<span class="text-blue-600">WILLFITNESS</span></h1>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Member Management System</p>
+                <h1 class="text-xl font-extrabold text-white tracking-tighter uppercase">
+                    WILL<span class="text-sky-400">FITNESS</span>
+                </h1>
+                <p class="text-[9px] font-bold text-sky-400/80 uppercase tracking-widest mt-0.5">MEMBER LIST</p>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="toggleFullscreen()" id="btn-fs" class="p-2 text-slate-400 hover:text-blue-600 transition-colors" title="Fullscreen & Stay Awake">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- Tombol Fullscreen & Stay Awake -->
+                <button onclick="toggleFullscreen()" id="btn-fs" class="p-2.5 text-slate-400 hover:text-sky-400 bg-slate-900 rounded-xl border border-slate-800 transition-all duration-200" title="Layar Penuh & Tetap Menyala">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                     </svg>
                 </button>
-                <div id="stats-badge" class="bg-slate-900 text-white text-[10px] font-black px-3 py-1.5 rounded-full">
+                <div id="stats-badge" class="bg-sky-500 text-slate-950 text-[10px] font-black px-3.5 py-2 rounded-full shadow-lg shadow-sky-500/10 tracking-wider">
                     0 MEMBER
                 </div>
             </div>
@@ -75,166 +90,197 @@
 
     <main class="max-w-md mx-auto p-4">
         
-        <!-- DAFTAR MEMBER -->
+        <!-- TAB DAFTAR MEMBER -->
         <section id="tab-list" class="tab-content active">
+            <!-- Kolom Pencarian -->
             <div class="relative mb-6">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+                <span class="absolute inset-y-0 left-0 pl-3-5 flex items-center text-slate-400 pl-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </span>
                 <input type="text" id="search-input" placeholder="Cari nama member..." 
-                    class="w-full pl-10 pr-4 py-3.5 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all text-sm" 
+                    class="w-full pl-12 pr-4 py-4 bg-[#090d22] border border-slate-800 rounded-2xl shadow-inner focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500" 
                     oninput="renderMembers()">
             </div>
             
-            <div id="birthday-announcement" class="hidden mb-4 p-4 bg-amber-100 text-amber-800 rounded-2xl text-xs font-bold flex items-center gap-3 border border-amber-200">
-                <span class="text-xl">🎂</span> Ada member yang berulang tahun hari ini! Segera berikan ucapan.
+            <!-- Pengumuman Ulang Tahun -->
+            <div id="birthday-announcement" class="hidden mb-4 p-4 bg-fuchsia-950/40 text-fuchsia-300 rounded-2xl text-xs font-bold flex items-center gap-3 border border-fuchsia-800/50 shadow-lg shadow-fuchsia-950/20">
+                <span class="text-xl">🎂</span> Ada member yang berulang tahun hari ini! Segera berikan ucapan spesial.
             </div>
 
+            <!-- Tempat Render Card Member -->
             <div id="member-container" class="space-y-4">
                 <!-- Diisi oleh JS -->
             </div>
         </section>
 
-        <!-- TAMBAH MEMBER -->
+        <!-- TAB TAMBAH / EDIT MEMBER -->
         <section id="tab-add" class="tab-content">
-            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
-                <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+            <div class="bg-[#090d22] p-6 rounded-3xl shadow-xl border border-slate-800/80">
+                <h2 id="form-title" class="text-xl font-extrabold text-white mb-6 flex items-center gap-2 tracking-tight">
                     Member Baru
                 </h2>
                 <form id="member-form" class="space-y-5">
                     <div>
-                        <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">Nama Lengkap</label>
-                        <input type="text" id="name" placeholder="Nama Klien" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 outline-none" required>
+                        <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Nama Lengkap</label>
+                        <input type="text" id="name" placeholder="Nama lengkap member" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">Tanggal Lahir</label>
-                            <input type="date" id="dob" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none" required>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Tanggal Lahir</label>
+                            <input type="date" id="dob" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">Mulai Member</label>
-                            <input type="date" id="start_date" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none" required>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Mulai Member</label>
+                            <input type="date" id="start_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">Tipe Membership</label>
-                            <select id="duration" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none">
-                                <option value="1">1 Bulan</option>
-                                <option value="3">3 Bulan</option>
-                                <option value="6">6 Bulan</option>
-                                <option value="12">12 Bulan</option>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Membership (Bulan)</label>
+                            <select id="duration" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" onchange="toggleCustomDuration()">
+                                <option value="1">1</option>
+                                <option value="3">3</option>
+                                <option value="6">6</option>
+                                <option value="12">12</option>
+                                <option value="custom">Kustom</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block">No. WhatsApp (Angka Saja)</label>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">No. WhatsApp</label>
                             <input type="tel" id="whatsapp" placeholder="Contoh: 0812345678" 
-                                class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-blue-600 outline-none" 
+                                class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" 
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')"
                                 required>
                         </div>
                     </div>
 
+                    <!-- Input Kustom Bulan -->
+                    <div id="custom-duration-container" class="hidden">
+                        <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Jumlah Bulan (Kustom)</label>
+                        <input type="number" id="custom_duration" min="1" placeholder="Contoh: 5" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                    </div>
+
                     <div class="py-2">
-                        <label class="flex items-center gap-3 cursor-pointer p-4 bg-blue-50 rounded-2xl border border-blue-100 active:scale-[0.98] transition-all">
-                            <input type="checkbox" id="use_pt" class="w-6 h-6 rounded-lg border-none ring-2 ring-blue-200 checked:bg-blue-600 appearance-none transition-all">
+                        <label class="flex items-center gap-3 cursor-pointer p-4 bg-[#020617] rounded-2xl border border-slate-850 active:scale-[0.98] transition-all">
+                            <input type="checkbox" id="use_pt" class="w-6 h-6 rounded-lg border-none ring-2 ring-slate-800 checked:bg-sky-500 appearance-none transition-all cursor-pointer">
                             <div class="flex flex-col">
-                                <span class="text-sm font-bold text-blue-900 uppercase tracking-tight">Layanan Personal Trainer</span>
-                                <span class="text-[10px] text-blue-600 font-medium">Aktifkan jika klien didampingi coach</span>
+                                <span class="text-sm font-bold text-slate-200 uppercase tracking-tight">Layanan Personal Trainer (PT)</span>
+                                <span class="text-[10px] text-sky-400 font-medium">Aktifkan jika klien dipandu oleh coach</span>
                             </div>
                         </label>
                     </div>
 
-                    <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-extrabold text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-all">
-                        Simpan Member
-                    </button>
+                    <div class="flex gap-3">
+                        <button type="button" id="btn-cancel-edit" onclick="cancelEditMode()" class="hidden flex-1 bg-slate-800 hover:bg-slate-700 text-white py-5 rounded-2xl font-extrabold text-sm uppercase tracking-widest active:scale-95 transition-all">
+                            Batal
+                        </button>
+                        <button type="submit" id="btn-submit" class="flex-2 w-full bg-sky-500 hover:bg-sky-400 text-slate-950 py-5 rounded-2xl font-extrabold text-sm uppercase tracking-widest shadow-lg shadow-sky-500/10 active:scale-95 transition-all">
+                            Simpan Member
+                        </button>
+                    </div>
                 </form>
             </div>
         </section>
 
-        <!-- LAPORAN & STATISTIK -->
+        <!-- TAB LAPORAN & STATISTIK -->
         <section id="tab-data" class="tab-content">
             <div class="space-y-4">
-                <h2 class="text-lg font-extrabold text-slate-800 px-1">Ringkasan Statistik</h2>
+                <h2 class="text-lg font-extrabold text-white px-1 tracking-tight">Ringkasan Statistik</h2>
                 
                 <div class="grid grid-cols-1 gap-4">
-                    <div class="stat-card flex items-center justify-between border-l-4 border-l-blue-500">
+                    <div class="stat-card flex items-center justify-between border-l-4 border-l-sky-500">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic">Pendaftaran Hari Ini</p>
-                            <h3 id="stat-daily" class="text-2xl font-black text-slate-900">0</h3>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Pendaftaran Hari Ini</p>
+                            <h3 id="stat-daily" class="text-2xl font-black text-white">0</h3>
                         </div>
-                        <div class="bg-blue-50 p-4 rounded-2xl text-blue-500 flex items-center justify-center">
+                        <div class="bg-sky-500/10 p-4 rounded-2xl text-sky-400 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="stat-card border-l-4 border-l-green-500">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic">Minggu Ini</p>
-                            <h3 id="stat-weekly" class="text-2xl font-black text-slate-900">0</h3>
+                        <div class="stat-card border-l-4 border-l-emerald-500">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Minggu Ini (7 Hari)</p>
+                            <h3 id="stat-weekly" class="text-2xl font-black text-white">0</h3>
                         </div>
-                        <div class="stat-card border-l-4 border-l-purple-500">
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic">Bulan Ini</p>
-                            <h3 id="stat-monthly" class="text-2xl font-black text-slate-900">0</h3>
+                        <div class="stat-card border-l-4 border-l-fuchsia-500">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Bulan Ini (30 Hari)</p>
+                            <h3 id="stat-monthly" class="text-2xl font-black text-white">0</h3>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 mt-6">
-                    <h3 class="text-sm font-bold text-slate-800 mb-4">Export & Backup</h3>
+                <div class="bg-[#090d22] p-6 rounded-3xl shadow-xl border border-slate-800/80 mt-6">
+                    <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Ekspor & Cadangan</h3>
                     
                     <div class="space-y-3">
-                        <button onclick="exportCSV()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                        <button onclick="exportCSV()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             <span>Ekspor Excel (CSV)</span>
                         </button>
 
-                        <button onclick="exportBackup()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                        <button onclick="exportBackup()" class="w-full bg-[#0ea5e9] hover:bg-sky-400 text-slate-950 p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
-                            <span>Ekspor Backup (JSON)</span>
+                            <span>Ekspor Cadangan (JSON)</span>
                         </button>
 
-                        <button onclick="triggerImport()" class="w-full bg-slate-800 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
+                        <button onclick="triggerImport()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                            <span>Impor Backup (JSON)</span>
+                            <span>Impor Cadangan (JSON)</span>
                         </button>
                         <input type="file" id="import-file" class="hidden" accept=".json" onchange="handleImport(event)">
                     </div>
 
-                    <p class="text-[10px] text-center text-slate-400 mt-6 font-medium uppercase tracking-widest leading-relaxed">Gunakan file JSON untuk pindah perangkat.<br>Pastikan layar stay awake saat Fullscreen.</p>
+                    <p class="text-[10px] text-center text-slate-500 mt-6 font-medium uppercase tracking-widest leading-relaxed">
+                        Gunakan file JSON untuk pindah perangkat.<br>Pastikan layar tetap menyala saat Fullscreen.
+                    </p>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Navigation -->
-    <nav class="fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-100 flex justify-around p-4 z-50 rounded-t-[32px] shadow-lg">
-        <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-blue-600 transition-all">
+    <!-- Navigasi Bawah (Glossy & Modern Dark) -->
+    <nav class="fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-800/80 flex justify-around p-4 z-50 rounded-t-[32px] shadow-2xl">
+        <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-sky-400 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
             <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Database</span>
         </button>
-        <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center text-slate-300 transition-all">
-            <div class="bg-slate-100 p-3 rounded-2xl -mt-8 shadow-lg text-slate-400 transition-all" id="add-icon-bg">
+        <button onclick="switchTab('add')" id="nav-add" class="flex flex-col items-center text-slate-500 transition-all">
+            <div class="bg-slate-900 border border-slate-800 p-3 rounded-2xl -mt-8 shadow-xl text-slate-400 transition-all" id="add-icon-bg">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
             </div>
-            <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Baru</span>
+            <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none" id="nav-add-label">Baru</span>
         </button>
-        <button onclick="switchTab('data')" id="nav-data" class="flex flex-col items-center text-slate-300 transition-all">
+        <button onclick="switchTab('data')" id="nav-data" class="flex flex-col items-center text-slate-500 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
             <span class="text-[9px] font-black mt-1 uppercase tracking-tighter leading-none">Laporan</span>
         </button>
     </nav>
 
+    <!-- Modal Kustom (Desain Gelap Modern) -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
+        <div class="bg-[#090d22] rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-800/80 transform transition-all scale-95 duration-200 text-slate-100">
+            <h3 id="modal-title" class="text-lg font-bold text-white mb-2"></h3>
+            <p id="modal-message" class="text-sm text-slate-400 mb-6"></p>
+            <div class="flex gap-3 justify-end">
+                <button id="modal-cancel-btn" class="px-4 py-2.5 rounded-xl border border-slate-800 bg-[#020617] text-slate-400 text-sm font-bold hidden active:scale-95 transition-all"></button>
+                <button id="modal-confirm-btn" class="px-5 py-2.5 rounded-xl bg-sky-500 text-slate-950 text-sm font-bold active:scale-95 transition-all"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // DATA STATE
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v1')) || [];
         let wakeLock = null;
+        let editingMemberId = null;
 
         window.onload = () => {
             const today = new Date().toISOString().split('T')[0];
@@ -243,22 +289,72 @@
             renderStats();
         };
 
-        // FULLSCREEN & WAKE LOCK LOGIC
+        // KONTROL MODAL KUSTOM
+        function showCustomAlert(message, title = "Informasi") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-message').innerText = message;
+                
+                const cancelBtn = document.getElementById('modal-cancel-btn');
+                cancelBtn.classList.add('hidden');
+                
+                const confirmBtn = document.getElementById('modal-confirm-btn');
+                confirmBtn.innerText = "Selesai";
+                confirmBtn.className = "px-5 py-2.5 rounded-xl bg-sky-500 text-slate-950 text-sm font-bold active:scale-95 transition-all";
+                
+                confirmBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(true);
+                };
+                
+                modal.classList.remove('hidden');
+            });
+        }
+
+        function showCustomConfirm(message, title = "Konfirmasi") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('custom-modal');
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-message').innerText = message;
+                
+                const cancelBtn = document.getElementById('modal-cancel-btn');
+                cancelBtn.innerText = "Batal";
+                cancelBtn.classList.remove('hidden');
+                cancelBtn.className = "px-4 py-2.5 rounded-xl border border-slate-800 bg-[#020617] text-slate-300 text-sm font-bold active:scale-95 transition-all";
+                cancelBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(false);
+                };
+                
+                const confirmBtn = document.getElementById('modal-confirm-btn');
+                confirmBtn.innerText = "Ya, Lanjutkan";
+                confirmBtn.className = "px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold active:scale-95 transition-all";
+                confirmBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    resolve(true);
+                };
+                
+                modal.classList.remove('hidden');
+            });
+        }
+
+        // SCREEN STAY AWAKE & FULLSCREEN LOGIC
         async function toggleFullscreen() {
             try {
                 if (!document.fullscreenElement) {
                     await document.documentElement.requestFullscreen();
-                    document.getElementById('btn-fs').classList.add('active', 'text-blue-600');
+                    document.getElementById('btn-fs').classList.add('active', 'text-sky-400');
                     requestWakeLock();
                 } else {
                     if (document.exitFullscreen) {
                         await document.exitFullscreen();
-                        document.getElementById('btn-fs').classList.remove('active', 'text-blue-600');
+                        document.getElementById('btn-fs').classList.remove('active', 'text-sky-400');
                         releaseWakeLock();
                     }
                 }
             } catch (err) {
-                console.error(`Gagal fullscreen: ${err.message}`);
+                console.error(`Gagal mengaktifkan mode layar penuh: ${err.message}`);
             }
         }
 
@@ -268,7 +364,7 @@
                     wakeLock = await navigator.wakeLock.request('screen');
                 }
             } catch (err) {
-                console.error(`${err.name}, ${err.message}`);
+                console.error(`Sistem Wake Lock diblokir: ${err.name}, ${err.message}`);
             }
         }
 
@@ -285,7 +381,7 @@
             }
         });
 
-        // CORE CRM LOGIC
+        // CORE CRM BUSINESS LOGIC
         function isBirthdayToday(dobString) {
             const today = new Date();
             const dob = new Date(dobString);
@@ -301,9 +397,36 @@
             return age;
         }
 
-        function calculateExpiry(startDate, months) {
+        function toggleCustomDuration() {
+            const selectVal = document.getElementById('duration').value;
+            const container = document.getElementById('custom-duration-container');
+            if (selectVal === 'custom') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        // TIPE MEMBERSHIP (1m = 30d, 3m = 90d, 6m = 180d, 12m = 360d)
+        function calculateExpiry(startDate, durationMonths) {
             const date = new Date(startDate);
-            date.setMonth(date.getMonth() + parseInt(months));
+            let daysToAdd = 30;
+            
+            if (durationMonths === 'custom' || isNaN(durationMonths)) {
+                const val = parseInt(durationMonths);
+                daysToAdd = isNaN(val) ? 30 : val * 30;
+            } else {
+                const m = parseInt(durationMonths);
+                switch(m) {
+                    case 1: daysToAdd = 30; break;
+                    case 3: daysToAdd = 90; break;
+                    case 6: daysToAdd = 180; break;
+                    case 12: daysToAdd = 360; break;
+                    default: daysToAdd = m * 30;
+                }
+            }
+            
+            date.setDate(date.getDate() + daysToAdd);
             return date;
         }
 
@@ -328,18 +451,18 @@
             tabs.forEach(t => {
                 const btn = document.getElementById('nav-' + t);
                 if(t === tabId) {
-                    btn.classList.add('text-blue-600');
-                    btn.classList.remove('text-slate-300');
+                    btn.classList.add('text-sky-400');
+                    btn.classList.remove('text-slate-500');
                     if(t === 'add') {
-                        document.getElementById('add-icon-bg').classList.add('bg-blue-600', 'text-white');
-                        document.getElementById('add-icon-bg').classList.remove('bg-slate-100', 'text-slate-400');
+                        document.getElementById('add-icon-bg').classList.add('bg-sky-500', 'text-slate-950');
+                        document.getElementById('add-icon-bg').classList.remove('bg-slate-900', 'text-slate-400');
                     }
                 } else {
-                    btn.classList.remove('text-blue-600');
-                    btn.classList.add('text-slate-300');
+                    btn.classList.remove('text-sky-400');
+                    btn.classList.add('text-slate-500');
                     if(t === 'add') {
-                        document.getElementById('add-icon-bg').classList.remove('bg-blue-600', 'text-white');
-                        document.getElementById('add-icon-bg').classList.add('bg-slate-100', 'text-slate-400');
+                        document.getElementById('add-icon-bg').classList.remove('bg-sky-500', 'text-slate-950');
+                        document.getElementById('add-icon-bg').classList.add('bg-slate-900', 'text-slate-400');
                     }
                 }
             });
@@ -348,21 +471,101 @@
             if(tabId === 'data') renderStats();
         }
 
+        // EDIT MODE CONTROLS
+        function editMember(id) {
+            const m = members.find(x => x.id === id);
+            if (!m) return;
+
+            editingMemberId = id;
+            
+            document.getElementById('name').value = m.name;
+            document.getElementById('dob').value = m.dob;
+            document.getElementById('start_date').value = m.startDate;
+            document.getElementById('whatsapp').value = m.whatsapp;
+            document.getElementById('use_pt').checked = m.usePT;
+
+            const standardDurations = ['1', '3', '6', '12'];
+            if (standardDurations.includes(String(m.durationMonths))) {
+                document.getElementById('duration').value = String(m.durationMonths);
+                document.getElementById('custom-duration-container').classList.add('hidden');
+            } else {
+                document.getElementById('duration').value = 'custom';
+                document.getElementById('custom-duration-container').classList.remove('hidden');
+                document.getElementById('custom_duration').value = m.durationMonths;
+            }
+
+            document.getElementById('form-title').innerText = "Edit Member";
+            document.getElementById('btn-submit').innerText = "Perbarui Member";
+            document.getElementById('btn-cancel-edit').classList.remove('hidden');
+            document.getElementById('nav-add-label').innerText = "Edit";
+
+            switchTab('add');
+        }
+
+        function cancelEditMode() {
+            editingMemberId = null;
+            document.getElementById('member-form').reset();
+            document.getElementById('form-title').innerText = "Member Baru";
+            document.getElementById('btn-submit').innerText = "Simpan Member";
+            document.getElementById('btn-cancel-edit').classList.add('hidden');
+            document.getElementById('custom-duration-container').classList.add('hidden');
+            document.getElementById('nav-add-label').innerText = "Baru";
+            
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').value = today;
+            switchTab('list');
+        }
+
         document.getElementById('member-form').onsubmit = (e) => {
             e.preventDefault();
-            const newMember = {
-                id: Date.now(),
+            
+            const selectDuration = document.getElementById('duration').value;
+            let finalDuration = selectDuration;
+            
+            if (selectDuration === 'custom') {
+                const customVal = document.getElementById('custom_duration').value;
+                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) {
+                    showCustomAlert('Silakan masukkan jumlah bulan kustom yang valid!', 'Data Tidak Lengkap');
+                    return;
+                }
+                finalDuration = parseInt(customVal);
+            }
+
+            const memberData = {
                 name: document.getElementById('name').value,
                 dob: document.getElementById('dob').value,
                 startDate: document.getElementById('start_date').value,
-                durationMonths: document.getElementById('duration').value,
+                durationMonths: finalDuration,
                 whatsapp: document.getElementById('whatsapp').value,
-                usePT: document.getElementById('use_pt').checked,
-                lastChat: null 
+                usePT: document.getElementById('use_pt').checked
             };
-            members.push(newMember);
+
+            if (editingMemberId !== null) {
+                // Update Existing Member
+                const index = members.findIndex(m => m.id === editingMemberId);
+                if (index !== -1) {
+                    members[index] = { ...members[index], ...memberData };
+                    showCustomAlert('Data member berhasil diperbarui!', 'Berhasil');
+                }
+                editingMemberId = null;
+                document.getElementById('form-title').innerText = "Member Baru";
+                document.getElementById('btn-submit').innerText = "Simpan Member";
+                document.getElementById('btn-cancel-edit').classList.add('hidden');
+                document.getElementById('nav-add-label').innerText = "Baru";
+            } else {
+                // Add New Member
+                const newMember = {
+                    id: Date.now(),
+                    ...memberData,
+                    lastChat: null 
+                };
+                members.push(newMember);
+                showCustomAlert('Member baru berhasil disimpan!', 'Berhasil');
+            }
+
             saveData();
             e.target.reset();
+            document.getElementById('custom-duration-container').classList.add('hidden');
             document.getElementById('start_date').value = new Date().toISOString().split('T')[0];
             switchTab('list');
         };
@@ -383,8 +586,9 @@
             }
         }
 
-        function deleteMember(id) {
-            if(confirm('Hapus member ini dari database?')) {
+        async function deleteMember(id) {
+            const confirmDelete = await showCustomConfirm('Hapus data member ini secara permanen dari database?');
+            if(confirmDelete) {
                 members = members.filter(m => m.id !== id);
                 saveData();
                 renderMembers();
@@ -429,50 +633,53 @@
                 else if (daysLeft <= 7) { statusClass = "status-warning"; statusText = "Limit"; }
 
                 const card = document.createElement('div');
-                card.className = `rounded-[32px] shadow-sm border border-slate-100 overflow-hidden transition-all ${isBDay ? 'card-birthday' : 'bg-white'}`;
+                card.className = `rounded-[32px] shadow-lg border border-slate-800/80 overflow-hidden transition-all ${isBDay ? 'card-birthday' : 'bg-[#090d22]'}`;
                 card.innerHTML = `
-                    <div class="p-6 border-b border-black/5 flex justify-between items-start">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-start">
                         <div class="flex-1">
                             <div class="flex items-center gap-2 mb-1">
-                                <h3 class="font-bold text-slate-800 text-base tracking-tight leading-none">${m.name}</h3>
+                                <h3 class="font-bold text-white text-base tracking-tight leading-none">${m.name}</h3>
                                 ${isBDay ? '<span>🎂</span>' : ''}
-                                ${m.usePT ? '<span class="bg-blue-600 text-white text-[7px] px-2 py-0.5 rounded-full font-black uppercase shadow-sm">PT</span>' : ''}
+                                ${m.usePT ? '<span class="bg-sky-500 text-slate-950 text-[7px] px-2 py-0.5 rounded-full font-black uppercase shadow-md">PT</span>' : ''}
                             </div>
-                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
-                                ${isBDay ? '<span class="text-amber-600">ULANG TAHUN HARI INI!</span>' : `${age} TAHUN • LAHIR: ${m.dob}`}
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
+                                ${isBDay ? '<span class="text-fuchsia-300">ULANG TAHUN HARI INI!</span>' : `${age} TAHUN • LAHIR: ${m.dob}`}
                             </p>
                         </div>
                         <span class="text-[9px] font-black px-3 py-1.5 rounded-full uppercase tracking-tighter ${statusClass}">
                             ${statusText}
                         </span>
                     </div>
-                    <div class="p-6 ${isBDay ? 'bg-amber-50/20' : 'bg-slate-50/30'}">
+                    <div class="p-6 ${isBDay ? 'bg-fuchsia-950/10' : 'bg-slate-950/20'}">
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <p class="text-[9px] text-slate-400 uppercase font-extrabold mb-1">Paket</p>
-                                <p class="text-sm font-bold text-slate-700">${m.durationMonths} Bulan</p>
+                                <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Keahlian</p>
+                                <p class="text-sm font-bold text-slate-300">${m.durationMonths} Bulan</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-[9px] text-slate-400 uppercase font-extrabold mb-1">Berakhir</p>
-                                <p class="text-sm font-black text-slate-900 uppercase italic leading-none">${formatDisplayDate(expiryDate)}</p>
+                                <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Berakhir Pada</p>
+                                <p class="text-sm font-black text-sky-400 uppercase italic leading-none">${formatDisplayDate(expiryDate)}</p>
                             </div>
                         </div>
                         <div class="flex items-end justify-between">
                             <div>
-                                <p class="text-[9px] text-slate-400 uppercase font-extrabold mb-1">Sisa Hari</p>
-                                <p class="text-2xl font-black ${daysLeft < 0 ? 'text-red-500' : 'text-slate-900'}">
-                                    ${daysLeft < 0 ? '0' : daysLeft} <span class="text-xs font-bold text-slate-400 italic">HARI</span>
+                                <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Sisa Hari</p>
+                                <p class="text-2xl font-black ${daysLeft < 0 ? 'text-rose-500' : 'text-white'}">
+                                    ${daysLeft < 0 ? '0' : daysLeft} <span class="text-xs font-bold text-slate-500 italic">HARI</span>
                                 </p>
                             </div>
                             <div class="flex flex-col items-end gap-3">
                                 <span class="text-[10px] font-medium italic text-slate-400 leading-none">
-                                    ${m.lastChat ? '💬 ' + m.lastChat : '⚪ Belum dichat'}
+                                    ${m.lastChat ? '💬 Chat: ' + m.lastChat : '⚪ Belum pernah dichat'}
                                 </span>
                                 <div class="flex gap-2">
-                                    <button onclick="deleteMember(${m.id})" class="p-3 bg-white border border-slate-100 text-red-400 rounded-2xl shadow-sm">
+                                    <button onclick="deleteMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-rose-400 rounded-2xl shadow-sm hover:bg-slate-900 transition-colors" title="Hapus Member">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                     </button>
-                                    <button onclick="contactWhatsApp(${m.id})" class="bg-green-500 text-white px-6 py-3 rounded-2xl text-[10px] font-black shadow-lg shadow-green-100 flex items-center gap-2 active:scale-95 transition-all uppercase tracking-widest">
+                                    <button onclick="editMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-sky-400 rounded-2xl shadow-sm hover:bg-slate-900 transition-colors" title="Edit Member">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                                    </button>
+                                    <button onclick="contactWhatsApp(${m.id})" class="bg-[#22c55e] hover:bg-green-400 text-slate-950 px-6 py-3 rounded-2xl text-[10px] font-black shadow-lg shadow-green-500/10 flex items-center gap-2 active:scale-95 transition-all uppercase tracking-widest">
                                         <span>HUBUNGI WA</span>
                                     </button>
                                 </div>
@@ -510,48 +717,55 @@
             document.getElementById('stat-monthly').innerText = monthly;
         }
 
-        // IMPORT & EXPORT LOGIC
+        // BACKUP & EXPORT FUNCTIONS
         function exportCSV() {
-            if (members.length === 0) return alert('Data masih kosong');
+            if (members.length === 0) {
+                showCustomAlert('Data member masih kosong!');
+                return;
+            }
             let csv = "Nama,Tgl Lahir,Usia,Tgl Mulai,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Terakhir Chat\n";
             members.forEach(m => {
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
                 csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.lastChat || '-'}"\n`;
             });
-            downloadFile(csv, `JANWILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
+            downloadFile(csv, `WILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
         }
 
         function exportBackup() {
-            if (members.length === 0) return alert('Data masih kosong');
+            if (members.length === 0) {
+                showCustomAlert('Data member masih kosong!');
+                return;
+            }
             const dataStr = JSON.stringify(members);
-            downloadFile(dataStr, `JANWILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
+            downloadFile(dataStr, `WILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
         }
 
         function triggerImport() {
             document.getElementById('import-file').click();
         }
 
-        function handleImport(event) {
+        async function handleImport(event) {
             const file = event.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = async (e) => {
                 try {
                     const importedData = JSON.parse(e.target.result);
                     if (Array.isArray(importedData)) {
-                        if (confirm(`Anda akan mengimpor ${importedData.length} data member. Data saat ini akan diganti. Lanjutkan?`)) {
+                        const confirmImport = await showCustomConfirm(`Anda akan memuat masuk ${importedData.length} data member. Data saat ini akan diganti. Lanjutkan?`);
+                        if (confirmImport) {
                             members = importedData;
                             saveData();
                             renderMembers();
                             renderStats();
-                            alert('Data berhasil diimpor!');
+                            showCustomAlert('Cadangan berhasil diimpor!', 'Selesai');
                         }
                     } else {
-                        alert('Format file cadangan tidak valid!');
+                        showCustomAlert('Format file cadangan tidak valid!', 'Format Salah');
                     }
                 } catch (err) {
-                    alert('Gagal memproses file impor!');
+                    showCustomAlert('Gagal membaca kandungan file JSON ini.', 'Sistem Error');
                 }
             };
             reader.readAsText(file);
