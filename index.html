@@ -111,13 +111,14 @@
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Urutkan:</span>
                     <div class="flex w-full gap-2">
                         <select id="sort-select" onchange="applySortChange()" class="flex-1 p-3 bg-[#090d22] text-white rounded-xl border border-slate-800 focus:ring-2 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer">
-                            <option value="join-date">Tanggal Join</option>
+                            <option value="transaction-date">Tanggal Transaksi</option>
+                            <option value="start-date">Tanggal Start Membership</option>
                             <option value="birthday-date">Tanggal Ulang Tahun</option>
                             <option value="chat-date">Tanggal Chat</option>
                             <option value="membership-expiry">Masa Aktif Membership</option>
                         </select>
                         <button onclick="toggleSortOrder()" id="btn-sort-order" class="p-3 bg-[#090d22] text-sky-400 rounded-xl border border-slate-800 focus:outline-none flex items-center justify-center active:scale-95 transition-all cursor-pointer" title="Ubah Arah Urutan">
-                            <!-- Arrow down/up indicator that rotates based on state -->
+                            <!-- Indikator panah atas/bawah berputar sesuai arah sortir -->
                             <svg id="sort-arrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 transform rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -155,23 +156,6 @@
                             <input type="date" id="dob" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Mulai Member</label>
-                            <input type="date" id="start_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Membership (Bulan)</label>
-                            <select id="duration" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" onchange="toggleCustomDuration()">
-                                <option value="1">1</option>
-                                <option value="3">3</option>
-                                <option value="6">6</option>
-                                <option value="12">12</option>
-                                <option value="custom">Kustom</option>
-                            </select>
-                        </div>
-                        <div>
                             <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">No. WhatsApp</label>
                             <input type="tel" id="whatsapp" placeholder="Contoh: 0812345678" 
                                 class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" 
@@ -180,10 +164,32 @@
                         </div>
                     </div>
 
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Tanggal Transaksi</label>
+                            <input type="date" id="transaction_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
+                        </div>
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Tanggal Start Membership</label>
+                            <input type="date" id="start_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Membership (Bulan)</label>
+                        <select id="duration" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" onchange="toggleCustomDuration()">
+                            <option value="1">1</option>
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="12">12</option>
+                            <option value="custom">Kustom</option>
+                        </select>
+                    </div>
+
                     <!-- Input Kustom Bulan -->
                     <div id="custom-duration-container" class="hidden">
                         <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Jumlah Bulan (Kustom)</label>
-                        <input type="number" id="custom_duration" min="1" placeholder="Contoh: 5" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                        <input type="number" id="custom_duration" min="1" placeholder="Contoh: 5" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-200 focus:ring-2 focus:ring-sky-500 outline-none">
                     </div>
 
                     <div class="py-2">
@@ -216,12 +222,12 @@
                 <div class="grid grid-cols-1 gap-4">
                     <div class="stat-card flex items-center justify-between border-l-4 border-l-sky-500">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Pendaftaran Hari Ini</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Transaksi Pendaftaran Hari Ini</p>
                             <h3 id="stat-daily" class="text-2xl font-black text-white">0</h3>
                         </div>
                         <div class="bg-sky-500/10 p-4 rounded-2xl text-sky-400 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                     </div>
@@ -310,6 +316,7 @@
         window.onload = () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
+            document.getElementById('transaction_date').value = today;
             
             // Set arah default berdasarkan pilihan tipe sortir
             applyDefaultSortDirection();
@@ -521,6 +528,8 @@
             
             document.getElementById('name').value = m.name;
             document.getElementById('dob').value = m.dob;
+            // Jika data lama di-import, jadikan startDate sebagai default transactionDate jika belum ada
+            document.getElementById('transaction_date').value = m.transactionDate || m.startDate;
             document.getElementById('start_date').value = m.startDate;
             document.getElementById('whatsapp').value = m.whatsapp;
             document.getElementById('use_pt').checked = m.usePT;
@@ -554,6 +563,7 @@
             
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
+            document.getElementById('transaction_date').value = today;
             switchTab('list');
         }
 
@@ -575,6 +585,7 @@
             const memberData = {
                 name: document.getElementById('name').value,
                 dob: document.getElementById('dob').value,
+                transactionDate: document.getElementById('transaction_date').value,
                 startDate: document.getElementById('start_date').value,
                 durationMonths: finalDuration,
                 whatsapp: document.getElementById('whatsapp').value,
@@ -608,7 +619,9 @@
             saveData();
             e.target.reset();
             document.getElementById('custom-duration-container').classList.add('hidden');
-            document.getElementById('start_date').value = new Date().toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').value = today;
+            document.getElementById('transaction_date').value = today;
             switchTab('list');
         };
 
@@ -650,7 +663,7 @@
                 sortOrder = 'asc'; // Terdekat / sisa terkecil tampil duluan
                 document.getElementById('sort-arrow').classList.add('rotate-180');
             } else {
-                sortOrder = 'desc'; // Tanggal join terbaru / chat terbaru tampil duluan
+                sortOrder = 'desc'; // Tanggal transaksi terbaru / chat terbaru tampil duluan
                 document.getElementById('sort-arrow').classList.remove('rotate-180');
             }
         }
@@ -694,7 +707,7 @@
                     const bBdayDays = getDaysUntilNextBirthday(b.dob);
                     comparison = (sortOrder === 'asc') ? (aBdayDays - bBdayDays) : (bBdayDays - aBdayDays);
                 } else if (sortVal === 'membership-expiry') {
-                    // Berdasarkan sisa hari masa berlaku paket
+                    // Berdasarkan sisa hari masa berlaku paket (dihitung dari startDate)
                     const expiryA = calculateExpiry(a.startDate, a.durationMonths);
                     const expiryB = calculateExpiry(b.startDate, b.durationMonths);
                     const remA = getDaysRemaining(expiryA);
@@ -705,10 +718,15 @@
                     const timeA = a.lastChatTime || 0;
                     const timeB = b.lastChatTime || 0;
                     comparison = (sortOrder === 'asc') ? (timeA - timeB) : (timeB - timeA);
-                } else {
-                    // Tanggal Join (Mulai pendaftaran mendaftar)
+                } else if (sortVal === 'start-date') {
+                    // Tanggal Start Membership
                     const dateA = new Date(a.startDate).getTime() || 0;
                     const dateB = new Date(b.startDate).getTime() || 0;
+                    comparison = (sortOrder === 'asc') ? (dateA - dateB) : (dateB - dateA);
+                } else {
+                    // Default / Tanggal Transaksi (fallback ke startDate jika transactionDate kosong di data lama)
+                    const dateA = new Date(a.transactionDate || a.startDate).getTime() || 0;
+                    const dateB = new Date(b.transactionDate || b.startDate).getTime() || 0;
                     if (sortOrder === 'asc') {
                         comparison = dateA - dateB || a.id - b.id;
                     } else {
@@ -719,7 +737,7 @@
                 return comparison;
             });
 
-            // Filter pencarian berdasarkan input teks
+            // Filter pencarian berdasarkan nama
             const filtered = sortedMembers.filter(m => m.name.toLowerCase().includes(search));
 
             filtered.forEach(m => {
@@ -729,7 +747,9 @@
 
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
-                
+                const showTrxDate = m.transactionDate ? formatDisplayDate(new Date(m.transactionDate)) : formatDisplayDate(new Date(m.startDate));
+                const showStartDate = formatDisplayDate(new Date(m.startDate));
+
                 let statusClass = "status-active";
                 let statusText = "Aktif";
                 if (daysLeft < 0) { statusClass = "status-expired"; statusText = "Habis"; }
@@ -754,6 +774,19 @@
                         </span>
                     </div>
                     <div class="p-6 ${isBDay ? 'bg-fuchsia-950/10' : 'bg-slate-950/20'}">
+                        
+                        <!-- Rincian Tanggal Transaksi & Mulai -->
+                        <div class="grid grid-cols-2 gap-4 mb-4 pb-4 border-b border-white/5 text-[11px]">
+                            <div>
+                                <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Transaksi</p>
+                                <p class="font-semibold text-slate-300">${showTrxDate}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Start Member</p>
+                                <p class="font-semibold text-slate-300">${showStartDate}</p>
+                            </div>
+                        </div>
+
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
                                 <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Membership</p>
@@ -764,6 +797,7 @@
                                 <p class="text-sm font-black text-sky-400 uppercase italic leading-none">${formatDisplayDate(expiryDate)}</p>
                             </div>
                         </div>
+
                         <div class="flex items-end justify-between">
                             <div>
                                 <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Sisa Hari</p>
@@ -807,12 +841,14 @@
             let daily = 0, weekly = 0, monthly = 0;
 
             members.forEach(m => {
-                const joinDate = new Date(m.startDate);
-                joinDate.setHours(0, 0, 0, 0);
+                // Perhitungan statistik pendaftaran berdasarkan Tanggal Transaksi (transactionDate)
+                const checkDateStr = m.transactionDate || m.startDate;
+                const trxDate = new Date(checkDateStr);
+                trxDate.setHours(0, 0, 0, 0);
 
-                if (joinDate.getTime() === today.getTime()) daily++;
-                if (joinDate.getTime() >= weekAgo.getTime()) weekly++;
-                if (joinDate.getTime() >= monthAgo.getTime()) monthly++;
+                if (trxDate.getTime() === today.getTime()) daily++;
+                if (trxDate.getTime() >= weekAgo.getTime()) weekly++;
+                if (trxDate.getTime() >= monthAgo.getTime()) monthly++;
             });
 
             document.getElementById('stat-daily').innerText = daily;
@@ -826,10 +862,11 @@
                 showCustomAlert('Data member masih kosong!');
                 return;
             }
-            let csv = "Nama,Tgl Lahir,Usia,Tgl Mulai,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Terakhir Chat\n";
+            let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Terakhir Chat\n";
             members.forEach(m => {
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
-                csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.lastChat || '-'}"\n`;
+                const trxDate = m.transactionDate || m.startDate;
+                csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${trxDate}","${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.lastChat || '-'}"\n`;
             });
             downloadFile(csv, `WILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
         }
@@ -885,4 +922,3 @@
     </script>
 </body>
 </html>
-
