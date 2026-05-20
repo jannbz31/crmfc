@@ -17,19 +17,19 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Status Badge Colors - Dark Theme Optimized */
+        /* Warna Status Membership - Dioptimalkan untuk Mode Gelap */
         .status-active { background-color: #064e3b; color: #a7f3d0; border: 1px solid #10b981; }
         .status-warning { background-color: #78350f; color: #fde68a; border: 1px solid #f59e0b; }
         .status-expired { background-color: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
         
-        /* Premium Glow Birthday Card - Inspired by Neon Logo */
+        /* Kartu Hari Lahir dengan Glow Ungu/Fuchsia Neon */
         .card-birthday { 
             background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
             border: 2px solid #d946ef;
             box-shadow: 0 0 20px rgba(217, 70, 239, 0.35);
         }
 
-        /* Glassmorphism Navigation */
+        /* Navigasi Glassmorphism */
         .glass-nav {
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(12px);
@@ -44,13 +44,13 @@
             border: 1px solid #1e293b;
         }
 
-        /* Fullscreen button active styling */
+        /* Tombol Fullscreen Aktif */
         .btn-fullscreen.active {
             color: #38bdf8;
             background-color: #0c4a6e;
         }
 
-        /* Custom Scrollbar for modern look */
+        /* Kustom Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -92,16 +92,38 @@
         
         <!-- TAB DAFTAR MEMBER -->
         <section id="tab-list" class="tab-content active">
-            <!-- Kolom Pencarian -->
-            <div class="relative mb-6">
-                <span class="absolute inset-y-0 left-0 pl-3-5 flex items-center text-slate-400 pl-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </span>
-                <input type="text" id="search-input" placeholder="Cari nama member..." 
-                    class="w-full pl-12 pr-4 py-4 bg-[#090d22] border border-slate-800 rounded-2xl shadow-inner focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500" 
-                    oninput="renderMembers()">
+            <!-- Kontrol Pencarian & Pengurutan -->
+            <div class="space-y-3 mb-6">
+                <!-- Kolom Pencarian -->
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </span>
+                    <input type="text" id="search-input" placeholder="Cari nama member..." 
+                        class="w-full pl-12 pr-4 py-4 bg-[#090d22] border border-slate-800 rounded-2xl shadow-inner focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition-all text-sm text-white placeholder-slate-500" 
+                        oninput="renderMembers()">
+                </div>
+
+                <!-- Kontrol Sortir dengan Fitur Ascending & Descending -->
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Urutkan:</span>
+                    <div class="flex w-full gap-2">
+                        <select id="sort-select" onchange="applySortChange()" class="flex-1 p-3 bg-[#090d22] text-white rounded-xl border border-slate-800 focus:ring-2 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer">
+                            <option value="join-date">Tanggal Join</option>
+                            <option value="birthday-date">Tanggal Ulang Tahun</option>
+                            <option value="chat-date">Tanggal Chat</option>
+                            <option value="membership-expiry">Masa Aktif Membership</option>
+                        </select>
+                        <button onclick="toggleSortOrder()" id="btn-sort-order" class="p-3 bg-[#090d22] text-sky-400 rounded-xl border border-slate-800 focus:outline-none flex items-center justify-center active:scale-95 transition-all cursor-pointer" title="Ubah Arah Urutan">
+                            <!-- Arrow down/up indicator that rotates based on state -->
+                            <svg id="sort-arrow" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform duration-300 transform rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Pengumuman Ulang Tahun -->
@@ -270,7 +292,7 @@
             <h3 id="modal-title" class="text-lg font-bold text-white mb-2"></h3>
             <p id="modal-message" class="text-sm text-slate-400 mb-6"></p>
             <div class="flex gap-3 justify-end">
-                <button id="modal-cancel-btn" class="px-4 py-2.5 rounded-xl border border-slate-800 bg-[#020617] text-slate-400 text-sm font-bold hidden active:scale-95 transition-all"></button>
+                <button id="modal-cancel-btn" class="px-4 py-2.5 rounded-xl border border-slate-800 bg-[#020617] text-slate-300 text-sm font-bold hidden active:scale-95 transition-all"></button>
                 <button id="modal-confirm-btn" class="px-5 py-2.5 rounded-xl bg-sky-500 text-slate-950 text-sm font-bold active:scale-95 transition-all"></button>
             </div>
         </div>
@@ -281,10 +303,16 @@
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v1')) || [];
         let wakeLock = null;
         let editingMemberId = null;
+        
+        // Pengurutan State
+        let sortOrder = 'desc'; // default: Descending
 
         window.onload = () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
+            
+            // Set arah default berdasarkan pilihan tipe sortir
+            applyDefaultSortDirection();
             renderMembers();
             renderStats();
         };
@@ -381,7 +409,20 @@
             }
         });
 
-        // CORE CRM BUSINESS LOGIC
+        // HITUNG HARI SAMPAI ULANG TAHUN BERIKUTNYA
+        function getDaysUntilNextBirthday(dobString) {
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            const dob = new Date(dobString);
+            const currentYear = today.getFullYear();
+            let nextBday = new Date(currentYear, dob.getMonth(), dob.getDate());
+            if (nextBday < today) {
+                nextBday.setFullYear(currentYear + 1);
+            }
+            const diffTime = nextBday - today;
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
         function isBirthdayToday(dobString) {
             const today = new Date();
             const dob = new Date(dobString);
@@ -541,7 +582,7 @@
             };
 
             if (editingMemberId !== null) {
-                // Update Existing Member
+                // Perbarui Member yang Ada
                 const index = members.findIndex(m => m.id === editingMemberId);
                 if (index !== -1) {
                     members[index] = { ...members[index], ...memberData };
@@ -553,11 +594,12 @@
                 document.getElementById('btn-cancel-edit').classList.add('hidden');
                 document.getElementById('nav-add-label').innerText = "Baru";
             } else {
-                // Add New Member
+                // Simpan Member Baru
                 const newMember = {
                     id: Date.now(),
                     ...memberData,
-                    lastChat: null 
+                    lastChat: null,
+                    lastChatTime: null
                 };
                 members.push(newMember);
                 showCustomAlert('Member baru berhasil disimpan!', 'Berhasil');
@@ -578,6 +620,7 @@
                     day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' 
                 });
                 members[index].lastChat = timeString;
+                members[index].lastChatTime = Date.now(); 
                 saveData();
                 renderMembers();
                 let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
@@ -599,24 +642,84 @@
             localStorage.setItem('jan_willfitness_v1', JSON.stringify(members));
         }
 
+        // LOGIKA FILTER DAN PENGURUTAN (SORTING ASC & DESC)
+        function applyDefaultSortDirection() {
+            const sortVal = document.getElementById('sort-select').value;
+            // Set arah default yang paling intuitif untuk setiap kategori
+            if (sortVal === 'birthday-date' || sortVal === 'membership-expiry') {
+                sortOrder = 'asc'; // Terdekat / sisa terkecil tampil duluan
+                document.getElementById('sort-arrow').classList.add('rotate-180');
+            } else {
+                sortOrder = 'desc'; // Tanggal join terbaru / chat terbaru tampil duluan
+                document.getElementById('sort-arrow').classList.remove('rotate-180');
+            }
+        }
+
+        function applySortChange() {
+            applyDefaultSortDirection();
+            renderMembers();
+        }
+
+        function toggleSortOrder() {
+            sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
+            const arrow = document.getElementById('sort-arrow');
+            if (sortOrder === 'asc') {
+                arrow.classList.add('rotate-180'); // Rotasi 180 derajat (Panah ke Atas / Ascending)
+            } else {
+                arrow.classList.remove('rotate-180'); // Rotasi 0 derajat (Panah ke Bawah / Descending)
+            }
+            renderMembers();
+        }
+
         function renderMembers() {
             const container = document.getElementById('member-container');
             const search = document.getElementById('search-input').value.toLowerCase();
             const birthdayAnnounce = document.getElementById('birthday-announcement');
+            const sortVal = document.getElementById('sort-select').value;
             container.innerHTML = '';
             
             document.getElementById('stats-badge').innerText = members.length + ' MEMBER';
 
             let hasBirthday = false;
 
-            const sortedMembers = [...members].sort((a, b) => {
-                const aBDay = isBirthdayToday(a.dob);
-                const bBDay = isBirthdayToday(b.dob);
-                if (aBDay && !bBDay) return -1;
-                if (!aBDay && bBDay) return 1;
-                return b.id - a.id;
+            // Salin array member agar tidak memodifikasi database asli saat sortir
+            let sortedMembers = [...members];
+            
+            sortedMembers.sort((a, b) => {
+                let comparison = 0;
+                
+                if (sortVal === 'birthday-date') {
+                    // Selisih hari ke ulang tahun berikutnya (mengabaikan tahun lahir)
+                    const aBdayDays = getDaysUntilNextBirthday(a.dob);
+                    const bBdayDays = getDaysUntilNextBirthday(b.dob);
+                    comparison = (sortOrder === 'asc') ? (aBdayDays - bBdayDays) : (bBdayDays - aBdayDays);
+                } else if (sortVal === 'membership-expiry') {
+                    // Berdasarkan sisa hari masa berlaku paket
+                    const expiryA = calculateExpiry(a.startDate, a.durationMonths);
+                    const expiryB = calculateExpiry(b.startDate, b.durationMonths);
+                    const remA = getDaysRemaining(expiryA);
+                    const remB = getDaysRemaining(expiryB);
+                    comparison = (sortOrder === 'asc') ? (remA - remB) : (remB - remA);
+                } else if (sortVal === 'chat-date') {
+                    // Berdasarkan timestamp waktu tombol WhatsApp terakhir kali diklik
+                    const timeA = a.lastChatTime || 0;
+                    const timeB = b.lastChatTime || 0;
+                    comparison = (sortOrder === 'asc') ? (timeA - timeB) : (timeB - timeA);
+                } else {
+                    // Tanggal Join (Mulai pendaftaran mendaftar)
+                    const dateA = new Date(a.startDate).getTime() || 0;
+                    const dateB = new Date(b.startDate).getTime() || 0;
+                    if (sortOrder === 'asc') {
+                        comparison = dateA - dateB || a.id - b.id;
+                    } else {
+                        comparison = dateB - dateA || b.id - a.id;
+                    }
+                }
+                
+                return comparison;
             });
 
+            // Filter pencarian berdasarkan input teks
             const filtered = sortedMembers.filter(m => m.name.toLowerCase().includes(search));
 
             filtered.forEach(m => {
@@ -640,7 +743,7 @@
                             <div class="flex items-center gap-2 mb-1">
                                 <h3 class="font-bold text-white text-base tracking-tight leading-none">${m.name}</h3>
                                 ${isBDay ? '<span>🎂</span>' : ''}
-                                ${m.usePT ? '<span class="bg-sky-500 text-slate-950 text-[7px] px-2 py-0.5 rounded-full font-black uppercase shadow-md">PT</span>' : ''}
+                                ${m.usePT ? '<span class="bg-sky-500 text-slate-950 text-[7px] px-2 py-0.5 rounded-full font-black uppercase shadow-sm">PT</span>' : ''}
                             </div>
                             <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                                 ${isBDay ? '<span class="text-fuchsia-300">ULANG TAHUN HARI INI!</span>' : `${age} TAHUN • LAHIR: ${m.dob}`}
@@ -653,7 +756,7 @@
                     <div class="p-6 ${isBDay ? 'bg-fuchsia-950/10' : 'bg-slate-950/20'}">
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
-                                <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Keahlian</p>
+                                <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Membership</p>
                                 <p class="text-sm font-bold text-slate-300">${m.durationMonths} Bulan</p>
                             </div>
                             <div class="text-right">
@@ -665,7 +768,7 @@
                             <div>
                                 <p class="text-[9px] text-slate-500 uppercase font-extrabold mb-1 tracking-wider">Sisa Hari</p>
                                 <p class="text-2xl font-black ${daysLeft < 0 ? 'text-rose-500' : 'text-white'}">
-                                    ${daysLeft < 0 ? '0' : daysLeft} <span class="text-xs font-bold text-slate-500 italic">HARI</span>
+                                    ${daysLeft < 0 ? '0' : daysLeft} <span class="text-xs font-bold text-slate-400 italic">HARI</span>
                                 </p>
                             </div>
                             <div class="flex flex-col items-end gap-3">
