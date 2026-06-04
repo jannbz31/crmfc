@@ -65,7 +65,6 @@
 </head>
 <body class="bg-[#020617] text-slate-100 pb-28 min-h-screen">
 
-    <!-- Header Utama (Premium Dark Theme) -->
     <header class="bg-[#090d22]/90 border-b border-slate-800/80 sticky top-0 z-40 px-5 py-5 shadow-lg backdrop-blur-md">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div>
@@ -75,7 +74,6 @@
                 <p class="text-[9px] font-bold text-sky-400/80 uppercase tracking-widest mt-0.5">MEMBER LIST</p>
             </div>
             <div class="flex items-center gap-2">
-                <!-- Tombol Fullscreen & Stay Awake -->
                 <button onclick="toggleFullscreen()" id="btn-fs" class="p-2.5 text-slate-400 hover:text-sky-400 bg-slate-900 rounded-xl border border-slate-800 transition-all duration-200" title="Layar Penuh & Tetap Menyala">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -90,11 +88,8 @@
 
     <main class="max-w-md mx-auto p-4">
         
-        <!-- TAB DAFTAR MEMBER -->
         <section id="tab-list" class="tab-content active">
-            <!-- Kontrol Pencarian & Pengurutan -->
             <div class="space-y-3 mb-6">
-                <!-- Kolom Pencarian -->
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -106,7 +101,6 @@
                         oninput="renderMembers()">
                 </div>
 
-                <!-- Kontrol Sortir -->
                 <div class="flex items-center gap-2">
                     <span class="text-xs font-bold text-slate-400 uppercase tracking-wider whitespace-nowrap">Urutkan:</span>
                     <div class="flex w-full gap-2">
@@ -126,18 +120,14 @@
                 </div>
             </div>
             
-            <!-- Pengumuman Ulang Tahun -->
             <div id="birthday-announcement" class="hidden mb-4 p-4 bg-fuchsia-950/40 text-fuchsia-300 rounded-2xl text-xs font-bold flex items-center gap-3 border border-fuchsia-800/50 shadow-lg shadow-fuchsia-950/20">
-                <span class="text-xl">🎂</span> Ada member yang berulang tahun hari ini! Segera berikan ucapan spesial.
+                <span class="text-xl">🎂</span> Ada member yang berulang tahun hari ini! Segera berikan ucapan.
             </div>
 
-            <!-- Tempat Render Card Member -->
             <div id="member-container" class="space-y-4">
-                <!-- Diisi oleh JS -->
-            </div>
+                </div>
         </section>
 
-        <!-- TAB TAMBAH / EDIT MEMBER -->
         <section id="tab-add" class="tab-content">
             <div class="bg-[#090d22] p-6 rounded-3xl shadow-xl border border-slate-800/80">
                 <h2 id="form-title" class="text-xl font-extrabold text-white mb-6 flex items-center gap-2 tracking-tight">
@@ -169,7 +159,7 @@
                             <input type="date" id="transaction_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Tanggal Start Membership</label>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Tgl Start Member</label>
                             <input type="date" id="start_date" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" required>
                         </div>
                     </div>
@@ -201,7 +191,6 @@
                         </div>
                     </div>
 
-                    <!-- Input Kustom Bulan -->
                     <div id="custom-duration-container" class="hidden">
                         <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Jumlah Bulan (Kustom)</label>
                         <input type="number" id="custom_duration" min="1" placeholder="Contoh: 5" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
@@ -209,11 +198,11 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Revenue Membership (Rp)</label>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Rev Membership (Rp)</label>
                             <input type="number" id="revenue_membership" placeholder="Contoh: 500000" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
                         </div>
                         <div>
-                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">POS Revenue Sesi PT (Rp)</label>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1 mb-1.5 block tracking-wider">Rev Sesi PT (Rp)</label>
                             <input type="number" id="revenue_pos" placeholder="Contoh: 1500000" class="w-full p-4 bg-[#020617] text-white rounded-2xl border-none ring-1 ring-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
                         </div>
                     </div>
@@ -240,35 +229,51 @@
             </div>
         </section>
 
-        <!-- TAB LAPORAN & STATISTIK -->
         <section id="tab-data" class="tab-content">
             <div class="space-y-4">
-                <h2 class="text-lg font-extrabold text-white px-1 tracking-tight">Laporan Keuangan & Penjualan</h2>
+                <h2 class="text-lg font-extrabold text-white px-1 tracking-tight">Laporan Penjualan</h2>
                 
-                <!-- Filter Laporan Tingkat Lanjut -->
                 <div class="bg-[#090d22] p-5 rounded-3xl border border-slate-800/80 space-y-4">
-                    <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">Saring Laporan Penjualan</p>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Periode</p>
-                            <select id="report-type" onchange="onReportTypeChange()" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold">
-                                <option value="all">Semua Waktu</option>
-                                <option value="day">Hari Tertentu</option>
-                                <option value="week">Minggu Tertentu</option>
-                                <option value="month">Bulan Tertentu</option>
-                            </select>
-                        </div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saring Laporan Penjualan</p>
+                    <div class="space-y-3">
+                        <select id="report-type" onchange="onReportTypeChange()" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold cursor-pointer outline-none focus:ring-2 focus:ring-sky-500">
+                            <option value="today" selected>Hari Ini</option>
+                            <option value="this_week">Minggu Ini</option>
+                            <option value="month">Bulan Tertentu</option>
+                            <option value="custom">Range Tanggal Tertentu</option>
+                        </select>
+                        
                         <div id="report-input-wrapper">
-                            <!-- Input dinamis akan di-render di sini oleh JS -->
+                            <div id="input-month" class="hidden">
+                                <input type="month" id="report-month" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold outline-none focus:ring-2 focus:ring-sky-500">
+                            </div>
+                            <div id="input-custom" class="hidden grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-slate-500 block mb-1">Dari</label>
+                                    <input type="date" id="report-start" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold outline-none focus:ring-2 focus:ring-sky-500">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-slate-500 block mb-1">Sampai</label>
+                                    <input type="date" id="report-end" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold outline-none focus:ring-2 focus:ring-sky-500">
+                                </div>
+                            </div>
                         </div>
+
+                        <button onclick="processReport()" class="w-full bg-sky-500 hover:bg-sky-400 text-slate-950 p-3 rounded-xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md mt-2">
+                            Proses Laporan
+                        </button>
                     </div>
                 </div>
 
-                <!-- Statistik Penjualan Terpilih -->
-                <div class="grid grid-cols-1 gap-4">
+                <div class="grid grid-cols-1 gap-4 mt-2">
+                    <div class="flex items-center justify-between px-2">
+                        <span id="report-label" class="text-xs font-bold text-sky-400">Laporan: Hari Ini</span>
+                        <span class="text-xs text-slate-500"><span id="report-member-count" class="font-bold text-white">0</span> Transaksi</span>
+                    </div>
+
                     <div class="stat-card flex items-center justify-between border-l-4 border-l-sky-500">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Total Penjualan Membership</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Revenue Membership</p>
                             <h3 id="report-membership-rev" class="text-xl font-black text-white">Rp 0</h3>
                         </div>
                         <div class="bg-sky-500/10 p-3 rounded-2xl text-sky-400 text-sm font-black">MEMBERSHIP</div>
@@ -276,7 +281,7 @@
 
                     <div class="stat-card flex items-center justify-between border-l-4 border-l-purple-500">
                         <div>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Total Penjualan POS (Sesi PT)</p>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase italic tracking-wider">Revenue POS (Sesi PT)</p>
                             <h3 id="report-pos-rev" class="text-xl font-black text-white">Rp 0</h3>
                         </div>
                         <div class="bg-purple-500/10 p-3 rounded-2xl text-purple-400 text-sm font-black">POS PT</div>
@@ -284,37 +289,30 @@
 
                     <div class="stat-card flex items-center justify-between border-l-4 border-l-emerald-500 bg-emerald-950/10">
                         <div>
-                            <p class="text-[10px] font-bold text-emerald-400 uppercase italic tracking-wider">Akumulasi Penjualan (Total Revenue)</p>
+                            <p class="text-[10px] font-bold text-emerald-400 uppercase italic tracking-wider">Total Pendapatan Bersih</p>
                             <h3 id="report-total-rev" class="text-2xl font-black text-emerald-400">Rp 0</h3>
-                            <p class="text-[10px] text-slate-400 mt-1"><span id="report-member-count" class="font-bold text-white">0</span> pendaftaran terdata</p>
                         </div>
                         <div class="bg-emerald-500/20 p-4 rounded-2xl text-emerald-400 text-xl">💰</div>
                     </div>
                 </div>
 
-                <!-- Statistik Leads Terpilih -->
                 <div class="bg-[#090d22] p-6 rounded-3xl border border-slate-800/80">
-                    <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Analisis Efektivitas Leads</h3>
+                    <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Breakdown Sumber Leads</h3>
                     <div id="leads-breakdown-container" class="space-y-3">
-                        <!-- Diisi oleh JS -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- Bagian Ekspor & Cadangan -->
                 <div class="bg-[#090d22] p-6 rounded-3xl shadow-xl border border-slate-800/80 mt-6">
                     <h3 class="text-sm font-bold text-white mb-4 uppercase tracking-wider">Penyimpanan & Cadangan</h3>
-                    
                     <div class="space-y-3">
                         <button onclick="exportCSV()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
                             <span>Ekspor Excel (CSV)</span>
                         </button>
-
                         <button onclick="exportBackup()" class="w-full bg-[#0ea5e9] hover:bg-sky-400 text-slate-950 p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
                             <span>Ekspor Cadangan (JSON)</span>
                         </button>
-
                         <button onclick="triggerImport()" class="w-full bg-slate-800 hover:bg-slate-700 text-white p-4 rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-all shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                             <span>Impor Cadangan (JSON)</span>
@@ -327,7 +325,6 @@
 
     </main>
 
-    <!-- Navigasi Bawah -->
     <nav class="fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-800/80 flex justify-around p-4 z-50 rounded-t-[32px] shadow-2xl">
         <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-sky-400 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
@@ -345,7 +342,6 @@
         </button>
     </nav>
 
-    <!-- Modal Kustom (Desain Gelap Modern) -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
         <div class="bg-[#090d22] rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-800/80 transform transition-all scale-95 duration-200 text-slate-100">
             <h3 id="modal-title" class="text-lg font-bold text-white mb-2"></h3>
@@ -362,11 +358,7 @@
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v2')) || [];
         let wakeLock = null;
         let editingMemberId = null;
-        
-        // Pengurutan State
-        let sortOrder = 'desc'; // default: Descending
-
-        // Expanded Cards Registry
+        let sortOrder = 'desc'; 
         let expandedCards = {};
 
         window.onload = () => {
@@ -374,10 +366,14 @@
             document.getElementById('start_date').value = today;
             document.getElementById('transaction_date').value = today;
             
-            // Set arah default berdasarkan pilihan tipe sortir
+            // Set bulan default pada laporan
+            const currentMonthStr = today.substring(0, 7);
+            document.getElementById('report-month').value = currentMonthStr;
+
             applyDefaultSortDirection();
             renderMembers();
-            onReportTypeChange(); // Inisialisasi Laporan
+            onReportTypeChange(); // Setup awal UI laporan
+            processReport();      // Eksekusi laporan
         };
 
         // KONTROL MODAL KUSTOM
@@ -386,19 +382,12 @@
                 const modal = document.getElementById('custom-modal');
                 document.getElementById('modal-title').innerText = title;
                 document.getElementById('modal-message').innerText = message;
-                
                 const cancelBtn = document.getElementById('modal-cancel-btn');
                 cancelBtn.classList.add('hidden');
-                
                 const confirmBtn = document.getElementById('modal-confirm-btn');
                 confirmBtn.innerText = "Selesai";
                 confirmBtn.className = "px-5 py-2.5 rounded-xl bg-sky-500 text-slate-950 text-sm font-bold active:scale-95 transition-all";
-                
-                confirmBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(true);
-                };
-                
+                confirmBtn.onclick = () => { modal.classList.add('hidden'); resolve(true); };
                 modal.classList.remove('hidden');
             });
         }
@@ -408,29 +397,19 @@
                 const modal = document.getElementById('custom-modal');
                 document.getElementById('modal-title').innerText = title;
                 document.getElementById('modal-message').innerText = message;
-                
                 const cancelBtn = document.getElementById('modal-cancel-btn');
                 cancelBtn.innerText = "Batal";
                 cancelBtn.classList.remove('hidden');
-                cancelBtn.className = "px-4 py-2.5 rounded-xl border border-slate-800 bg-[#020617] text-slate-300 text-sm font-bold active:scale-95 transition-all";
-                cancelBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(false);
-                };
-                
+                cancelBtn.onclick = () => { modal.classList.add('hidden'); resolve(false); };
                 const confirmBtn = document.getElementById('modal-confirm-btn');
                 confirmBtn.innerText = "Ya, Lanjutkan";
                 confirmBtn.className = "px-5 py-2.5 rounded-xl bg-rose-600 text-white text-sm font-bold active:scale-95 transition-all";
-                confirmBtn.onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve(true);
-                };
-                
+                confirmBtn.onclick = () => { modal.classList.add('hidden'); resolve(true); };
                 modal.classList.remove('hidden');
             });
         }
 
-        // SCREEN STAY AWAKE & FULLSCREEN LOGIC
+        // FULLSCREEN & WAKE LOCK
         async function toggleFullscreen() {
             try {
                 if (!document.fullscreenElement) {
@@ -444,35 +423,22 @@
                         releaseWakeLock();
                     }
                 }
-            } catch (err) {
-                console.error(`Gagal mengaktifkan mode layar penuh: ${err.message}`);
-            }
+            } catch (err) { console.error(err.message); }
         }
 
         async function requestWakeLock() {
             try {
-                if ('wakeLock' in navigator) {
-                    wakeLock = await navigator.wakeLock.request('screen');
-                }
-            } catch (err) {
-                console.error(`Sistem Wake Lock diblokir: ${err.name}, ${err.message}`);
-            }
+                if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+            } catch (err) {}
         }
-
         function releaseWakeLock() {
-            if (wakeLock !== null) {
-                wakeLock.release();
-                wakeLock = null;
-            }
+            if (wakeLock !== null) { wakeLock.release(); wakeLock = null; }
         }
-
         document.addEventListener('visibilitychange', async () => {
-            if (wakeLock !== null && document.visibilityState === 'visible') {
-                await requestWakeLock();
-            }
+            if (wakeLock !== null && document.visibilityState === 'visible') await requestWakeLock();
         });
 
-        // FORMULIR TANGGAL INDONESIA DD/mmm/YYYY
+        // UTILITAS TANGGAL & RUPIAH
         function formatDisplayDateDMY(dateStr) {
             if (!dateStr) return '-';
             const parts = dateStr.split('-');
@@ -489,11 +455,8 @@
             const date = new Date(timestamp);
             const day = String(date.getDate()).padStart(2, '0');
             const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-            const monthStr = months[date.getMonth()];
             const year = date.getFullYear();
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            return `${day}/${monthStr}/${year} ${hours}:${minutes}`;
+            return `${day}/${months[date.getMonth()]}/${year}`;
         }
 
         function formatRupiah(num) {
@@ -501,18 +464,13 @@
             return 'Rp ' + parseInt(num, 10).toLocaleString('id-ID');
         }
 
-        // HITUNG HARI SAMPAI ULANG TAHUN BERIKUTNYA
         function getDaysUntilNextBirthday(dobString) {
             const today = new Date();
             today.setHours(0,0,0,0);
             const dob = new Date(dobString);
-            const currentYear = today.getFullYear();
-            let nextBday = new Date(currentYear, dob.getMonth(), dob.getDate());
-            if (nextBday < today) {
-                nextBday.setFullYear(currentYear + 1);
-            }
-            const diffTime = nextBday - today;
-            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            let nextBday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+            if (nextBday < today) nextBday.setFullYear(today.getFullYear() + 1);
+            return Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
         }
 
         function isBirthdayToday(dobString) {
@@ -532,19 +490,13 @@
 
         function toggleCustomDuration() {
             const selectVal = document.getElementById('duration').value;
-            const container = document.getElementById('custom-duration-container');
-            if (selectVal === 'custom') {
-                container.classList.remove('hidden');
-            } else {
-                container.classList.add('hidden');
-            }
+            if (selectVal === 'custom') document.getElementById('custom-duration-container').classList.remove('hidden');
+            else document.getElementById('custom-duration-container').classList.add('hidden');
         }
 
-        // TIPE MEMBERSHIP (1m = 30d, 3m = 90d, 6m = 180d, 12m = 360d)
         function calculateExpiry(startDate, durationMonths) {
             const date = new Date(startDate);
             let daysToAdd = 30;
-            
             if (durationMonths === 'custom' || isNaN(durationMonths)) {
                 const val = parseInt(durationMonths);
                 daysToAdd = isNaN(val) ? 30 : val * 30;
@@ -558,7 +510,6 @@
                     default: daysToAdd = m * 30;
                 }
             }
-            
             date.setDate(date.getDate() + daysToAdd);
             return date;
         }
@@ -568,27 +519,24 @@
             today.setHours(0, 0, 0, 0);
             const expiry = new Date(expiryDate);
             expiry.setHours(0, 0, 0, 0);
-            const diffTime = expiry - today;
-            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
         }
 
+        // TABS
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            
             const tabs = ['list', 'add', 'data'];
             tabs.forEach(t => {
                 const btn = document.getElementById('nav-' + t);
                 if(t === tabId) {
-                    btn.classList.add('text-sky-400');
-                    btn.classList.remove('text-slate-500');
+                    btn.classList.add('text-sky-400'); btn.classList.remove('text-slate-500');
                     if(t === 'add') {
                         document.getElementById('add-icon-bg').classList.add('bg-sky-500', 'text-slate-950');
                         document.getElementById('add-icon-bg').classList.remove('bg-slate-900', 'text-slate-400');
                     }
                 } else {
-                    btn.classList.remove('text-sky-400');
-                    btn.classList.add('text-slate-500');
+                    btn.classList.remove('text-sky-400'); btn.classList.add('text-slate-500');
                     if(t === 'add') {
                         document.getElementById('add-icon-bg').classList.remove('bg-sky-500', 'text-slate-950');
                         document.getElementById('add-icon-bg').classList.add('bg-slate-900', 'text-slate-400');
@@ -597,22 +545,22 @@
             });
 
             if(tabId === 'list') renderMembers();
-            if(tabId === 'data') onReportTypeChange();
+            if(tabId === 'data') {
+                onReportTypeChange();
+                processReport();
+            }
         }
 
-        // CONTROL EXPAND CARD
         function toggleCardExpand(id) {
             expandedCards[id] = !expandedCards[id];
             renderMembers();
         }
 
-        // EDIT MODE CONTROLS
+        // CRUD MEMBER
         function editMember(id) {
             const m = members.find(x => x.id === id);
             if (!m) return;
-
             editingMemberId = id;
-            
             document.getElementById('name').value = m.name;
             document.getElementById('dob').value = m.dob;
             document.getElementById('transaction_date').value = m.transactionDate || m.startDate;
@@ -620,8 +568,8 @@
             document.getElementById('whatsapp').value = m.whatsapp;
             document.getElementById('use_pt').checked = m.usePT;
             document.getElementById('source').value = m.source || 'Leads Internal';
-            document.getElementById('revenue_membership').value = m.revenueMembership || 0;
-            document.getElementById('revenue_pos').value = m.revenuePOS || 0;
+            document.getElementById('revenue_membership').value = m.revenueMembership || '';
+            document.getElementById('revenue_pos').value = m.revenuePOS || '';
 
             const standardDurations = ['1', '3', '6', '12'];
             if (standardDurations.includes(String(m.durationMonths))) {
@@ -637,7 +585,6 @@
             document.getElementById('btn-submit').innerText = "Perbarui Member";
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
             document.getElementById('nav-add-label').innerText = "Edit";
-
             switchTab('add');
         }
 
@@ -649,7 +596,6 @@
             document.getElementById('btn-cancel-edit').classList.add('hidden');
             document.getElementById('custom-duration-container').classList.add('hidden');
             document.getElementById('nav-add-label').innerText = "Baru";
-            
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
             document.getElementById('transaction_date').value = today;
@@ -658,16 +604,11 @@
 
         document.getElementById('member-form').onsubmit = (e) => {
             e.preventDefault();
-            
             const selectDuration = document.getElementById('duration').value;
             let finalDuration = selectDuration;
-            
             if (selectDuration === 'custom') {
                 const customVal = document.getElementById('custom_duration').value;
-                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) {
-                    showCustomAlert('Silakan masukkan jumlah bulan kustom yang valid!', 'Data Tidak Lengkap');
-                    return;
-                }
+                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) return showCustomAlert('Jumlah bulan tidak valid!', 'Data Tidak Lengkap');
                 finalDuration = parseInt(customVal);
             }
 
@@ -685,45 +626,29 @@
             };
 
             if (editingMemberId !== null) {
-                // Perbarui Member yang Ada
                 const index = members.findIndex(m => m.id === editingMemberId);
-                if (index !== -1) {
-                    members[index] = { ...members[index], ...memberData };
-                    showCustomAlert('Data member berhasil diperbarui!', 'Berhasil');
-                }
-                editingMemberId = null;
-                document.getElementById('form-title').innerText = "Member Baru";
-                document.getElementById('btn-submit').innerText = "Simpan Member";
-                document.getElementById('btn-cancel-edit').classList.add('hidden');
-                document.getElementById('nav-add-label').innerText = "Baru";
+                if (index !== -1) members[index] = { ...members[index], ...memberData };
+                showCustomAlert('Data member berhasil diperbarui!', 'Berhasil');
+                cancelEditMode(); // resets the form and view
             } else {
-                // Simpan Member Baru
-                const newMember = {
-                    id: Date.now(),
-                    ...memberData,
-                    lastChat: null,
-                    lastChatTime: null
-                };
-                members.push(newMember);
+                members.push({ id: Date.now(), ...memberData, lastChat: null, lastChatTime: null });
                 showCustomAlert('Member baru berhasil disimpan!', 'Berhasil');
+                saveData();
+                e.target.reset();
+                document.getElementById('custom-duration-container').classList.add('hidden');
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('start_date').value = today;
+                document.getElementById('transaction_date').value = today;
+                switchTab('list');
             }
-
-            saveData();
-            e.target.reset();
-            document.getElementById('custom-duration-container').classList.add('hidden');
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('start_date').value = today;
-            document.getElementById('transaction_date').value = today;
-            switchTab('list');
         };
 
         function contactWhatsApp(id) {
             const index = members.findIndex(m => m.id === id);
             if (index !== -1) {
                 const now = new Date();
-                const timeString = formatDisplayTimestamp(now.getTime());
-                members[index].lastChat = timeString;
-                members[index].lastChatTime = Date.now(); 
+                members[index].lastChat = formatDisplayTimestamp(now.getTime());
+                members[index].lastChatTime = now.getTime(); 
                 saveData();
                 renderMembers();
                 let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
@@ -733,7 +658,7 @@
         }
 
         async function deleteMember(id) {
-            const confirmDelete = await showCustomConfirm('Hapus data member ini secara permanen dari database?');
+            const confirmDelete = await showCustomConfirm('Hapus data member ini secara permanen?');
             if(confirmDelete) {
                 members = members.filter(m => m.id !== id);
                 saveData();
@@ -745,7 +670,7 @@
             localStorage.setItem('jan_willfitness_v2', JSON.stringify(members));
         }
 
-        // LOGIKA FILTER DAN PENGURUTAN (SORTING ASC & DESC)
+        // RENDER MEMBER LIST
         function applyDefaultSortDirection() {
             const sortVal = document.getElementById('sort-select').value;
             if (sortVal === 'birthday-date' || sortVal === 'membership-expiry') {
@@ -765,11 +690,8 @@
         function toggleSortOrder() {
             sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
             const arrow = document.getElementById('sort-arrow');
-            if (sortOrder === 'asc') {
-                arrow.classList.add('rotate-180');
-            } else {
-                arrow.classList.remove('rotate-180');
-            }
+            if (sortOrder === 'asc') arrow.classList.add('rotate-180');
+            else arrow.classList.remove('rotate-180');
             renderMembers();
         }
 
@@ -781,40 +703,27 @@
             container.innerHTML = '';
             
             document.getElementById('stats-badge').innerText = members.length + ' MEMBER';
-
             let hasBirthday = false;
 
             let sortedMembers = [...members];
-            
             sortedMembers.sort((a, b) => {
                 let comparison = 0;
-                
                 if (sortVal === 'birthday-date') {
-                    const aBdayDays = getDaysUntilNextBirthday(a.dob);
-                    const bBdayDays = getDaysUntilNextBirthday(b.dob);
-                    comparison = (sortOrder === 'asc') ? (aBdayDays - bBdayDays) : (bBdayDays - aBdayDays);
+                    comparison = (sortOrder === 'asc') ? (getDaysUntilNextBirthday(a.dob) - getDaysUntilNextBirthday(b.dob)) : (getDaysUntilNextBirthday(b.dob) - getDaysUntilNextBirthday(a.dob));
                 } else if (sortVal === 'membership-expiry') {
-                    const expiryA = calculateExpiry(a.startDate, a.durationMonths);
-                    const expiryB = calculateExpiry(b.startDate, b.durationMonths);
-                    const remA = getDaysRemaining(expiryA);
-                    const remB = getDaysRemaining(expiryB);
+                    const remA = getDaysRemaining(calculateExpiry(a.startDate, a.durationMonths));
+                    const remB = getDaysRemaining(calculateExpiry(b.startDate, b.durationMonths));
                     comparison = (sortOrder === 'asc') ? (remA - remB) : (remB - remA);
                 } else if (sortVal === 'chat-date') {
-                    const timeA = a.lastChatTime || 0;
-                    const timeB = b.lastChatTime || 0;
-                    comparison = (sortOrder === 'asc') ? (timeA - timeB) : (timeB - timeA);
+                    comparison = (sortOrder === 'asc') ? ((a.lastChatTime || 0) - (b.lastChatTime || 0)) : ((b.lastChatTime || 0) - (a.lastChatTime || 0));
                 } else if (sortVal === 'start-date') {
-                    const dateA = new Date(a.startDate).getTime() || 0;
-                    const dateB = new Date(b.startDate).getTime() || 0;
-                    comparison = (sortOrder === 'asc') ? (dateA - dateB) : (dateB - dateA);
+                    const dA = new Date(a.startDate).getTime() || 0;
+                    const dB = new Date(b.startDate).getTime() || 0;
+                    comparison = (sortOrder === 'asc') ? (dA - dB) : (dB - dA);
                 } else {
-                    const dateA = new Date(a.transactionDate || a.startDate).getTime() || 0;
-                    const dateB = new Date(b.transactionDate || b.startDate).getTime() || 0;
-                    if (sortOrder === 'asc') {
-                        comparison = dateA - dateB || a.id - b.id;
-                    } else {
-                        comparison = dateB - dateA || b.id - a.id;
-                    }
+                    const dA = new Date(a.transactionDate || a.startDate).getTime() || 0;
+                    const dB = new Date(b.transactionDate || b.startDate).getTime() || 0;
+                    comparison = (sortOrder === 'asc') ? (dA - dB || a.id - b.id) : (dB - dA || b.id - a.id);
                 }
                 return comparison;
             });
@@ -838,11 +747,9 @@
                 else if (daysLeft <= 7) { statusClass = "status-warning"; statusText = "Limit"; }
 
                 const isExpanded = !!expandedCards[m.id];
-
                 const card = document.createElement('div');
                 card.className = `rounded-[28px] shadow-lg border border-slate-800/80 overflow-hidden transition-all duration-200 ${isBDay ? 'card-birthday' : 'bg-[#090d22]'}`;
                 
-                // HEADER CARD (Selalu Terlihat)
                 let headerHTML = `
                     <div onclick="toggleCardExpand(${m.id})" class="p-5 flex justify-between items-center cursor-pointer hover:bg-slate-900/10 transition-colors">
                         <div class="flex-1 pr-2">
@@ -865,7 +772,6 @@
                                     ${daysLeft < 0 ? '0' : daysLeft} <span class="text-[9px] font-bold text-slate-400">Hari</span>
                                 </span>
                             </div>
-                            <!-- Arrow toggle -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400 transition-transform ${isExpanded ? 'rotate-180' : ''}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                             </svg>
@@ -873,58 +779,27 @@
                     </div>
                 `;
 
-                // DETAIL CARD (Terbuka saat di-expand)
                 let detailHTML = '';
                 if (isExpanded) {
                     detailHTML = `
-                        <div class="p-6 bg-slate-950/40 border-t border-white/5 space-y-4">
-                            <!-- Detail Tanggal & Paket -->
+                        <div class="p-5 bg-slate-950/40 border-t border-white/5 space-y-4">
                             <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-[11px]">
-                                <div>
-                                    <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Transaksi</p>
-                                    <p class="font-semibold text-slate-300">${showTrxDate}</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Start Member</p>
-                                    <p class="font-semibold text-slate-300">${showStartDate}</p>
-                                </div>
-                                <div>
-                                    <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Paket Membership</p>
-                                    <p class="font-semibold text-slate-300">${m.durationMonths} Bulan</p>
-                                </div>
-                                <div class="text-right">
-                                    <p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Berakhir Pada</p>
-                                    <p class="font-bold text-sky-400">${formatDisplayDateDMY(expiryDate.toISOString().split('T')[0])}</p>
-                                </div>
+                                <div><p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Transaksi</p><p class="font-semibold text-slate-300">${showTrxDate}</p></div>
+                                <div class="text-right"><p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Tgl Start Member</p><p class="font-semibold text-slate-300">${showStartDate}</p></div>
+                                <div><p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Membership</p><p class="font-semibold text-slate-300">${m.durationMonths} Bulan</p></div>
+                                <div class="text-right"><p class="text-slate-500 font-bold uppercase tracking-wider mb-0.5">Berakhir Pada</p><p class="font-bold text-sky-400">${formatDisplayDateDMY(expiryDate.toISOString().split('T')[0])}</p></div>
                             </div>
-
-                            <!-- Detail Pendapatan & Sumber -->
                             <div class="grid grid-cols-3 gap-2 bg-[#020617]/60 p-3 rounded-2xl border border-slate-900 text-center">
-                                <div>
-                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Rev Membership</p>
-                                    <p class="font-bold text-xs text-emerald-400">${formatRupiah(m.revenueMembership)}</p>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Revenue POS (PT)</p>
-                                    <p class="font-bold text-xs text-purple-400">${formatRupiah(m.revenuePOS)}</p>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Sumber Leads</p>
-                                    <p class="font-bold text-xs text-white truncate px-1">${m.source || 'Internal'}</p>
-                                </div>
+                                <div><p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Rev Membership</p><p class="font-bold text-xs text-emerald-400">${formatRupiah(m.revenueMembership)}</p></div>
+                                <div><p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Rev POS (PT)</p><p class="font-bold text-xs text-purple-400">${formatRupiah(m.revenuePOS)}</p></div>
+                                <div><p class="text-[9px] text-slate-500 font-bold uppercase tracking-wider mb-0.5">Sumber Leads</p><p class="font-bold text-[10px] text-white truncate px-1">${m.source || 'Internal'}</p></div>
                             </div>
-
-                            <!-- Tombol Aksi -->
                             <div class="flex justify-between items-center pt-2">
                                 <div class="flex gap-2">
-                                    <button onclick="deleteMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-rose-400 rounded-2xl hover:bg-slate-900 active:scale-95 transition-all" title="Hapus Member">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                                    </button>
-                                    <button onclick="editMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-sky-400 rounded-2xl hover:bg-slate-900 active:scale-95 transition-all" title="Edit Member">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                                    </button>
+                                    <button onclick="deleteMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-rose-400 rounded-2xl hover:bg-slate-900 transition-all"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button>
+                                    <button onclick="editMember(${m.id})" class="p-3 bg-[#020617] border border-slate-800 text-sky-400 rounded-2xl hover:bg-slate-900 transition-all"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg></button>
                                 </div>
-                                <button onclick="contactWhatsApp(${m.id})" class="bg-[#22c55e] hover:bg-green-400 text-slate-950 px-6 py-3 rounded-2xl text-[10px] font-black shadow-lg shadow-green-500/10 flex items-center gap-2 active:scale-95 transition-all uppercase tracking-widest">
+                                <button onclick="contactWhatsApp(${m.id})" class="bg-[#22c55e] hover:bg-green-400 text-slate-950 px-6 py-3 rounded-2xl text-[10px] font-black shadow-lg flex items-center gap-2 transition-all uppercase tracking-widest">
                                     <span>HUBUNGI WA</span>
                                 </button>
                             </div>
@@ -935,193 +810,134 @@
                 card.innerHTML = headerHTML + detailHTML;
                 container.appendChild(card);
             });
-
             birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
         }
 
-        // LOGIKA PENYARINGAN & STATISTIK PENJUALAN LAPORAN
+        // LOGIKA FILTER LAPORAN
         function onReportTypeChange() {
             const reportType = document.getElementById('report-type').value;
-            const inputWrapper = document.getElementById('report-input-wrapper');
+            const inputMonth = document.getElementById('input-month');
+            const inputCustom = document.getElementById('input-custom');
             
-            let inputHTML = '';
-            const todayStr = new Date().toISOString().split('T')[0];
+            inputMonth.classList.add('hidden');
+            inputCustom.classList.add('hidden');
 
-            if (reportType === 'day') {
-                inputHTML = `
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Pilih Hari</label>
-                    <input type="date" id="report-param" value="${todayStr}" onchange="renderStatsAndReport()" class="w-full p-2.5 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold">
-                `;
-            } else if (reportType === 'week') {
-                // Mengambil nilai minggu standar input
-                inputHTML = `
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Pilih Minggu</label>
-                    <input type="week" id="report-param" onchange="renderStatsAndReport()" class="w-full p-2.5 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold">
-                `;
-            } else if (reportType === 'month') {
-                const currentMonthStr = todayStr.substring(0, 7); // YYYY-MM
-                inputHTML = `
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Pilih Bulan</label>
-                    <input type="month" id="report-param" value="${currentMonthStr}" onchange="renderStatsAndReport()" class="w-full p-2.5 bg-[#020617] text-white rounded-xl border border-slate-800 text-xs font-semibold">
-                `;
-            } else {
-                inputHTML = `
-                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Status</label>
-                    <div class="p-3 bg-[#020617] text-slate-500 rounded-xl border border-slate-800 text-xs font-semibold">Semua Riwayat</div>
-                `;
+            if (reportType === 'month') {
+                inputMonth.classList.remove('hidden');
+            } else if (reportType === 'custom') {
+                inputCustom.classList.remove('hidden');
+                inputCustom.classList.add('grid');
             }
-
-            inputWrapper.innerHTML = inputHTML;
-            renderStatsAndReport();
         }
 
-        function getStartAndEndOfWeek(weekStr) {
-            // weekStr format: "YYYY-Www" (misal: "2026-W23")
-            const parts = weekStr.split('-W');
-            if (parts.length !== 2) return null;
-            const year = parseInt(parts[0], 10);
-            const week = parseInt(parts[1], 10);
-            
-            // Cari hari pertama tahun tersebut
-            const jan1 = new Date(year, 0, 1);
-            const jan1Day = jan1.getDay(); // 0 is Sunday
-            // Set ke hari Senin terdekat di minggu pertama
-            const startOffset = (jan1Day <= 4) ? (1 - jan1Day) : (8 - jan1Day);
-            const firstMonday = new Date(year, 0, 1 + startOffset);
-            
-            // Tambahkan minggu
-            const startOfWeek = new Date(firstMonday.getTime() + (week - 1) * 7 * 24 * 60 * 60 * 1000);
-            const endOfWeek = new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000);
-            
-            startOfWeek.setHours(0, 0, 0, 0);
-            endOfWeek.setHours(23, 59, 59, 999);
-            return { start: startOfWeek, end: endOfWeek };
+        function getStartAndEndOfWeek(dateObj) {
+            const d = new Date(dateObj);
+            const day = d.getDay() || 7; // 1 = Monday, 7 = Sunday
+            d.setDate(d.getDate() - day + 1); // Get Monday
+            d.setHours(0,0,0,0);
+            const end = new Date(d);
+            end.setDate(d.getDate() + 6); // Add 6 days to get Sunday
+            end.setHours(23,59,59,999);
+            return { start: d, end: end };
         }
 
-        function renderStatsAndReport() {
-            // Hitung statistik dashboard umum terlebih dahulu
-            renderStats();
-
-            // Memulai perhitungan laporan penjualan khusus
+        function processReport() {
             const reportType = document.getElementById('report-type').value;
-            const paramInput = document.getElementById('report-param');
-            const paramVal = paramInput ? paramInput.value : '';
+            let startDate, endDate;
+            const today = new Date();
+            today.setHours(0,0,0,0);
+            
+            let labelText = "";
 
-            let filteredList = [...members];
-
-            if (reportType === 'day' && paramVal) {
-                filteredList = members.filter(m => {
-                    const trx = m.transactionDate || m.startDate;
-                    return trx === paramVal;
-                });
-            } else if (reportType === 'month' && paramVal) {
-                filteredList = members.filter(m => {
-                    const trx = m.transactionDate || m.startDate;
-                    return trx.startsWith(paramVal); // Menyamakan "YYYY-MM"
-                });
-            } else if (reportType === 'week' && paramVal) {
-                const range = getStartAndEndOfWeek(paramVal);
-                if (range) {
-                    filteredList = members.filter(m => {
-                        const trxStr = m.transactionDate || m.startDate;
-                        const trxDate = new Date(trxStr);
-                        trxDate.setHours(0, 0, 0, 0);
-                        return trxDate >= range.start && trxDate <= range.end;
-                    });
-                }
+            if (reportType === 'today') {
+                startDate = new Date(today);
+                endDate = new Date(today);
+                endDate.setHours(23,59,59,999);
+                labelText = "Laporan: Hari Ini";
+            } else if (reportType === 'this_week') {
+                const weekRange = getStartAndEndOfWeek(today);
+                startDate = weekRange.start;
+                endDate = weekRange.end;
+                labelText = "Laporan: Minggu Ini";
+            } else if (reportType === 'month') {
+                const monthVal = document.getElementById('report-month').value;
+                if (!monthVal) return showCustomAlert('Pilih bulan terlebih dahulu!');
+                const [y, m] = monthVal.split('-');
+                startDate = new Date(y, m - 1, 1);
+                endDate = new Date(y, m, 0); // Hari terakhir bulan tersebut
+                endDate.setHours(23,59,59,999);
+                labelText = `Laporan: Bulan ${monthVal}`;
+            } else if (reportType === 'custom') {
+                const startVal = document.getElementById('report-start').value;
+                const endVal = document.getElementById('report-end').value;
+                if (!startVal || !endVal) return showCustomAlert('Lengkapi rentang tanggal terlebih dahulu!');
+                startDate = new Date(startVal);
+                startDate.setHours(0,0,0,0);
+                endDate = new Date(endVal);
+                endDate.setHours(23,59,59,999);
+                labelText = `Laporan: ${formatDisplayDateDMY(startVal)} - ${formatDisplayDateDMY(endVal)}`;
             }
 
-            // Perhitungan Akumulasi Pendapatan
+            // Menyaring data berdasarkan Tanggal Transaksi (jika tidak ada gunakan startDate)
+            const filteredList = members.filter(m => {
+                const trxDateStr = m.transactionDate || m.startDate;
+                if (!trxDateStr) return false;
+                const trxDate = new Date(trxDateStr);
+                trxDate.setHours(0,0,0,0);
+                return trxDate >= startDate && trxDate <= endDate;
+            });
+
+            // Kalkulasi Keuangan
             let sumMembership = 0;
             let sumPOS = 0;
-            let leadsCounts = {
-                'Leads Internal': 0,
-                'TikTok': 0,
-                'IG': 0,
-                'FB': 0,
-                'Threads': 0,
-                'BR': 0,
-                'WI': 0,
-                'WhatsApp': 0,
-                'Leads Pribadi': 0
-            };
+            let leadsCounts = {};
 
             filteredList.forEach(m => {
                 sumMembership += parseFloat(m.revenueMembership) || 0;
                 sumPOS += parseFloat(m.revenuePOS) || 0;
-                
-                // Hitung Leads
                 const src = m.source || 'Leads Internal';
-                if (leadsCounts[src] !== undefined) {
-                    leadsCounts[src]++;
-                } else {
-                    leadsCounts[src] = 1;
-                }
+                leadsCounts[src] = (leadsCounts[src] || 0) + 1;
             });
 
             const totalCombined = sumMembership + sumPOS;
 
-            // Render ke UI
+            document.getElementById('report-label').innerText = labelText;
+            document.getElementById('report-member-count').innerText = filteredList.length;
             document.getElementById('report-membership-rev').innerText = formatRupiah(sumMembership);
             document.getElementById('report-pos-rev').innerText = formatRupiah(sumPOS);
             document.getElementById('report-total-rev').innerText = formatRupiah(totalCombined);
-            document.getElementById('report-member-count').innerText = filteredList.length;
 
-            // Render Breakdown Leads
+            // Render Grafik Breakdown Leads
             const breakdownContainer = document.getElementById('leads-breakdown-container');
             breakdownContainer.innerHTML = '';
-
+            
             const totalFiltered = filteredList.length;
-
-            Object.entries(leadsCounts).forEach(([sourceName, count]) => {
-                const percentage = totalFiltered > 0 ? Math.round((count / totalFiltered) * 100) : 0;
-                
-                const leadRow = document.createElement('div');
-                leadRow.className = "space-y-1.5";
-                leadRow.innerHTML = `
-                    <div class="flex justify-between text-xs font-semibold">
-                        <span class="text-slate-300">${sourceName}</span>
-                        <span class="text-sky-400">${count} Member <span class="text-slate-500 font-normal">(${percentage}%)</span></span>
-                    </div>
-                    <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden">
-                        <div class="bg-sky-500 h-full rounded-full" style="width: ${percentage}%"></div>
-                    </div>
-                `;
-                breakdownContainer.appendChild(leadRow);
-            });
-        }
-
-        function renderStats() {
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-
-            const oneDay = 24 * 60 * 60 * 1000;
-            const weekAgo = new Date(today.getTime() - (7 * oneDay));
-            const monthAgo = new Date(today.getTime() - (30 * oneDay));
-
-            let daily = 0, weekly = 0, monthly = 0;
-
-            members.forEach(m => {
-                const checkDateStr = m.transactionDate || m.startDate;
-                const trxDate = new Date(checkDateStr);
-                trxDate.setHours(0, 0, 0, 0);
-
-                if (trxDate.getTime() === today.getTime()) daily++;
-                if (trxDate.getTime() >= weekAgo.getTime()) weekly++;
-                if (trxDate.getTime() >= monthAgo.getTime()) monthly++;
-            });
-
-            document.getElementById('stat-daily').innerText = daily;
-            document.getElementById('stat-weekly').innerText = weekly;
-            document.getElementById('stat-monthly').innerText = monthly;
-        }
-
-        // BACKUP & EXPORT FUNCTIONS
-        function exportCSV() {
-            if (members.length === 0) {
-                showCustomAlert('Data member masih kosong!');
-                return;
+            if (totalFiltered === 0) {
+                breakdownContainer.innerHTML = `<p class="text-xs text-slate-500 text-center italic">Tidak ada transaksi pada periode ini.</p>`;
+            } else {
+                // Urutkan leads dari terbanyak
+                const sortedLeads = Object.entries(leadsCounts).sort((a,b) => b[1] - a[1]);
+                sortedLeads.forEach(([sourceName, count]) => {
+                    const percentage = Math.round((count / totalFiltered) * 100);
+                    const leadRow = document.createElement('div');
+                    leadRow.className = "space-y-1.5";
+                    leadRow.innerHTML = `
+                        <div class="flex justify-between text-[11px] font-semibold">
+                            <span class="text-slate-300">${sourceName}</span>
+                            <span class="text-sky-400">${count} Transaksi <span class="text-slate-500 font-normal">(${percentage}%)</span></span>
+                        </div>
+                        <div class="w-full bg-[#020617] h-2.5 rounded-full overflow-hidden border border-slate-800">
+                            <div class="bg-gradient-to-r from-sky-600 to-sky-400 h-full rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                    `;
+                    breakdownContainer.appendChild(leadRow);
+                });
             }
+        }
+
+        // FUNGSI EKSPORT & IMPORT
+        function exportCSV() {
+            if (members.length === 0) return showCustomAlert('Data member masih kosong!');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
             members.forEach(m => {
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
@@ -1132,41 +948,30 @@
         }
 
         function exportBackup() {
-            if (members.length === 0) {
-                showCustomAlert('Data member masih kosong!');
-                return;
-            }
-            const dataStr = JSON.stringify(members);
-            downloadFile(dataStr, `WILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
+            if (members.length === 0) return showCustomAlert('Data member masih kosong!');
+            downloadFile(JSON.stringify(members), `WILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
         }
 
-        function triggerImport() {
-            document.getElementById('import-file').click();
-        }
+        function triggerImport() { document.getElementById('import-file').click(); }
 
         async function handleImport(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = async (e) => {
                 try {
                     const importedData = JSON.parse(e.target.result);
                     if (Array.isArray(importedData)) {
-                        const confirmImport = await showCustomConfirm(`Anda akan memuat masuk ${importedData.length} data member. Data saat ini akan diganti. Lanjutkan?`);
+                        const confirmImport = await showCustomConfirm(`Memuat masuk ${importedData.length} data. Data saat ini akan diganti. Lanjutkan?`);
                         if (confirmImport) {
                             members = importedData;
                             saveData();
                             renderMembers();
-                            onReportTypeChange();
+                            processReport();
                             showCustomAlert('Cadangan berhasil diimpor!', 'Selesai');
                         }
-                    } else {
-                        showCustomAlert('Format file cadangan tidak valid!', 'Format Salah');
-                    }
-                } catch (err) {
-                    showCustomAlert('Gagal membaca kandungan file JSON ini.', 'Sistem Error');
-                }
+                    } else showCustomAlert('Format file tidak valid!', 'Format Salah');
+                } catch (err) { showCustomAlert('Gagal membaca file JSON.', 'Sistem Error'); }
             };
             reader.readAsText(file);
         }
