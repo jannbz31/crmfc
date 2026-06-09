@@ -529,9 +529,9 @@
     </div>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
 
         // =========================================================================================
         // PENGATURAN FIREBASE (UNTUK HOSTING DI GITHUB PAGES / LUAR CANVAS)
@@ -605,12 +605,9 @@
         // Firebase Auth Init (Perbaikan Refresh Issue)
         if (auth) {
             const initAuth = async () => {
-                // Di dalam Canvas, gunakan initial token atau anonim
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     await signInWithCustomToken(auth, __initial_auth_token);
                 } else if (typeof __firebase_config !== 'undefined') {
-                    // Hanya otomatis force anonymous jika berada di dalam environment Canvas.
-                    // Jika di Github Pages (external), biarkan Firebase memuat sesi Google yang tersimpan otomatis
                     await signInAnonymously(auth); 
                 }
             };
@@ -634,11 +631,8 @@
                         if(btnMobLogin) { btnMobLogin.classList.add('hidden'); btnMobLogout.classList.remove('hidden'); }
                     }
                     
-                    // Jangan load Firebase jika user anonymous TAPI kita di luar Canvas (Github Pages)
                     if (user.isAnonymous && typeof __firebase_config === 'undefined') {
-                        // User external yang belum login Google, biarkan offline
                         if (unsubscribeSnapshot) unsubscribeSnapshot();
-                        updateCloudIndicators(false);
                         window.renderMembers();
                         window.processReport();
                     } else {
@@ -649,7 +643,6 @@
                     if(btnDesk) { btnDesk.classList.remove('hidden'); infoDesk.classList.add('hidden'); }
                     if(btnMobLogin) { btnMobLogin.classList.remove('hidden'); btnMobLogout.classList.add('hidden'); }
                     if (unsubscribeSnapshot) unsubscribeSnapshot();
-                    updateCloudIndicators(false);
                     window.renderMembers();
                     window.processReport();
                 }
@@ -668,39 +661,12 @@
                     members.push(doc.data());
                 });
                 
-                updateCloudIndicators(true);
                 localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
-                
                 window.renderMembers();
                 window.processReport();
             }, (error) => {
                 console.error("Error fetching data: ", error);
-                updateCloudIndicators(false);
             });
-        }
-
-        function updateCloudIndicators(isOnline) {
-            const deskDot = document.getElementById('cloud-dot');
-            const deskPing = document.getElementById('cloud-ping');
-            const deskText = document.getElementById('cloud-text');
-            const mobDot = document.getElementById('cloud-dot-mobile');
-            const mobPing = document.getElementById('cloud-ping-mobile');
-
-            if (isOnline && currentUser && !currentUser.isAnonymous) {
-                deskDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
-                mobDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
-                deskPing.classList.remove('hidden');
-                mobPing.classList.remove('hidden');
-                deskText.innerText = "Cloud Sync Aktif";
-                deskText.className = "text-emerald-400";
-            } else {
-                deskDot.className = "relative inline-flex rounded-full h-2 w-2 bg-slate-500";
-                mobDot.className = "relative inline-flex rounded-full h-2 w-2 bg-slate-500";
-                deskPing.classList.add('hidden');
-                mobPing.classList.add('hidden');
-                deskText.innerText = "Offline (Lokal)";
-                deskText.className = "text-slate-400";
-            }
         }
 
         const initUI = () => {
@@ -754,7 +720,7 @@
             setTimeout(() => { toast.classList.add('translate-x-[150%]'); }, 3000);
         }
 
-        // TANGGAL & RUPIAH
+        // UTILITAS TANGGAL & RUPIAH
         function formatDisplayDateDMY(dateStr) {
             if (!dateStr) return '-';
             const parts = dateStr.split('-');
@@ -1467,7 +1433,7 @@
             }
         }
 
-        // EKSPORT & IMPORT LOCAL STORAGE ONLY 
+        // EKSPORT & IMPORT
         window.exportCSV = function() {
             if (members.length === 0) return window.showCustomAlert('Data member kosong!');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
@@ -1491,28 +1457,62 @@
             if (!file) return;
             const reader = new FileReader();
             reader.onload = async (e) => {
+                let importedData;
                 try {
-                    const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData)) {
-                        if (await window.showCustomConfirm(`Memuat masuk ${importedData.length} data. Lanjut dan unggah ke sistem?`)) {
-                            const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
-                            if (isCloudActive) {
-                                window.showToast('Mengunggah ke Cloud...');
-                                for(let m of importedData) {
-                                    const docId = m.id ? m.id.toString() : Date.now().toString();
-                                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', docId);
-                                    await setDoc(docRef, m);
-                                }
-                            } else {
-                                members = importedData; 
-                                saveDataLocal(); 
-                                window.renderMembers(); 
-                                window.processReport();
+                    importedData = JSON.parse(e.target.result);
+                } catch (err) {
+                    console.error("JSON Parse Error:", err);
+                    return window.showCustomAlert('Format file bukan JSON yang valid!', 'Error');
+                }
+
+                if (!Array.isArray(importedData)) {
+                    return window.showCustomAlert('Isi file tidak sesuai format database member!', 'Error');
+                }
+
+                // Normalisasi data dari versi lama (Mencegah Firebase Error)
+                const normalizedData = importedData.map(m => ({
+                    id: m.id || Date.now() + Math.random(),
+                    name: m.name || '',
+                    dob: m.dob || '',
+                    transactionDate: m.transactionDate || m.startDate || '',
+                    startDate: m.startDate || '',
+                    durationMonths: m.durationMonths || 1,
+                    whatsapp: m.whatsapp || '',
+                    usePT: !!m.usePT,
+                    tncSigned: !!m.tncSigned,
+                    source: m.source || 'Leads Internal',
+                    revenueMembership: parseFloat(m.revenueMembership) || 0,
+                    revenuePOS: parseFloat(m.revenuePOS) || 0,
+                    lastChat: m.lastChat || null,
+                    lastChatTime: m.lastChatTime || null
+                }));
+
+                if (await window.showCustomConfirm(`Memuat masuk ${normalizedData.length} data. Data saat ini akan diganti. Lanjut?`)) {
+                    try {
+                        const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
+                        if (isCloudActive) {
+                            window.showToast('Mengunggah ke Cloud...');
+                            for(let m of normalizedData) {
+                                const docId = m.id.toString();
+                                const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', docId);
+                                await setDoc(docRef, m);
                             }
-                            window.showCustomAlert('Cadangan berhasil diimpor!');
+                            window.showCustomAlert('Cadangan berhasil diunggah ke Cloud!', 'Selesai');
+                        } else {
+                            members = normalizedData; 
+                            saveDataLocal(); 
+                            window.renderMembers(); 
+                            window.processReport();
+                            window.showCustomAlert('Cadangan berhasil diimpor ke Lokal!', 'Selesai');
                         }
-                    } else window.showCustomAlert('Format file tidak valid!', 'Error');
-                } catch (err) { window.showCustomAlert('Gagal membaca file JSON.', 'Error'); }
+                    } catch (err) {
+                        console.error("Upload Error:", err);
+                        window.showCustomAlert('Gagal memproses data ke sistem: ' + err.message, 'Error');
+                    }
+                }
+                
+                // Reset input file agar bisa import file yang sama lagi
+                document.getElementById('import-file').value = '';
             };
             reader.readAsText(file);
         }
