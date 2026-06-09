@@ -1433,7 +1433,7 @@
             }
         }
 
-        // EKSPORT & IMPORT
+        // EKSPORT & IMPORT LOCAL STORAGE ONLY 
         window.exportCSV = function() {
             if (members.length === 0) return window.showCustomAlert('Data member kosong!');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
@@ -1462,14 +1462,13 @@
                     importedData = JSON.parse(e.target.result);
                 } catch (err) {
                     console.error("JSON Parse Error:", err);
-                    return window.showCustomAlert('Format file bukan JSON yang valid!', 'Error');
+                    return window.showCustomAlert('Format file bukan JSON yang valid!', 'Error Format File');
                 }
 
                 if (!Array.isArray(importedData)) {
-                    return window.showCustomAlert('Isi file tidak sesuai format database member!', 'Error');
+                    return window.showCustomAlert('Isi file tidak sesuai format database member!', 'Error Struktur Data');
                 }
 
-                // Normalisasi data dari versi lama (Mencegah Firebase Error)
                 const normalizedData = importedData.map(m => ({
                     id: m.id || Date.now() + Math.random(),
                     name: m.name || '',
@@ -1507,11 +1506,10 @@
                         }
                     } catch (err) {
                         console.error("Upload Error:", err);
-                        window.showCustomAlert('Gagal memproses data ke sistem: ' + err.message, 'Error');
+                        window.showCustomAlert(`Gagal memproses data: ${err.message}`, 'Gagal Mengunggah');
                     }
                 }
                 
-                // Reset input file agar bisa import file yang sama lagi
                 document.getElementById('import-file').value = '';
             };
             reader.readAsText(file);
