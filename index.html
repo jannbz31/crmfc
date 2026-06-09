@@ -68,6 +68,17 @@
         #filter-panel {
             transition: all 0.3s ease-in-out;
         }
+
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid #38bdf8;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-[#020617] text-slate-100 h-screen w-full flex">
@@ -95,7 +106,10 @@
             </button>
         </div>
         <div class="p-6 border-t border-slate-800/80">
-            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest text-center">Tersimpan Offline</p>
+            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2">
+                <span class="relative flex h-2 w-2"><span id="cloud-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span><span id="cloud-dot" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
+                <span id="cloud-text">Cloud Sync Offline</span>
+            </p>
         </div>
     </aside>
 
@@ -105,7 +119,8 @@
         <!-- Header Atas -->
         <header class="bg-[#090d22]/90 border-b border-slate-800/80 px-6 py-5 shadow-lg backdrop-blur-md shrink-0">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
-                <div class="md:hidden">
+                <div class="md:hidden flex items-center gap-2">
+                    <span class="relative flex h-2 w-2"><span id="cloud-ping-mobile" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span><span id="cloud-dot-mobile" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
                     <h1 class="text-xl font-extrabold text-white tracking-tighter uppercase">
                         WILL<span class="text-sky-400">FITNESS</span>
                     </h1>
@@ -166,7 +181,7 @@
                         </div>
                     </div>
 
-                    <!-- Panel Filter Lanjutan (Tersembunyi by default) -->
+                    <!-- Panel Filter Lanjutan -->
                     <div id="filter-panel" class="hidden mb-6 p-5 bg-[#0f172a] border border-slate-800 rounded-2xl shadow-lg relative">
                         <h3 class="text-[10px] font-bold text-sky-400 uppercase tracking-widest mb-4">Filter Spesifik</h3>
                         <button onclick="toggleFilterPanel()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
@@ -241,6 +256,12 @@
                     <div id="active-filter-indicator" class="hidden mb-4 text-xs font-bold text-sky-400 flex items-center gap-2">
                         <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span></span>
                         Filter Spesifik Sedang Aktif
+                    </div>
+
+                    <!-- Loader awal data -->
+                    <div id="initial-loader" class="flex flex-col items-center justify-center py-20 hidden">
+                        <div class="loader mb-4"></div>
+                        <p class="text-sm text-slate-500 font-bold uppercase tracking-widest">Menyinkronkan Data Cloud...</p>
                     </div>
 
                     <!-- Tempat Render List View Profesional -->
@@ -344,7 +365,7 @@
                                 <button type="button" id="btn-cancel-edit" onclick="cancelEditMode()" class="hidden w-1/3 bg-slate-800 hover:bg-slate-700 text-white py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
                                     Batal
                                 </button>
-                                <button type="submit" id="btn-submit" class="flex-1 w-full bg-sky-500 hover:bg-sky-400 text-slate-950 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all">
+                                <button type="submit" id="btn-submit" class="flex-1 w-full bg-sky-500 hover:bg-sky-400 text-slate-950 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-50">
                                     Simpan Member
                                 </button>
                             </div>
@@ -465,9 +486,6 @@
                                         <input type="file" id="import-file" class="hidden" accept=".json" onchange="handleImport(event)">
                                     </div>
                                 </div>
-                                <p class="text-[10px] text-slate-500 mt-4 font-medium leading-relaxed">
-                                    * Data tersimpan offline di browser ini. Lakukan ekspor JSON secara rutin.
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -513,13 +531,30 @@
         <span id="toast-message">Tersimpan!</span>
     </div>
 
-    <script>
-        // DATA STATE
-        let members = JSON.parse(localStorage.getItem('jan_willfitness_v3')) || [];
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'willfitness-app';
+        
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+        } catch(e) {
+            console.error("Firebase init failed", e);
+        }
+
+        let members = [];
         let wakeLock = null;
         let editingMemberId = null;
         let sortOrder = 'desc'; 
         let expandedCards = {};
+        let currentUser = null;
+        let unsubscribeSnapshot = null;
         
         // Filter Global State
         let currentFilters = {
@@ -530,22 +565,89 @@
             source: 'all'
         };
 
-        window.onload = () => {
+        // Firebase Auth Init
+        if (auth) {
+            const initAuth = async () => {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            };
+            initAuth();
+
+            onAuthStateChanged(auth, (user) => {
+                currentUser = user;
+                if (user) {
+                    setupRealtimeListener();
+                } else {
+                    if (unsubscribeSnapshot) unsubscribeSnapshot();
+                }
+            });
+        }
+
+        function setupRealtimeListener() {
+            if (!currentUser) return;
+            const membersRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'members');
+            
+            document.getElementById('initial-loader').classList.remove('hidden');
+            document.getElementById('member-container').classList.add('hidden');
+            
+            unsubscribeSnapshot = onSnapshot(membersRef, (snapshot) => {
+                members = [];
+                snapshot.forEach((doc) => {
+                    members.push(doc.data());
+                });
+                
+                document.getElementById('initial-loader').classList.add('hidden');
+                document.getElementById('member-container').classList.remove('hidden');
+                
+                updateCloudIndicators(true);
+                renderMembers();
+                processReport();
+            }, (error) => {
+                console.error("Error fetching data: ", error);
+                updateCloudIndicators(false);
+            });
+        }
+
+        function updateCloudIndicators(isOnline) {
+            const deskDot = document.getElementById('cloud-dot');
+            const deskPing = document.getElementById('cloud-ping');
+            const deskText = document.getElementById('cloud-text');
+            const mobDot = document.getElementById('cloud-dot-mobile');
+            const mobPing = document.getElementById('cloud-ping-mobile');
+
+            if (isOnline) {
+                deskDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+                mobDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
+                deskPing.classList.remove('hidden');
+                mobPing.classList.remove('hidden');
+                deskText.innerText = "Cloud Sync Aktif";
+                deskText.className = "text-emerald-400";
+            } else {
+                deskDot.className = "relative inline-flex rounded-full h-2 w-2 bg-rose-500";
+                mobDot.className = "relative inline-flex rounded-full h-2 w-2 bg-rose-500";
+                deskPing.classList.add('hidden');
+                mobPing.classList.add('hidden');
+                deskText.innerText = "Sistem Offline";
+                deskText.className = "text-rose-400";
+            }
+        }
+
+        const initUI = () => {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
             document.getElementById('transaction_date').value = today;
-            
             const currentMonthStr = today.substring(0, 7);
             document.getElementById('report-month').value = currentMonthStr;
 
             applyDefaultSortDirection();
-            renderMembers();
-            onReportTypeChange(); // Set up UI laporan
-            processReport();      // Langsung proses data awal
+            window.onReportTypeChange();
         };
 
         // KONTROL MODAL KUSTOM & TOAST
-        function showCustomAlert(message, title = "Informasi") {
+        window.showCustomAlert = function(message, title = "Informasi") {
             return new Promise((resolve) => {
                 const modal = document.getElementById('custom-modal');
                 document.getElementById('modal-title').innerText = title;
@@ -560,7 +662,7 @@
             });
         }
 
-        function showCustomConfirm(message, title = "Konfirmasi") {
+        window.showCustomConfirm = function(message, title = "Konfirmasi") {
             return new Promise((resolve) => {
                 const modal = document.getElementById('custom-modal');
                 document.getElementById('modal-title').innerText = title;
@@ -585,7 +687,7 @@
         }
 
         // FULLSCREEN
-        async function toggleFullscreen() {
+        window.toggleFullscreen = async function() {
             try {
                 if (!document.fullscreenElement) {
                     await document.documentElement.requestFullscreen();
@@ -600,6 +702,7 @@
                 }
             } catch (err) {}
         }
+        
         document.addEventListener('visibilitychange', async () => {
             if (wakeLock !== null && document.visibilityState === 'visible' && 'wakeLock' in navigator) {
                 wakeLock = await navigator.wakeLock.request('screen');
@@ -692,11 +795,10 @@
         }
 
         // TABS & UI CONTROLS
-        function switchTab(tabId) {
+        window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             
-            // Mobile Nav
             const tabs = ['list', 'add', 'data'];
             tabs.forEach(t => {
                 const btn = document.getElementById('nav-' + t);
@@ -715,7 +817,6 @@
                 }
             });
 
-            // Desktop Nav
             tabs.forEach(t => {
                 const btn = document.getElementById('desk-nav-' + t);
                 if(t === tabId) {
@@ -730,10 +831,10 @@
             const titles = { 'list': 'Database Member', 'add': editingMemberId ? 'Edit Member' : 'Tambah Member', 'data': 'Laporan Penjualan & Komisi' };
             document.getElementById('desktop-page-title').innerText = titles[tabId];
 
-            if(tabId === 'list') renderMembers();
+            if(tabId === 'list') window.renderMembers();
         }
 
-        function toggleCustomDuration() {
+        window.toggleCustomDuration = function() {
             const selectVal = document.getElementById('duration').value;
             const cd = document.getElementById('custom_duration');
             if (selectVal === 'custom') {
@@ -743,17 +844,16 @@
             }
         }
 
-        function toggleCardExpand(id) {
+        window.toggleCardExpand = function(id) {
             expandedCards[id] = !expandedCards[id];
-            renderMembers();
+            window.renderMembers();
         }
 
         // PANEL FILTER SPESIFIK
-        function toggleFilterPanel() {
+        window.toggleFilterPanel = function() {
             const panel = document.getElementById('filter-panel');
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
-                // load current state
                 document.getElementById('filter-status').value = currentFilters.status;
                 document.getElementById('filter-pt').value = currentFilters.pt;
                 document.getElementById('filter-tnc').value = currentFilters.tnc;
@@ -764,31 +864,29 @@
             }
         }
 
-        function applyFilters() {
+        window.applyFilters = function() {
             currentFilters.status = document.getElementById('filter-status').value;
             currentFilters.pt = document.getElementById('filter-pt').value;
             currentFilters.tnc = document.getElementById('filter-tnc').value;
             currentFilters.duration = document.getElementById('filter-duration').value;
             currentFilters.source = document.getElementById('filter-source').value;
-            
-            toggleFilterPanel(); // Hide panel after apply
-            renderMembers();
+            window.toggleFilterPanel(); 
+            window.renderMembers();
         }
 
-        function resetFilters() {
+        window.resetFilters = function() {
             currentFilters = { status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all' };
             document.getElementById('filter-status').value = 'all';
             document.getElementById('filter-pt').value = 'all';
             document.getElementById('filter-tnc').value = 'all';
             document.getElementById('filter-duration').value = 'all';
             document.getElementById('filter-source').value = 'all';
-            
-            toggleFilterPanel(); // Hide panel
-            renderMembers();
+            window.toggleFilterPanel(); 
+            window.renderMembers();
         }
 
         // CRUD
-        function editMember(id) {
+        window.editMember = function(id) {
             const m = members.find(x => x.id === id);
             if (!m) return;
             editingMemberId = id;
@@ -817,12 +915,13 @@
 
             document.getElementById('form-title').innerText = "Edit Member";
             document.getElementById('btn-submit').innerText = "Perbarui Data";
+            document.getElementById('btn-submit').classList.remove('opacity-50');
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
             document.getElementById('nav-add-label').innerText = "Edit";
-            switchTab('add');
+            window.switchTab('add');
         }
 
-        function cancelEditMode() {
+        window.cancelEditMode = function() {
             editingMemberId = null;
             document.getElementById('member-form').reset();
             document.getElementById('form-title').innerText = "Tambah Member Baru";
@@ -833,16 +932,29 @@
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
             document.getElementById('transaction_date').value = today;
-            switchTab('list');
+            window.switchTab('list');
         }
 
-        document.getElementById('member-form').onsubmit = (e) => {
+        document.getElementById('member-form').onsubmit = async (e) => {
             e.preventDefault();
+
+            if(!currentUser) {
+                return window.showCustomAlert('Anda tidak terkoneksi dengan Cloud! Harap segarkan halaman.', 'Sistem Offline');
+            }
+
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
+            btnSubmit.disabled = true;
+
             const selectDuration = document.getElementById('duration').value;
             let finalDuration = selectDuration;
             if (selectDuration === 'custom') {
                 const customVal = document.getElementById('custom_duration').value;
-                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) return showCustomAlert('Jumlah bulan kustom tidak valid!', 'Data Gagal');
+                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) {
+                    btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btnSubmit.disabled = false;
+                    return window.showCustomAlert('Jumlah bulan kustom tidak valid!', 'Data Gagal');
+                }
                 finalDuration = parseInt(customVal);
             }
 
@@ -860,49 +972,66 @@
                 revenuePOS: parseFloat(document.getElementById('revenue_pos').value) || 0
             };
 
-            if (editingMemberId !== null) {
-                const index = members.findIndex(m => m.id === editingMemberId);
-                if (index !== -1) members[index] = { ...members[index], ...memberData };
-                showToast('Data diperbarui!');
-                cancelEditMode(); 
-            } else {
-                members.push({ id: Date.now(), ...memberData, lastChat: null, lastChatTime: null });
-                showToast('Member disimpan!');
-                e.target.reset();
-                document.getElementById('custom_duration').classList.add('hidden');
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('start_date').value = today;
-                document.getElementById('transaction_date').value = today;
-                switchTab('list');
+            try {
+                if (editingMemberId !== null) {
+                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', editingMemberId.toString());
+                    await setDoc(docRef, memberData, { merge: true });
+                    showToast('Data diperbarui di Cloud!');
+                    window.cancelEditMode(); 
+                } else {
+                    const newId = Date.now().toString();
+                    const newMember = { id: parseInt(newId), ...memberData, lastChat: null, lastChatTime: null };
+                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', newId);
+                    await setDoc(docRef, newMember);
+                    
+                    showToast('Member disimpan ke Cloud!');
+                    e.target.reset();
+                    document.getElementById('custom_duration').classList.add('hidden');
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('start_date').value = today;
+                    document.getElementById('transaction_date').value = today;
+                    window.switchTab('list');
+                }
+            } catch (error) {
+                console.error("Save error", error);
+                window.showCustomAlert('Gagal menyimpan ke Cloud. Pastikan koneksi internet aktif.', 'Error');
             }
-            saveData(); 
+
+            btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnSubmit.disabled = false;
         };
 
-        function contactWhatsApp(id) {
-            const index = members.findIndex(m => m.id === id);
-            if (index !== -1) {
+        window.contactWhatsApp = async function(id) {
+            const member = members.find(m => m.id === id);
+            if (member && currentUser) {
                 const now = new Date();
-                members[index].lastChat = formatDisplayTimestamp(now.getTime());
-                members[index].lastChatTime = now.getTime(); 
-                saveData();
-                renderMembers();
-                let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
+                member.lastChat = formatDisplayTimestamp(now.getTime());
+                member.lastChatTime = now.getTime(); 
+                
+                // Sync ke cloud tanpa merefresh seluruh array manual 
+                // karena realtime listener akan segera memberikan snapshot terbaru
+                const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', id.toString());
+                setDoc(docRef, { lastChat: member.lastChat, lastChatTime: member.lastChatTime }, { merge: true });
+                
+                let rawPhone = member.whatsapp.replace(/[^0-9]/g, '');
                 if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
                 window.open(`https://wa.me/${rawPhone}`, '_blank');
             }
         }
 
-        async function deleteMember(id) {
-            const confirmDelete = await showCustomConfirm('Hapus data member ini secara permanen?');
+        window.deleteMember = async function(id) {
+            if(!currentUser) return;
+            const confirmDelete = await window.showCustomConfirm('Hapus data member ini secara permanen dari Cloud?');
             if(confirmDelete) {
-                members = members.filter(m => m.id !== id);
-                saveData();
-                renderMembers();
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', id.toString());
+                    await deleteDoc(docRef);
+                    showToast('Data dihapus dari Cloud');
+                } catch(e) {
+                    console.error("Delete error", e);
+                    window.showCustomAlert('Gagal menghapus dari Cloud.', 'Error');
+                }
             }
-        }
-
-        function saveData() {
-            localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
         }
 
         // RENDER LIST, SORT, & FILTER
@@ -915,17 +1044,17 @@
             }
         }
 
-        function applySortChange() { applyDefaultSortDirection(); renderMembers(); }
+        window.applySortChange = function() { applyDefaultSortDirection(); window.renderMembers(); }
 
-        function toggleSortOrder() {
+        window.toggleSortOrder = function() {
             sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
             const arrow = document.getElementById('sort-arrow');
             if (sortOrder === 'asc') arrow.classList.add('rotate-180');
             else arrow.classList.remove('rotate-180');
-            renderMembers();
+            window.renderMembers();
         }
 
-        function renderMembers() {
+        window.renderMembers = function() {
             const container = document.getElementById('member-container');
             const search = document.getElementById('search-input').value.toLowerCase();
             const birthdayAnnounce = document.getElementById('birthday-announcement');
@@ -936,13 +1065,9 @@
             let hasBirthday = false;
             let sortedMembers = [...members];
             
-            // Cek apakah filter spesifik aktif
             const isFilterActive = Object.values(currentFilters).some(val => val !== 'all');
-            if (isFilterActive) {
-                filterIndicator.classList.remove('hidden');
-            } else {
-                filterIndicator.classList.add('hidden');
-            }
+            if (isFilterActive) { filterIndicator.classList.remove('hidden'); } 
+            else { filterIndicator.classList.add('hidden'); }
 
             sortedMembers.sort((a, b) => {
                 let comparison = 0;
@@ -963,17 +1088,13 @@
             });
 
             const filtered = sortedMembers.filter(m => {
-                // Filter Pencarian
                 if (!m.name.toLowerCase().includes(search)) return false;
-
-                // Status Expiry Hitung Cepat
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
                 let computedStatus = 'active';
                 if (daysLeft < 0) computedStatus = 'expired';
                 else if (daysLeft <= 7) computedStatus = 'warning';
 
-                // Filter Spesifik
                 if (currentFilters.status !== 'all' && computedStatus !== currentFilters.status) return false;
                 if (currentFilters.pt !== 'all') {
                     const wantsPT = currentFilters.pt === 'yes';
@@ -994,14 +1115,13 @@
                     const src = m.source || 'Leads Internal';
                     if (src !== currentFilters.source) return false;
                 }
-
                 return true;
             });
 
             document.getElementById('stats-badge').innerText = filtered.length;
 
             if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm">Tidak ada member yang sesuai dengan pencarian atau filter.</div>`;
+                container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm">Tidak ada member yang ditemukan.</div>`;
             }
 
             filtered.forEach(m => {
@@ -1021,18 +1141,15 @@
 
                 const isExpanded = !!expandedCards[m.id];
                 
-                // --- KONTEN LIST VIEW BARU ---
                 const row = document.createElement('div');
                 row.className = `rounded-2xl transition-all duration-200 ${isBDay ? 'row-birthday' : 'row-standard'} overflow-hidden`;
                 
                 let headerHTML = `
                     <div onclick="toggleCardExpand(${m.id})" class="p-4 md:p-5 flex items-center justify-between cursor-pointer hover:bg-white/[0.02]">
                         <div class="flex items-center gap-4 flex-1">
-                            <!-- Avatar -->
                             <div class="hidden md:flex h-10 w-10 shrink-0 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 items-center justify-center text-sm font-black tracking-widest shadow-sm">
                                 ${getInitials(m.name)}
                             </div>
-                            <!-- Title & Info -->
                             <div>
                                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
                                     <h3 class="font-extrabold text-slate-100 text-sm md:text-base">${m.name}</h3>
@@ -1047,14 +1164,10 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Info Paket Desktop -->
                         <div class="hidden lg:flex flex-1 items-center justify-center gap-8 text-xs text-slate-400 border-l border-r border-slate-800/50 px-6 mx-6 h-10">
                              <div class="text-center"><p class="text-[9px] uppercase tracking-widest mb-0.5">Paket</p><p class="text-slate-200 font-bold">${m.durationMonths} Bln</p></div>
                              <div class="text-center"><p class="text-[9px] uppercase tracking-widest mb-0.5">Berakhir</p><p class="text-slate-200 font-bold">${formatDisplayDateDMY(expiryDate.toISOString().split('T')[0])}</p></div>
                         </div>
-
-                        <!-- Right Info -->
                         <div class="flex items-center gap-4 md:gap-5 justify-end pl-2">
                             <div class="text-right">
                                 <span class="text-[8px] font-black px-2 py-0.5 rounded uppercase tracking-widest block mb-1 inline-block ${statusClass}">${statusText}</span>
@@ -1071,7 +1184,6 @@
                 if (isExpanded) {
                     detailHTML = `
                         <div class="p-4 md:p-6 bg-[#020617]/50 border-t border-slate-800/80 rounded-b-2xl">
-                            
                             <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 bg-[#090d22] p-4 rounded-xl border border-slate-800/50 mb-5">
                                 <div><p class="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Tgl Transaksi</p><p class="text-xs font-semibold text-slate-200">${showTrxDate}</p></div>
                                 <div><p class="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Tgl Start Member</p><p class="text-xs font-semibold text-slate-200">${showStartDate}</p></div>
@@ -1080,16 +1192,13 @@
                                 <div><p class="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Rev POS (PT)</p><p class="text-xs font-bold text-purple-400">${formatRupiah(m.revenuePOS)}</p></div>
                                 <div class="col-span-2 md:hidden"><p class="text-[9px] text-slate-500 uppercase tracking-widest mb-1">Berakhir Pada</p><p class="text-xs font-bold text-sky-400">${formatDisplayDateDMY(expiryDate.toISOString().split('T')[0])}</p></div>
                             </div>
-
                             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                                 <div class="w-full md:w-auto flex gap-2">
                                     <button onclick="deleteMember(${m.id})" class="flex-1 md:flex-none flex items-center justify-center px-4 py-2 bg-rose-500/10 border border-rose-500/20 text-rose-400 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-rose-500 hover:text-white transition-all">Hapus</button>
                                     <button onclick="editMember(${m.id})" class="flex-1 md:flex-none flex items-center justify-center px-6 py-2 bg-slate-800 border border-slate-700 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-slate-700 transition-all">Edit</button>
                                 </div>
                                 <div class="w-full md:w-auto flex items-center gap-3 justify-between md:justify-end">
-                                    <span class="text-[10px] text-slate-400 font-semibold bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 truncate max-w-[120px]">
-                                        Lead: ${m.source || 'Internal'}
-                                    </span>
+                                    <span class="text-[10px] text-slate-400 font-semibold bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 truncate max-w-[120px]">Lead: ${m.source || 'Internal'}</span>
                                     <button onclick="contactWhatsApp(${m.id})" class="bg-[#22c55e] hover:bg-green-400 text-slate-950 px-6 py-2.5 rounded-lg font-black shadow-lg shadow-green-500/10 flex items-center justify-center gap-2 active:scale-95 transition-all uppercase tracking-widest text-[10px]">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
                                         Hubungi WA
@@ -1107,7 +1216,7 @@
         }
 
         // LAPORAN LOGIC
-        function onReportTypeChange() {
+        window.onReportTypeChange = function() {
             const reportType = document.getElementById('report-type').value;
             const inputMonth = document.getElementById('input-month');
             const inputCustom = document.getElementById('input-custom');
@@ -1135,12 +1244,11 @@
             return { start: d, end: end };
         }
 
-        function processReport() {
+        window.processReport = function() {
             const reportType = document.getElementById('report-type').value;
             let startDate, endDate;
             const today = new Date();
             today.setHours(0,0,0,0);
-            
             let labelText = "";
 
             if (reportType === 'today') {
@@ -1155,7 +1263,7 @@
                 labelText = "Laporan: Minggu Ini";
             } else if (reportType === 'month') {
                 const monthVal = document.getElementById('report-month').value;
-                if (!monthVal) return showCustomAlert('Pilih bulan terlebih dahulu!');
+                if (!monthVal) return window.showCustomAlert('Pilih bulan terlebih dahulu!');
                 const [y, m] = monthVal.split('-');
                 startDate = new Date(y, m - 1, 1);
                 endDate = new Date(y, m, 0); 
@@ -1165,7 +1273,7 @@
             } else if (reportType === 'custom') {
                 const startVal = document.getElementById('report-start').value;
                 const endVal = document.getElementById('report-end').value;
-                if (!startVal || !endVal) return showCustomAlert('Lengkapi rentang tanggal terlebih dahulu!');
+                if (!startVal || !endVal) return window.showCustomAlert('Lengkapi rentang tanggal terlebih dahulu!');
                 startDate = new Date(startVal);
                 startDate.setHours(0,0,0,0);
                 endDate = new Date(endVal);
@@ -1238,14 +1346,12 @@
                 });
             }
 
-            // Render Daftar Member Laporan
             const reportMemberList = document.getElementById('report-member-list');
             reportMemberList.innerHTML = '';
 
             if (totalFiltered === 0) {
                 reportMemberList.innerHTML = `<p class="text-xs text-slate-500 text-center italic py-4">Tidak ada data member pada periode ini.</p>`;
             } else {
-                // Urutkan berdasarkan tanggal transaksi terbaru
                 const reportSorted = [...filteredList].sort((a, b) => {
                     const dateA = new Date(a.transactionDate || a.startDate).getTime();
                     const dateB = new Date(b.transactionDate || b.startDate).getTime();
@@ -1285,9 +1391,9 @@
             }
         }
 
-        // EKSPORT & IMPORT
-        function exportCSV() {
-            if (members.length === 0) return showCustomAlert('Data member kosong!');
+        // EKSPORT & IMPORT LOCAL STORAGE ONLY (Cloud function overrides removed to match request)
+        window.exportCSV = function() {
+            if (members.length === 0) return window.showCustomAlert('Data member kosong!');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
             members.forEach(m => {
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
@@ -1296,12 +1402,15 @@
             });
             downloadFile(csv, `WILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
         }
-        function exportBackup() {
-            if (members.length === 0) return showCustomAlert('Data kosong!');
+        
+        window.exportBackup = function() {
+            if (members.length === 0) return window.showCustomAlert('Data kosong!');
             downloadFile(JSON.stringify(members), `WILLFITNESS_BACKUP_${new Date().getTime()}.json`, 'application/json');
         }
-        function triggerImport() { document.getElementById('import-file').click(); }
-        async function handleImport(event) {
+        
+        window.triggerImport = function() { document.getElementById('import-file').click(); }
+        
+        window.handleImport = async function(event) {
             const file = event.target.files[0];
             if (!file) return;
             const reader = new FileReader();
@@ -1309,19 +1418,28 @@
                 try {
                     const importedData = JSON.parse(e.target.result);
                     if (Array.isArray(importedData)) {
-                        if (await showCustomConfirm(`Memuat ${importedData.length} data. Data saat ini akan diganti. Lanjut?`)) {
-                            members = importedData; saveData(); renderMembers(); processReport(); showCustomAlert('Berhasil diimpor!');
+                        if (await window.showCustomConfirm(`Memuat masuk ${importedData.length} data. Lanjut dan unggah ke sistem?`)) {
+                            // Only load locally unless we specifically re-upload to cloud (Cloud save handled by listener/sync)
+                            if (currentUser) {
+                                for(let m of importedData) {
+                                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', m.id.toString());
+                                    await setDoc(docRef, m);
+                                }
+                            } else {
+                                members = importedData; 
+                                saveData(); 
+                                window.renderMembers(); 
+                                window.processReport();
+                            }
+                            window.showCustomAlert('Cadangan berhasil diimpor!');
                         }
-                    } else showCustomAlert('Format file tidak valid!', 'Error');
-                } catch (err) { showCustomAlert('Gagal membaca file JSON.', 'Error'); }
+                    } else window.showCustomAlert('Format file tidak valid!', 'Error');
+                } catch (err) { window.showCustomAlert('Gagal membaca file JSON.', 'Error'); }
             };
             reader.readAsText(file);
         }
-        function downloadFile(content, fileName, contentType) {
-            const a = document.createElement("a");
-            const file = new Blob([content], { type: contentType });
-            a.href = URL.createObjectURL(file); a.download = fileName; a.click(); URL.revokeObjectURL(a.href);
-        }
+
+        initUI(); // Initialize view locally before real-time kicks in
     </script>
 </body>
 </html>
