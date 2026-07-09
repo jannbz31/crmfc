@@ -90,21 +90,11 @@
             </button>
         </div>
         <div class="p-6 border-t border-slate-800/80">
-            <!-- Auth Section -->
-            <div id="auth-section-desk" class="flex flex-col gap-2 mb-3">
-                <button onclick="loginGoogle()" id="btn-login-desk" class="w-full py-2.5 bg-white text-slate-900 hover:bg-slate-200 rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 transition-all">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                    Login untuk Sync
-                </button>
-                <div id="user-info-desk" class="hidden text-center bg-slate-900 border border-slate-800 rounded-xl p-2.5">
-                    <p id="user-email-desk" class="text-[10px] text-sky-400 font-bold truncate px-2"></p>
-                    <button onclick="logoutGoogle()" class="text-[9px] text-rose-400 mt-1 hover:underline uppercase tracking-widest font-bold">Logout</button>
-                </div>
-            </div>
-
-            <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2">
-                <span class="relative flex h-2 w-2"><span id="cloud-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span><span id="cloud-dot" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
-                <span id="cloud-text">Offline (Lokal)</span>
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2">
+                <span class="relative flex h-2 w-2">
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                Sistem Lokal (Offline)
             </p>
         </div>
     </aside>
@@ -116,7 +106,6 @@
         <header class="bg-[#090d22]/90 border-b border-slate-800/80 px-6 py-5 shadow-lg backdrop-blur-md shrink-0">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
                 <div class="md:hidden flex items-center gap-2">
-                    <span class="relative flex h-2 w-2"><span id="cloud-ping-mobile" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 hidden"></span><span id="cloud-dot-mobile" class="relative inline-flex rounded-full h-2 w-2 bg-slate-500"></span></span>
                     <h1 class="text-xl font-extrabold text-white tracking-tighter uppercase">
                         WILL<span class="text-sky-400">FITNESS</span>
                     </h1>
@@ -125,13 +114,6 @@
                     <h2 class="text-lg font-bold text-slate-200" id="desktop-page-title">Database Member</h2>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="loginGoogle()" id="btn-login-mob" class="md:hidden px-3 py-2 bg-white text-slate-900 text-[10px] font-extrabold rounded-lg shadow uppercase">
-                        Login Sync
-                    </button>
-                    <button onclick="logoutGoogle()" id="btn-logout-mob" class="hidden md:hidden px-3 py-2 bg-slate-900 border border-slate-800 text-rose-400 text-[10px] font-extrabold rounded-lg shadow uppercase">
-                        Logout
-                    </button>
-
                     <button onclick="toggleFullscreen()" id="btn-fs" class="p-2 text-slate-400 hover:text-sky-400 bg-slate-900 rounded-lg border border-slate-800 transition-all duration-200" title="Layar Penuh">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -528,146 +510,35 @@
         <span id="toast-message">Tersimpan!</span>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
-        import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
-
+    <script>
         // =========================================================================================
-        // PENGATURAN FIREBASE (UNTUK HOSTING DI GITHUB PAGES / LUAR CANVAS)
+        // APLIKASI VERSI LOKAL (TANPA FIREBASE)
+        // Data hanya tersimpan di Local Storage HP/Browser pengguna.
         // =========================================================================================
-        const extConfig = {
-            apiKey: "AIzaSyBw4toW359XiRF-56UxCCqBJMg0hVAovwc",
-            authDomain: "crmwillfitness.firebaseapp.com",
-            projectId: "crmwillfitness",
-            storageBucket: "crmwillfitness.firebasestorage.app",
-            messagingSenderId: "609346503572",
-            appId: "1:609346503572:web:14af574a6d0e182db88581",
-            measurementId: "G-WNSYSQPQBR"
-        };
-        // =========================================================================================
-
-        const isExternalConfigured = extConfig && extConfig.apiKey && extConfig.apiKey.length > 5;
-        const finalConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : (isExternalConfigured ? extConfig : null);
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'willfitness-app';
-        
-        let app, auth, db;
-        if (finalConfig) {
-            try {
-                app = initializeApp(finalConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-            } catch(e) {
-                console.error("Firebase init failed", e);
-            }
-        }
 
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v3')) || [];
-        let wakeLock = null;
         let editingMemberId = null;
         let sortOrder = 'desc'; 
         let expandedCards = {};
-        let currentUser = null;
-        let unsubscribeSnapshot = null;
         
         let currentFilters = {
             status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all'
         };
 
-        const provider = auth ? new GoogleAuthProvider() : null;
-
-        window.loginGoogle = async () => {
-            if (!auth) return window.showCustomAlert('Sistem Firebase belum dikonfigurasi.', 'Sistem Offline');
-            try {
-                await signInWithPopup(auth, provider);
-            } catch(e) {
-                console.error("Login failed", e);
-                window.showCustomAlert('Gagal login: ' + e.message, 'Error');
+        // Fullscreen Toggle
+        window.toggleFullscreen = function() {
+            if (!document.fullscreenElement) {
+                if (document.documentElement.requestFullscreen) {
+                    document.documentElement.requestFullscreen().catch((err) => {
+                        console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                    });
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
             }
         };
-
-        window.logoutGoogle = async () => {
-            if (!auth) return;
-            const konfirmasi = await window.showCustomConfirm('Anda yakin ingin logout? Data akan diputus dari Cloud.', 'Logout');
-            if (konfirmasi) {
-                try {
-                    await signOut(auth);
-                    members = [];
-                    window.renderMembers();
-                    window.processReport();
-                    if(typeof __initial_auth_token !== 'undefined' || typeof __firebase_config !== 'undefined') {
-                         signInAnonymously(auth);
-                    }
-                } catch(e) {}
-            }
-        };
-
-        // Firebase Auth Init (Perbaikan Refresh Issue)
-        if (auth) {
-            const initAuth = async () => {
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else if (typeof __firebase_config !== 'undefined') {
-                    await signInAnonymously(auth); 
-                }
-            };
-            initAuth();
-
-            onAuthStateChanged(auth, (user) => {
-                currentUser = user;
-                
-                const btnDesk = document.getElementById('btn-login-desk');
-                const infoDesk = document.getElementById('user-info-desk');
-                const emailDesk = document.getElementById('user-email-desk');
-                const btnMobLogin = document.getElementById('btn-login-mob');
-                const btnMobLogout = document.getElementById('btn-logout-mob');
-
-                if (user) {
-                    if (user.isAnonymous) {
-                        if(btnDesk) { btnDesk.classList.remove('hidden'); infoDesk.classList.add('hidden'); }
-                        if(btnMobLogin) { btnMobLogin.classList.remove('hidden'); btnMobLogout.classList.add('hidden'); }
-                    } else {
-                        if(btnDesk) { btnDesk.classList.add('hidden'); infoDesk.classList.remove('hidden'); emailDesk.innerText = user.email; }
-                        if(btnMobLogin) { btnMobLogin.classList.add('hidden'); btnMobLogout.classList.remove('hidden'); }
-                    }
-                    
-                    if (user.isAnonymous && typeof __firebase_config === 'undefined') {
-                        if (unsubscribeSnapshot) unsubscribeSnapshot();
-                        window.renderMembers();
-                        window.processReport();
-                    } else {
-                        setupRealtimeListener();
-                    }
-
-                } else {
-                    if(btnDesk) { btnDesk.classList.remove('hidden'); infoDesk.classList.add('hidden'); }
-                    if(btnMobLogin) { btnMobLogin.classList.remove('hidden'); btnMobLogout.classList.add('hidden'); }
-                    if (unsubscribeSnapshot) unsubscribeSnapshot();
-                    window.renderMembers();
-                    window.processReport();
-                }
-            });
-        }
-
-        function setupRealtimeListener() {
-            if (!currentUser || !db) return;
-            const membersRef = collection(db, 'artifacts', appId, 'users', currentUser.uid, 'members');
-            
-            if (unsubscribeSnapshot) unsubscribeSnapshot();
-
-            unsubscribeSnapshot = onSnapshot(membersRef, (snapshot) => {
-                members = [];
-                snapshot.forEach((doc) => {
-                    members.push(doc.data());
-                });
-                
-                localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
-                window.renderMembers();
-                window.processReport();
-            }, (error) => {
-                console.error("Error fetching data: ", error);
-            });
-        }
 
         const initUI = () => {
             const today = new Date().toISOString().split('T')[0];
@@ -678,6 +549,10 @@
 
             applyDefaultSortDirection();
             window.onReportTypeChange();
+            
+            // Render awal saat aplikasi dimuat
+            window.renderMembers();
+            window.processReport();
         };
 
         // KONTROL MODAL & TOAST
@@ -896,7 +771,7 @@
             window.renderMembers();
         }
 
-        // CRUD
+        // CRUD (LOKAL)
         window.editMember = function(id) {
             const m = members.find(x => x.id === id);
             if (!m) return;
@@ -946,7 +821,7 @@
             window.switchTab('list');
         }
 
-        document.getElementById('member-form').onsubmit = async (e) => {
+        document.getElementById('member-form').onsubmit = (e) => {
             e.preventDefault();
 
             const btnSubmit = document.getElementById('btn-submit');
@@ -979,71 +854,45 @@
                 revenuePOS: parseFloat(document.getElementById('revenue_pos').value) || 0
             };
 
-            const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
-
-            try {
-                if (editingMemberId !== null) {
-                    if (isCloudActive) {
-                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', editingMemberId.toString());
-                        await setDoc(docRef, memberData, { merge: true });
-                    } else {
-                        const index = members.findIndex(m => m.id === editingMemberId);
-                        if (index !== -1) members[index] = { ...members[index], ...memberData };
-                        saveDataLocal();
-                    }
-                    showToast('Data diperbarui!');
-                    window.cancelEditMode(); 
-                } else {
-                    const newId = Date.now().toString();
-                    const newMember = { id: parseInt(newId), ...memberData, lastChat: null, lastChatTime: null };
-                    
-                    if (isCloudActive) {
-                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', newId);
-                        await setDoc(docRef, newMember);
-                    } else {
-                        members.push(newMember);
-                        saveDataLocal();
-                    }
-                    
-                    showToast('Member disimpan!');
-                    e.target.reset();
-                    document.getElementById('custom_duration').classList.add('hidden');
-                    const today = new Date().toISOString().split('T')[0];
-                    document.getElementById('start_date').value = today;
-                    document.getElementById('transaction_date').value = today;
-                    window.switchTab('list');
-                }
-            } catch (error) {
-                console.error("Save error", error);
-                window.showCustomAlert('Gagal menyimpan data.', 'Error');
+            if (editingMemberId !== null) {
+                const index = members.findIndex(m => m.id === editingMemberId);
+                if (index !== -1) members[index] = { ...members[index], ...memberData };
+                saveDataLocal();
+                showToast('Data diperbarui!');
+                window.cancelEditMode(); 
+            } else {
+                const newId = Date.now(); // Gunakan timestamp integer untuk ID lokal
+                const newMember = { id: newId, ...memberData, lastChat: null, lastChatTime: null };
+                members.push(newMember);
+                saveDataLocal();
+                
+                showToast('Member disimpan!');
+                e.target.reset();
+                document.getElementById('custom_duration').classList.add('hidden');
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('start_date').value = today;
+                document.getElementById('transaction_date').value = today;
+                window.switchTab('list');
             }
 
-            if (!isCloudActive) {
-                window.renderMembers();
-                window.processReport();
-            }
+            window.renderMembers();
+            window.processReport();
 
             btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
             btnSubmit.disabled = false;
         };
 
-        window.contactWhatsApp = async function(id) {
-            const member = members.find(m => m.id === id);
-            if (member) {
+        window.contactWhatsApp = function(id) {
+            const index = members.findIndex(m => m.id === id);
+            if (index !== -1) {
                 const now = new Date();
-                member.lastChat = formatDisplayTimestamp(now.getTime());
-                member.lastChatTime = now.getTime(); 
+                members[index].lastChat = formatDisplayTimestamp(now.getTime());
+                members[index].lastChatTime = now.getTime(); 
                 
-                const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
-                if (isCloudActive) {
-                    const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', id.toString());
-                    setDoc(docRef, { lastChat: member.lastChat, lastChatTime: member.lastChatTime }, { merge: true });
-                } else {
-                    saveDataLocal();
-                    window.renderMembers();
-                }
+                saveDataLocal();
+                window.renderMembers();
                 
-                let rawPhone = member.whatsapp.replace(/[^0-9]/g, '');
+                let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
                 if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
                 window.open(`https://wa.me/${rawPhone}`, '_blank');
             }
@@ -1052,23 +901,11 @@
         window.deleteMember = async function(id) {
             const confirmDelete = await window.showCustomConfirm('Hapus data member ini secara permanen?');
             if(confirmDelete) {
-                const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
-                if (isCloudActive) {
-                    try {
-                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', id.toString());
-                        await deleteDoc(docRef);
-                        showToast('Data dihapus dari Cloud');
-                    } catch(e) {
-                        console.error("Delete error", e);
-                        window.showCustomAlert('Gagal menghapus dari Cloud.', 'Error');
-                    }
-                } else {
-                    members = members.filter(m => m.id !== id);
-                    saveDataLocal();
-                    window.renderMembers();
-                    window.processReport();
-                    showToast('Data dihapus!');
-                }
+                members = members.filter(m => m.id !== id);
+                saveDataLocal();
+                window.renderMembers();
+                window.processReport();
+                showToast('Data dihapus!');
             }
         }
 
@@ -1433,7 +1270,7 @@
             }
         }
 
-        // EKSPORT & IMPORT LOCAL STORAGE ONLY 
+        // EKSPORT & IMPORT LOCAL STORAGE 
         window.exportCSV = function() {
             if (members.length === 0) return window.showCustomAlert('Data member kosong!');
             let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
@@ -1470,7 +1307,7 @@
                 }
 
                 const normalizedData = importedData.map(m => ({
-                    id: m.id || Date.now() + Math.random(),
+                    id: m.id || Date.now() + Math.random(), // Pastikan selalu ada ID valid
                     name: m.name || '',
                     dob: m.dob || '',
                     transactionDate: m.transactionDate || m.startDate || '',
@@ -1487,27 +1324,11 @@
                 }));
 
                 if (await window.showCustomConfirm(`Memuat masuk ${normalizedData.length} data. Data saat ini akan diganti. Lanjut?`)) {
-                    try {
-                        const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
-                        if (isCloudActive) {
-                            window.showToast('Mengunggah ke Cloud...');
-                            for(let m of normalizedData) {
-                                const docId = m.id.toString();
-                                const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', docId);
-                                await setDoc(docRef, m);
-                            }
-                            window.showCustomAlert('Cadangan berhasil diunggah ke Cloud!', 'Selesai');
-                        } else {
-                            members = normalizedData; 
-                            saveDataLocal(); 
-                            window.renderMembers(); 
-                            window.processReport();
-                            window.showCustomAlert('Cadangan berhasil diimpor ke Lokal!', 'Selesai');
-                        }
-                    } catch (err) {
-                        console.error("Upload Error:", err);
-                        window.showCustomAlert(`Gagal memproses data: ${err.message}`, 'Gagal Mengunggah');
-                    }
+                    members = normalizedData; 
+                    saveDataLocal(); 
+                    window.renderMembers(); 
+                    window.processReport();
+                    window.showCustomAlert('Cadangan berhasil diimpor dan disimpan secara lokal!', 'Selesai');
                 }
                 
                 document.getElementById('import-file').value = '';
@@ -1528,3 +1349,5 @@
     </script>
 </body>
 </html>
+
+
