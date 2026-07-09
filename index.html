@@ -17,12 +17,11 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Warna Status Membership - Dioptimalkan untuk List Profesional */
+        /* Warna Status Membership */
         .status-active { background-color: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
         .status-warning { background-color: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-expired { background-color: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
         
-        /* Kartu Hari Lahir Profesional */
         .row-birthday { 
             background: linear-gradient(90deg, rgba(15,23,42,1) 0%, rgba(49,16,66,0.3) 100%);
             border: 1px solid rgba(217, 70, 239, 0.4);
@@ -34,7 +33,6 @@
             border: 1px solid rgba(30, 41, 59, 0.8);
         }
 
-        /* Navigasi Glassmorphism */
         .glass-nav {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(16px);
@@ -49,20 +47,14 @@
             border: 1px solid #1e293b;
         }
 
-        /* Kustom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Tipe Transaksi Badge */
+        .type-njm { background-color: #3b82f6; color: #0f172a; } /* Biru */
+        .type-renewal { background-color: #a855f7; color: #ffffff; } /* Ungu */
     </style>
 </head>
 <body class="bg-[#020617] text-slate-100 h-screen w-full flex">
@@ -85,7 +77,7 @@
                 Tambah / Edit
             </button>
             <button onclick="switchTab('data')" id="desk-nav-data" class="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 Laporan & Keuangan
             </button>
         </div>
@@ -102,7 +94,6 @@
     <!-- MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-[#020617]">
         
-        <!-- Header Atas -->
         <header class="bg-[#090d22]/90 border-b border-slate-800/80 px-6 py-5 shadow-lg backdrop-blur-md shrink-0">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
                 <div class="md:hidden flex items-center gap-2">
@@ -142,10 +133,10 @@
                             </span>
                             <input type="text" id="search-input" placeholder="Cari nama member..." 
                                 class="w-full pl-11 pr-4 py-3.5 bg-[#0f172a] border border-slate-800 rounded-xl focus:ring-1 focus:ring-sky-500 outline-none transition-all text-sm text-white placeholder-slate-500" 
-                                onkeypress="handleSearchEnter(event)">
+                                oninput="renderMembers()">
                         </div>
 
-                        <!-- Kontrol Sortir & Tombol Filter & Proses -->
+                        <!-- Kontrol Sortir & Tombol Filter -->
                         <div class="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0 hide-scrollbar">
                             <div class="flex gap-2 w-full md:w-auto min-w-max">
                                 <select id="sort-select" onchange="applyDefaultSortDirection()" class="w-44 md:w-48 p-3.5 bg-[#0f172a] text-slate-200 rounded-xl border border-slate-800 focus:ring-1 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer appearance-none">
@@ -162,9 +153,6 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                                     <span class="hidden md:block text-xs font-bold">Filter</span>
                                 </button>
-                                <button onclick="processData(false)" class="p-3.5 bg-sky-500 text-slate-950 rounded-xl font-extrabold hover:bg-sky-400 transition-all flex-shrink-0 flex items-center gap-2 shadow-lg shadow-sky-500/20 uppercase tracking-wide text-xs px-5">
-                                    Proses
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -176,7 +164,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                         </button>
                         
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-5">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-5">
                             <div>
                                 <label class="text-[10px] text-slate-500 block mb-1.5 uppercase font-semibold tracking-wider">Status</label>
                                 <select id="filter-status" class="w-full p-2.5 bg-[#020617] text-white text-xs rounded-xl border border-slate-700 outline-none focus:border-sky-500">
@@ -184,6 +172,14 @@
                                     <option value="active">Aktif</option>
                                     <option value="warning">Hampir Habis (Limit)</option>
                                     <option value="expired">Habis (Expired)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-slate-500 block mb-1.5 uppercase font-semibold tracking-wider">Tipe</label>
+                                <select id="filter-type" class="w-full p-2.5 bg-[#020617] text-white text-xs rounded-xl border border-slate-700 outline-none focus:border-sky-500">
+                                    <option value="all">Semua Tipe</option>
+                                    <option value="NJM">NJM</option>
+                                    <option value="Renewal">Renewal</option>
                                 </select>
                             </div>
                             <div>
@@ -235,12 +231,10 @@
                         </div>
                     </div>
                     
-                    <!-- Pengumuman Ulang Tahun -->
                     <div id="birthday-announcement" class="hidden mb-6 p-4 bg-fuchsia-500/10 text-fuchsia-300 rounded-xl text-sm font-semibold flex items-center gap-3 border border-fuchsia-500/20">
                         <span class="text-xl">🎂</span> Ada member yang berulang tahun hari ini!
                     </div>
 
-                    <!-- Indikator Filter Aktif -->
                     <div id="active-filter-indicator" class="hidden mb-4 text-xs font-bold text-sky-400 flex items-center gap-2">
                         <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span></span>
                         Filter Spesifik Sedang Aktif
@@ -249,19 +243,6 @@
                     <!-- Tempat Render List View Profesional -->
                     <div id="member-container" class="flex flex-col gap-3 min-h-[300px]">
                         <!-- Diisi oleh JS -->
-                    </div>
-
-                    <!-- Pagination Controls -->
-                    <div id="pagination-controls" class="hidden mt-6 flex justify-between items-center bg-[#0f172a] p-3 rounded-2xl border border-slate-800 shadow-lg">
-                        <button onclick="changePage(-1)" id="btn-prev-page" class="px-4 py-2.5 rounded-xl bg-[#020617] text-slate-300 text-xs font-bold border border-slate-700 hover:bg-slate-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-                            ← Sebelumnya
-                        </button>
-                        <span id="page-info" class="text-xs font-bold text-sky-400 uppercase tracking-widest">
-                            Hal 1 / 1
-                        </span>
-                        <button onclick="changePage(1)" id="btn-next-page" class="px-4 py-2.5 rounded-xl bg-[#020617] text-slate-300 text-xs font-bold border border-slate-700 hover:bg-slate-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
-                            Selanjutnya →
-                        </button>
                     </div>
 
                 </section>
@@ -300,9 +281,16 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-sm">
                                 <div>
-                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Membership (Bulan)</label>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Tipe Transaksi</label>
+                                    <select id="transaction_type" class="w-full p-3 bg-[#020617] text-white rounded-xl border border-slate-800 focus:border-sky-500 outline-none" required>
+                                        <option value="NJM">NJM</option>
+                                        <option value="Renewal">Renewal</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Paket (Bulan)</label>
                                     <div class="flex gap-2">
                                         <select id="duration" class="flex-1 p-3 bg-[#020617] text-white rounded-xl border border-slate-800 focus:border-sky-500 outline-none" onchange="toggleCustomDuration()">
                                             <option value="1">1 Bulan</option>
@@ -374,7 +362,6 @@
                     <div class="space-y-6 max-w-5xl mx-auto">
                         <h2 class="text-2xl font-extrabold text-white tracking-tight">Laporan Keuangan & Leads</h2>
                         
-                        <!-- Panel Filter Laporan -->
                         <div class="bg-[#0f172a] p-5 md:p-6 rounded-2xl border border-slate-800/80">
                             <div class="flex flex-col md:flex-row gap-4 items-end">
                                 <div class="w-full md:w-48">
@@ -410,7 +397,6 @@
                             </div>
                         </div>
 
-                        <!-- Panel Hasil Laporan -->
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-2">
                             <div class="col-span-1 md:col-span-2 lg:col-span-4 flex items-center justify-between pb-2 border-b border-slate-800/80 mb-2">
                                 <span id="report-label" class="text-sm font-bold text-sky-400 uppercase tracking-widest">Laporan: Hari Ini</span>
@@ -442,21 +428,11 @@
                             </div>
                         </div>
 
-                        <!-- Daftar Member Laporan -->
-                        <div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-800/80 mt-2">
-                            <h3 class="text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest border-b border-slate-800 pb-3">Daftar Transaksi Member (Berdasarkan Periode)</h3>
-                            <div id="report-member-list" class="space-y-3 max-h-[350px] overflow-y-auto pr-2">
-                                <!-- Diisi oleh JS -->
-                            </div>
-                        </div>
-
-                        <!-- Grid Bawah Laporan: Leads & Backup -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             <!-- Breakdown Leads -->
                             <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800/80">
                                 <h3 class="text-xs font-bold text-slate-400 mb-5 uppercase tracking-widest border-b border-slate-800 pb-3">Breakdown Sumber Leads</h3>
                                 <div id="leads-breakdown-container" class="space-y-3">
-                                    <!-- Diisi oleh JS -->
                                 </div>
                             </div>
 
@@ -491,7 +467,7 @@
         </main>
     </div>
 
-    <!-- Navigasi Bawah (Hanya Mobile) -->
+    <!-- Navigasi Bawah (Mobile) -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-800/80 flex justify-around p-3 z-50 rounded-t-3xl shadow-2xl">
         <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-sky-400 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
@@ -529,8 +505,7 @@
 
     <script>
         // =========================================================================================
-        // APLIKASI VERSI LOKAL V2 (TANPA FIREBASE, DENGAN PAGINATION)
-        // Data hanya tersimpan di Local Storage HP/Browser pengguna.
+        // APLIKASI VERSI LOKAL V3 (ALL DATA VIEW, AUTO-FIX DATE FORMAT, FIX BLANK)
         // =========================================================================================
 
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v3')) || [];
@@ -539,30 +514,68 @@
         let expandedCards = {};
         
         let currentFilters = {
-            status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all'
+            status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all', type: 'all'
         };
 
-        // State Pagination & Filtered Data
-        let filteredMembers = [];
-        let currentPage = 1;
-        const itemsPerPage = 20;
+        // ALAT BANTU (HELPER) UNTUK MEMBERSIHKAN TANGGAL INDONESIA (Penyebab Layar Blank)
+        function sanitizeDate(dateStr) {
+            if (!dateStr) return '';
+            // Jika format sudah YYYY-MM-DD
+            if (dateStr.match(/^\d{4}-\d{2}-\d{2}$/)) return dateStr;
+            
+            const months = {
+                'januari': '01', 'jan': '01', 'january': '01',
+                'februari': '02', 'feb': '02', 'february': '02',
+                'maret': '03', 'mar': '03', 'march': '03',
+                'april': '04', 'apr': '04',
+                'mei': '05', 'may': '05',
+                'juni': '06', 'jun': '06', 'june': '06',
+                'juli': '07', 'jul': '07', 'july': '07',
+                'agustus': '08', 'agu': '08', 'aug': '08', 'august': '08',
+                'september': '09', 'sep': '09',
+                'oktober': '10', 'okt': '10', 'october': '10', 'oct': '10',
+                'november': '11', 'nov': '11',
+                'desember': '12', 'des': '12', 'december': '12', 'dec': '12'
+            };
+            
+            // Format seperti: "2 Juni 2026"
+            const parts = dateStr.toLowerCase().replace(/,/g, '').split(' ');
+            if (parts.length >= 3) {
+                let d = parts[0].padStart(2, '0');
+                let m = months[parts[1]] || '01';
+                let y = parts[2];
+                return `${y}-${m}-${d}`;
+            }
+            return new Date().toISOString().split('T')[0]; // fallback hari ini
+        }
 
         // Fullscreen Toggle
         window.toggleFullscreen = function() {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch((err) => {
-                        console.log(`Error attempting to enable fullscreen: ${err.message}`);
-                    });
+                    document.documentElement.requestFullscreen().catch((err) => console.log(err));
                 }
             } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
+                if (document.exitFullscreen) document.exitFullscreen();
             }
         };
 
         const initUI = () => {
+            // Bersihkan format tanggal warisan di localstorage yang bikin error
+            let dataChanged = false;
+            members.forEach(m => {
+                const oldTx = m.transactionDate;
+                const oldSt = m.startDate;
+                m.transactionDate = sanitizeDate(m.transactionDate);
+                m.startDate = sanitizeDate(m.startDate);
+                if(m.transactionDate === '') m.transactionDate = m.startDate;
+                if(m.startDate === '') m.startDate = m.transactionDate;
+                if(!m.transactionType) m.transactionType = 'NJM'; // Default untuk data lama
+                
+                if(oldTx !== m.transactionDate || oldSt !== m.startDate) dataChanged = true;
+            });
+            if(dataChanged) saveDataLocal();
+
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('start_date').value = today;
             document.getElementById('transaction_date').value = today;
@@ -571,13 +584,10 @@
 
             applyDefaultSortDirection();
             window.onReportTypeChange();
-            
-            // Render awal saat aplikasi dimuat
-            window.processData(true);
+            window.renderMembers();
             window.processReport();
         };
 
-        // KONTROL MODAL & TOAST
         window.showCustomAlert = function(message, title = "Informasi") {
             return new Promise((resolve) => {
                 const modal = document.getElementById('custom-modal');
@@ -617,7 +627,6 @@
             setTimeout(() => { toast.classList.add('translate-x-[150%]'); }, 3000);
         }
 
-        // UTILITAS TANGGAL & RUPIAH
         function formatDisplayDateDMY(dateStr) {
             if (!dateStr) return '-';
             const parts = dateStr.split('-');
@@ -651,22 +660,28 @@
         }
 
         function getDaysUntilNextBirthday(dobString) {
+            if(!dobString) return 999;
             const today = new Date();
             today.setHours(0,0,0,0);
             const dob = new Date(dobString);
+            if(isNaN(dob)) return 999;
             let nextBday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
             if (nextBday < today) nextBday.setFullYear(today.getFullYear() + 1);
             return Math.ceil((nextBday - today) / (1000 * 60 * 60 * 24));
         }
 
         function isBirthdayToday(dobString) {
+            if(!dobString) return false;
             const today = new Date();
             const dob = new Date(dobString);
+            if(isNaN(dob)) return false;
             return today.getDate() === dob.getDate() && today.getMonth() === dob.getMonth();
         }
 
         function calculateAge(dob) {
+            if(!dob) return 0;
             const birthDate = new Date(dob);
+            if(isNaN(birthDate)) return 0;
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
@@ -676,6 +691,8 @@
 
         function calculateExpiry(startDate, durationMonths) {
             const date = new Date(startDate);
+            if(isNaN(date)) return new Date(); // Cegah crash jika string tgl aneh
+            
             let daysToAdd = 30;
             if (durationMonths === 'custom' || isNaN(durationMonths)) {
                 const val = parseInt(durationMonths);
@@ -702,7 +719,7 @@
             return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
         }
 
-        // TABS & UI CONTROLS
+        // TABS
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -723,25 +740,21 @@
                         document.getElementById('add-icon-bg').classList.add('bg-slate-900', 'text-slate-400');
                     }
                 }
-            });
-
-            tabs.forEach(t => {
-                const btn = document.getElementById('desk-nav-' + t);
+                
+                const deskBtn = document.getElementById('desk-nav-' + t);
                 if(t === tabId) {
-                    btn.classList.add('text-sky-400', 'bg-sky-500/10', 'border-sky-500/20');
-                    btn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50', 'border-transparent');
+                    deskBtn.classList.add('text-sky-400', 'bg-sky-500/10', 'border-sky-500/20');
+                    deskBtn.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50', 'border-transparent');
                 } else {
-                    btn.classList.remove('text-sky-400', 'bg-sky-500/10', 'border-sky-500/20');
-                    btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50', 'border-transparent');
+                    deskBtn.classList.remove('text-sky-400', 'bg-sky-500/10', 'border-sky-500/20');
+                    deskBtn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800/50', 'border-transparent');
                 }
             });
 
-            const titles = { 'list': 'Database Member', 'add': editingMemberId ? 'Edit Member' : 'Tambah Member', 'data': 'Laporan Penjualan & Komisi' };
+            const titles = { 'list': 'Database Member', 'add': editingMemberId ? 'Edit Member' : 'Tambah Member', 'data': 'Laporan Penjualan' };
             document.getElementById('desktop-page-title').innerText = titles[tabId];
 
-            if(tabId === 'list') {
-                window.processData(true); // render saat tab list dibuka
-            }
+            if(tabId === 'list') window.renderMembers();
         }
 
         window.toggleCustomDuration = function() {
@@ -756,7 +769,7 @@
 
         window.toggleCardExpand = function(id) {
             expandedCards[id] = !expandedCards[id];
-            window.renderPage(); // Hanya merender ulang halaman saat ini
+            window.renderMembers();
         }
 
         // PANEL FILTER SPESIFIK
@@ -765,6 +778,7 @@
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
                 document.getElementById('filter-status').value = currentFilters.status;
+                document.getElementById('filter-type').value = currentFilters.type;
                 document.getElementById('filter-pt').value = currentFilters.pt;
                 document.getElementById('filter-tnc').value = currentFilters.tnc;
                 document.getElementById('filter-duration').value = currentFilters.duration;
@@ -776,34 +790,29 @@
 
         window.applyFilters = function() {
             currentFilters.status = document.getElementById('filter-status').value;
+            currentFilters.type = document.getElementById('filter-type').value;
             currentFilters.pt = document.getElementById('filter-pt').value;
             currentFilters.tnc = document.getElementById('filter-tnc').value;
             currentFilters.duration = document.getElementById('filter-duration').value;
             currentFilters.source = document.getElementById('filter-source').value;
             window.toggleFilterPanel(); 
-            window.processData(false); // Proses filter dan reset ke halaman 1
+            window.renderMembers();
         }
 
         window.resetFilters = function() {
-            currentFilters = { status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all' };
+            currentFilters = { status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all', type: 'all' };
             document.getElementById('filter-status').value = 'all';
+            document.getElementById('filter-type').value = 'all';
             document.getElementById('filter-pt').value = 'all';
             document.getElementById('filter-tnc').value = 'all';
             document.getElementById('filter-duration').value = 'all';
             document.getElementById('filter-source').value = 'all';
             document.getElementById('search-input').value = '';
             window.toggleFilterPanel(); 
-            window.processData(false);
+            window.renderMembers();
         }
 
-        // PENCARIAN DENGAN ENTER
-        window.handleSearchEnter = function(event) {
-            if (event.key === 'Enter') {
-                window.processData(false);
-            }
-        }
-
-        // CRUD (LOKAL)
+        // CRUD
         window.editMember = function(id) {
             const m = members.find(x => x.id === id);
             if (!m) return;
@@ -812,6 +821,7 @@
             document.getElementById('dob').value = m.dob;
             document.getElementById('transaction_date').value = m.transactionDate || m.startDate;
             document.getElementById('start_date').value = m.startDate;
+            document.getElementById('transaction_type').value = m.transactionType || 'NJM';
             document.getElementById('whatsapp').value = m.whatsapp;
             document.getElementById('use_pt').checked = m.usePT;
             document.getElementById('tnc_signed').checked = m.tncSigned || false;
@@ -878,6 +888,7 @@
                 transactionDate: document.getElementById('transaction_date').value,
                 startDate: document.getElementById('start_date').value,
                 durationMonths: finalDuration,
+                transactionType: document.getElementById('transaction_type').value,
                 whatsapp: document.getElementById('whatsapp').value,
                 usePT: document.getElementById('use_pt').checked,
                 tncSigned: document.getElementById('tnc_signed').checked,
@@ -907,7 +918,7 @@
                 window.switchTab('list');
             }
 
-            window.processData(true); // Refresh data di list
+            window.renderMembers();
             window.processReport();
 
             btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -922,7 +933,7 @@
                 members[index].lastChatTime = now.getTime(); 
                 
                 saveDataLocal();
-                window.processData(true); // Update chat date & biarkan di page yang sama
+                window.renderMembers();
                 
                 let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
                 if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
@@ -935,7 +946,7 @@
             if(confirmDelete) {
                 members = members.filter(m => m.id !== id);
                 saveDataLocal();
-                window.processData(true); // Render ulang
+                window.renderMembers();
                 window.processReport();
                 showToast('Data dihapus!');
             }
@@ -945,12 +956,8 @@
             localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
         }
 
-        // ==========================================
-        // PROSES DATA (SEARCH, SORT, FILTER) & PAGINATION
-        // ==========================================
+        // RENDER LIST, SORT, & FILTER REAL-TIME 
         function applyDefaultSortDirection() {
-            // Kita tidak panggil render otomatis, biarkan user tekan 'Proses'
-            // Hanya memastikan arah panah sesuai dengan default logika dropdown
             const sortVal = document.getElementById('sort-select').value;
             const arrow = document.getElementById('sort-arrow');
             if (sortVal === 'birthday-date' || sortVal === 'membership-expiry') {
@@ -958,6 +965,7 @@
             } else {
                 sortOrder = 'desc'; arrow.classList.remove('rotate-180');
             }
+            window.renderMembers();
         }
 
         window.toggleSortOrder = function() {
@@ -965,24 +973,25 @@
             const arrow = document.getElementById('sort-arrow');
             if (sortOrder === 'asc') arrow.classList.add('rotate-180');
             else arrow.classList.remove('rotate-180');
-            window.processData(true); // Mengganti sort direction lgsg merender
+            window.renderMembers();
         }
 
-        // 1. Eksekusi Pencarian & Penyaringan
-        window.processData = function(preservePage = false) {
+        window.renderMembers = function() {
+            const container = document.getElementById('member-container');
             const search = document.getElementById('search-input').value.toLowerCase();
+            const birthdayAnnounce = document.getElementById('birthday-announcement');
             const sortVal = document.getElementById('sort-select').value;
             const filterIndicator = document.getElementById('active-filter-indicator');
-            const birthdayAnnounce = document.getElementById('birthday-announcement');
+            container.innerHTML = '';
             
-            let sortedMembers = [...members];
             let hasBirthday = false;
-
+            let sortedMembers = [...members];
+            
             const isFilterActive = Object.values(currentFilters).some(val => val !== 'all');
             if (isFilterActive) { filterIndicator.classList.remove('hidden'); } 
             else { filterIndicator.classList.add('hidden'); }
 
-            // Urutkan terlebih dahulu
+            // Urutkan (Aman dari Invalid Date karena sudah di sanitizeData saat Init/Import)
             sortedMembers.sort((a, b) => {
                 let comparison = 0;
                 if (sortVal === 'birthday-date') {
@@ -994,19 +1003,20 @@
                 } else if (sortVal === 'chat-date') {
                     comparison = (a.lastChatTime || 0) - (b.lastChatTime || 0);
                 } else if (sortVal === 'start-date') {
-                    comparison = new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+                    const tA = new Date(a.startDate).getTime() || 0;
+                    const tB = new Date(b.startDate).getTime() || 0;
+                    comparison = tA - tB;
                 } else {
-                    comparison = new Date(a.transactionDate || a.startDate).getTime() - new Date(b.transactionDate || b.startDate).getTime() || a.id - b.id;
+                    const tA = new Date(a.transactionDate || a.startDate).getTime() || 0;
+                    const tB = new Date(b.transactionDate || b.startDate).getTime() || 0;
+                    comparison = tA - tB || a.id - b.id;
                 }
                 return (sortOrder === 'asc') ? comparison : -comparison;
             });
 
-            // Saring (Filter) & Cari
-            filteredMembers = sortedMembers.filter(m => {
-                const isBDay = isBirthdayToday(m.dob);
-                if(isBDay) hasBirthday = true; // Set indikator ulang tahun (walau di filter)
-
-                if (search && !m.name.toLowerCase().includes(search)) return false;
+            // Saring Data
+            const filteredMembers = sortedMembers.filter(m => {
+                if (!m.name.toLowerCase().includes(search)) return false;
                 
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
@@ -1015,6 +1025,7 @@
                 else if (daysLeft <= 7) computedStatus = 'warning';
 
                 if (currentFilters.status !== 'all' && computedStatus !== currentFilters.status) return false;
+                if (currentFilters.type !== 'all' && (m.transactionType || 'NJM') !== currentFilters.type) return false;
                 if (currentFilters.pt !== 'all') {
                     const wantsPT = currentFilters.pt === 'yes';
                     if (m.usePT !== wantsPT) return false;
@@ -1038,54 +1049,18 @@
             });
 
             document.getElementById('stats-badge').innerText = filteredMembers.length;
-            birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
 
-            // Tentukan Pagination
-            if (!preservePage) {
-                currentPage = 1; // Reset ke halaman 1 jika ini proses filter baru
-            } else {
-                // Cegah page melewati batas jika item di hapus dan page kosong
-                const totalPages = Math.ceil(filteredMembers.length / itemsPerPage) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-            }
-
-            // Render DOM untuk halaman tersebut
-            window.renderPage();
-        }
-
-        // 2. Ganti Halaman (Dipanggil dari tombol next/prev)
-        window.changePage = function(delta) {
-            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage) || 1;
-            currentPage += delta;
-            if (currentPage < 1) currentPage = 1;
-            if (currentPage > totalPages) currentPage = totalPages;
-            window.renderPage();
-            // Scroll ke atas container
-            document.getElementById('member-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-
-        // 3. Render HTML berdasarkan halaman saat ini (PAGINATION)
-        window.renderPage = function() {
-            const container = document.getElementById('member-container');
-            const paginationControls = document.getElementById('pagination-controls');
-            container.innerHTML = '';
-            
             if (filteredMembers.length === 0) {
                 container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm">Tidak ada member yang ditemukan.</div>`;
-                paginationControls.classList.add('hidden');
+                birthdayAnnounce.classList.add('hidden');
                 return;
             }
 
-            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
-            
-            // Slice Array berdasarkan Pagination
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const pageData = filteredMembers.slice(startIndex, endIndex);
-
-            // Render data per page
-            pageData.forEach(m => {
+            // Tampilkan Seluruh Data Terfilter
+            filteredMembers.forEach(m => {
                 const isBDay = isBirthdayToday(m.dob);
+                if(isBDay) hasBirthday = true;
+
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
                 const showTrxDate = m.transactionDate ? formatDisplayDateDMY(m.transactionDate) : formatDisplayDateDMY(m.startDate);
@@ -1097,8 +1072,10 @@
                 if (daysLeft < 0) { statusClass = "status-expired"; statusText = "Habis"; }
                 else if (daysLeft <= 7) { statusClass = "status-warning"; statusText = "Limit"; }
 
-                const isExpanded = !!expandedCards[m.id];
+                const typeBadgeClass = (m.transactionType === 'Renewal') ? 'type-renewal' : 'type-njm';
+                const typeText = m.transactionType || 'NJM';
                 
+                const isExpanded = !!expandedCards[m.id];
                 const row = document.createElement('div');
                 row.className = `rounded-2xl transition-all duration-200 ${isBDay ? 'row-birthday' : 'row-standard'} overflow-hidden`;
                 
@@ -1112,6 +1089,7 @@
                                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
                                     <h3 class="font-extrabold text-slate-100 text-sm md:text-base">${m.name}</h3>
                                     ${isBDay ? '<span class="text-sm">🎂</span>' : ''}
+                                    <span class="text-[8px] px-1.5 py-[2px] rounded font-black uppercase ${typeBadgeClass}">${typeText}</span>
                                     ${m.usePT ? '<span class="bg-sky-500 text-slate-950 text-[8px] px-1.5 py-[2px] rounded font-black uppercase">PT</span>' : ''}
                                     ${m.tncSigned ? '<span class="bg-emerald-500 text-slate-950 text-[8px] px-1.5 py-[2px] rounded font-black uppercase flex items-center gap-0.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg> TNC</span>' : '<span class="bg-rose-500/20 text-rose-400 border border-rose-500/50 text-[8px] px-1.5 py-[2px] rounded font-black uppercase">NO TNC</span>'}
                                 </div>
@@ -1170,16 +1148,7 @@
                 row.innerHTML = headerHTML + detailHTML;
                 container.appendChild(row);
             });
-
-            // Update UI Pagination
-            if (totalPages > 1) {
-                paginationControls.classList.remove('hidden');
-                document.getElementById('page-info').innerText = `Hal ${currentPage} / ${totalPages}`;
-                document.getElementById('btn-prev-page').disabled = (currentPage === 1);
-                document.getElementById('btn-next-page').disabled = (currentPage === totalPages);
-            } else {
-                paginationControls.classList.add('hidden');
-            }
+            birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
         }
 
         // LAPORAN LOGIC
@@ -1252,6 +1221,7 @@
                 const trxDateStr = m.transactionDate || m.startDate;
                 if (!trxDateStr) return false;
                 const trxDate = new Date(trxDateStr);
+                if (isNaN(trxDate)) return false; // Abaikan jika masih gagal parsing 
                 trxDate.setHours(0,0,0,0);
                 return trxDate >= startDate && trxDate <= endDate;
             });
@@ -1320,8 +1290,8 @@
                 reportMemberList.innerHTML = `<p class="text-xs text-slate-500 text-center italic py-4">Tidak ada data member pada periode ini.</p>`;
             } else {
                 const reportSorted = [...filteredList].sort((a, b) => {
-                    const dateA = new Date(a.transactionDate || a.startDate).getTime();
-                    const dateB = new Date(b.transactionDate || b.startDate).getTime();
+                    const dateA = new Date(a.transactionDate || a.startDate).getTime() || 0;
+                    const dateB = new Date(b.transactionDate || b.startDate).getTime() || 0;
                     return dateB - dateA || b.id - a.id;
                 });
 
@@ -1330,6 +1300,8 @@
                     const revPos = parseFloat(m.revenuePOS) || 0;
                     const totalRev = revMem + revPos;
                     const trxDate = m.transactionDate ? formatDisplayDateDMY(m.transactionDate) : formatDisplayDateDMY(m.startDate);
+                    const typeText = m.transactionType || 'NJM';
+                    const typeColor = (typeText === 'Renewal') ? 'text-purple-400' : 'text-blue-400';
 
                     const row = document.createElement('div');
                     row.className = "flex justify-between items-center p-4 bg-[#020617] rounded-xl border border-slate-800/50 hover:border-slate-700 transition-colors";
@@ -1342,6 +1314,8 @@
                                 <h4 class="text-sm font-bold text-white mb-0.5">${m.name}</h4>
                                 <div class="flex items-center gap-2 text-[10px] text-slate-500 flex-wrap">
                                     <span>Trx: <span class="text-slate-300 font-semibold">${trxDate}</span></span>
+                                    <span class="hidden sm:inline">•</span>
+                                    <span class="font-bold uppercase tracking-wider ${typeColor}">${typeText}</span>
                                     <span class="hidden sm:inline">•</span>
                                     <span class="font-bold uppercase tracking-wider ${m.tncSigned ? 'text-emerald-400' : 'text-rose-400'}">${m.tncSigned ? 'TNC ✔' : 'NO TNC ✖'}</span>
                                     ${m.usePT ? `<span class="hidden sm:inline">•</span><span class="font-bold text-sky-400">PT</span>` : ''}
@@ -1361,11 +1335,12 @@
         // EKSPORT & IMPORT LOCAL STORAGE 
         window.exportCSV = function() {
             if (members.length === 0) return window.showCustomAlert('Data member kosong!');
-            let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
+            let csv = "Nama,Tgl Lahir,Usia,Tgl Transaksi,Tipe Transaksi,Tgl Start Member,Durasi Bulan,Tgl Berakhir,WhatsApp,Pakai PT,Done Sign TNC,Sumber Leads,Revenue Membership,Revenue POS,Terakhir Chat\n";
             members.forEach(m => {
                 const expiry = calculateExpiry(m.startDate, m.durationMonths);
                 const trxDate = m.transactionDate || m.startDate;
-                csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${trxDate}","${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.tncSigned ? 'Ya' : 'Tidak'}","${m.source || 'Leads Internal'}",${m.revenueMembership || 0},${m.revenuePOS || 0},"${m.lastChat || '-'}"\n`;
+                const typeTx = m.transactionType || 'NJM';
+                csv += `"${m.name}","${m.dob}",${calculateAge(m.dob)},"${trxDate}","${typeTx}","${m.startDate}",${m.durationMonths},"${expiry.toISOString().split('T')[0]}","${m.whatsapp}","${m.usePT ? 'Ya' : 'Tidak'}","${m.tncSigned ? 'Ya' : 'Tidak'}","${m.source || 'Leads Internal'}",${m.revenueMembership || 0},${m.revenuePOS || 0},"${m.lastChat || '-'}"\n`;
             });
             downloadFile(csv, `WILLFITNESS_EXCEL_${new Date().getTime()}.csv`, 'text/csv');
         }
@@ -1394,29 +1369,37 @@
                     return window.showCustomAlert('Isi file tidak sesuai format database member!', 'Error Struktur Data');
                 }
 
-                const normalizedData = importedData.map(m => ({
-                    id: m.id || Date.now() + Math.random(), 
-                    name: m.name || '',
-                    dob: m.dob || '',
-                    transactionDate: m.transactionDate || m.startDate || '',
-                    startDate: m.startDate || '',
-                    durationMonths: m.durationMonths || 1,
-                    whatsapp: m.whatsapp || '',
-                    usePT: !!m.usePT,
-                    tncSigned: !!m.tncSigned,
-                    source: m.source || 'Leads Internal',
-                    revenueMembership: parseFloat(m.revenueMembership) || 0,
-                    revenuePOS: parseFloat(m.revenuePOS) || 0,
-                    lastChat: m.lastChat || null,
-                    lastChatTime: m.lastChatTime || null
-                }));
+                const normalizedData = importedData.map(m => {
+                    let txDate = sanitizeDate(m.transactionDate);
+                    let stDate = sanitizeDate(m.startDate);
+                    if(txDate === '') txDate = stDate;
+                    if(stDate === '') stDate = txDate;
+                    
+                    return {
+                        id: m.id || Date.now() + Math.random(), 
+                        name: m.name || '',
+                        dob: sanitizeDate(m.dob) || '',
+                        transactionDate: txDate,
+                        startDate: stDate,
+                        durationMonths: m.durationMonths || 1,
+                        transactionType: m.transactionType || 'NJM',
+                        whatsapp: m.whatsapp || '',
+                        usePT: !!m.usePT,
+                        tncSigned: !!m.tncSigned,
+                        source: m.source || 'Leads Internal',
+                        revenueMembership: parseFloat(m.revenueMembership) || 0,
+                        revenuePOS: parseFloat(m.revenuePOS) || 0,
+                        lastChat: m.lastChat || null,
+                        lastChatTime: m.lastChatTime || null
+                    }
+                });
 
                 if (await window.showCustomConfirm(`Memuat masuk ${normalizedData.length} data. Data saat ini akan diganti. Lanjut?`)) {
                     members = normalizedData; 
                     saveDataLocal(); 
-                    window.processData(false); // Reset ke page 1 dan render
+                    window.renderMembers(); 
                     window.processReport();
-                    window.showCustomAlert('Cadangan berhasil diimpor dan disimpan secara lokal!', 'Selesai');
+                    window.showCustomAlert('Cadangan berhasil diimpor, data dipulihkan!', 'Selesai');
                 }
                 
                 document.getElementById('import-file').value = '';
