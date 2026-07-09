@@ -85,7 +85,7 @@
                 Tambah / Edit
             </button>
             <button onclick="switchTab('data')" id="desk-nav-data" class="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 Laporan & Keuangan
             </button>
         </div>
@@ -119,7 +119,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
                         </svg>
                     </button>
-                    <div class="bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[10px] font-black px-4 py-2 rounded-full tracking-wider flex items-center gap-1.5">
+                    <div class="bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[10px] font-black px-4 py-2 rounded-full tracking-wider flex items-center gap-1.5" title="Total Member Ditemukan">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
                         <span id="stats-badge">0</span>
                     </div>
@@ -134,7 +134,7 @@
                 <!-- TAB DAFTAR MEMBER -->
                 <section id="tab-list" class="tab-content active">
                     <!-- Kontrol Pencarian, Pengurutan & Filter -->
-                    <div class="flex flex-col md:flex-row gap-3 mb-4">
+                    <div class="flex flex-col lg:flex-row gap-3 mb-4">
                         <!-- Kolom Pencarian -->
                         <div class="relative flex-1">
                             <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
@@ -142,13 +142,13 @@
                             </span>
                             <input type="text" id="search-input" placeholder="Cari nama member..." 
                                 class="w-full pl-11 pr-4 py-3.5 bg-[#0f172a] border border-slate-800 rounded-xl focus:ring-1 focus:ring-sky-500 outline-none transition-all text-sm text-white placeholder-slate-500" 
-                                oninput="renderMembers()">
+                                onkeypress="handleSearchEnter(event)">
                         </div>
 
-                        <!-- Kontrol Sortir & Tombol Filter -->
-                        <div class="flex items-center gap-2 w-full md:w-auto">
-                            <div class="flex w-full md:w-auto gap-2">
-                                <select id="sort-select" onchange="applySortChange()" class="flex-1 md:w-56 p-3.5 bg-[#0f172a] text-slate-200 rounded-xl border border-slate-800 focus:ring-1 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer appearance-none">
+                        <!-- Kontrol Sortir & Tombol Filter & Proses -->
+                        <div class="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0 hide-scrollbar">
+                            <div class="flex gap-2 w-full md:w-auto min-w-max">
+                                <select id="sort-select" onchange="applyDefaultSortDirection()" class="w-44 md:w-48 p-3.5 bg-[#0f172a] text-slate-200 rounded-xl border border-slate-800 focus:ring-1 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer appearance-none">
                                     <option value="transaction-date">Urut: Tgl Transaksi</option>
                                     <option value="start-date">Urut: Tgl Mulai Member</option>
                                     <option value="birthday-date">Urut: Ulang Tahun Terdekat</option>
@@ -161,6 +161,9 @@
                                 <button onclick="toggleFilterPanel()" class="p-3.5 bg-[#0f172a] text-slate-400 hover:text-sky-400 rounded-xl border border-slate-800 hover:bg-slate-800 transition-all cursor-pointer flex-shrink-0 flex items-center gap-2" title="Filter Spesifik">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
                                     <span class="hidden md:block text-xs font-bold">Filter</span>
+                                </button>
+                                <button onclick="processData(false)" class="p-3.5 bg-sky-500 text-slate-950 rounded-xl font-extrabold hover:bg-sky-400 transition-all flex-shrink-0 flex items-center gap-2 shadow-lg shadow-sky-500/20 uppercase tracking-wide text-xs px-5">
+                                    Proses
                                 </button>
                             </div>
                         </div>
@@ -244,9 +247,23 @@
                     </div>
 
                     <!-- Tempat Render List View Profesional -->
-                    <div id="member-container" class="flex flex-col gap-3">
+                    <div id="member-container" class="flex flex-col gap-3 min-h-[300px]">
                         <!-- Diisi oleh JS -->
                     </div>
+
+                    <!-- Pagination Controls -->
+                    <div id="pagination-controls" class="hidden mt-6 flex justify-between items-center bg-[#0f172a] p-3 rounded-2xl border border-slate-800 shadow-lg">
+                        <button onclick="changePage(-1)" id="btn-prev-page" class="px-4 py-2.5 rounded-xl bg-[#020617] text-slate-300 text-xs font-bold border border-slate-700 hover:bg-slate-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+                            ← Sebelumnya
+                        </button>
+                        <span id="page-info" class="text-xs font-bold text-sky-400 uppercase tracking-widest">
+                            Hal 1 / 1
+                        </span>
+                        <button onclick="changePage(1)" id="btn-next-page" class="px-4 py-2.5 rounded-xl bg-[#020617] text-slate-300 text-xs font-bold border border-slate-700 hover:bg-slate-800 transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+                            Selanjutnya →
+                        </button>
+                    </div>
+
                 </section>
 
                 <!-- TAB TAMBAH / EDIT MEMBER -->
@@ -387,7 +404,7 @@
                                     </div>
                                 </div>
 
-                                <button onclick="processReport()" class="w-full md:w-auto px-6 bg-sky-500 hover:bg-sky-400 text-slate-950 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                                <button onclick="processReport()" class="w-full md:w-auto px-6 bg-sky-500 hover:bg-sky-400 text-slate-950 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-500/20">
                                     Proses
                                 </button>
                             </div>
@@ -487,7 +504,7 @@
             <span class="text-[9px] font-bold mt-1 uppercase" id="nav-add-label">Baru</span>
         </button>
         <button onclick="switchTab('data')" id="nav-data" class="flex flex-col items-center text-slate-500 transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
             <span class="text-[9px] font-bold mt-1 uppercase">Laporan</span>
         </button>
     </nav>
@@ -512,7 +529,7 @@
 
     <script>
         // =========================================================================================
-        // APLIKASI VERSI LOKAL (TANPA FIREBASE)
+        // APLIKASI VERSI LOKAL V2 (TANPA FIREBASE, DENGAN PAGINATION)
         // Data hanya tersimpan di Local Storage HP/Browser pengguna.
         // =========================================================================================
 
@@ -525,12 +542,17 @@
             status: 'all', pt: 'all', tnc: 'all', duration: 'all', source: 'all'
         };
 
+        // State Pagination & Filtered Data
+        let filteredMembers = [];
+        let currentPage = 1;
+        const itemsPerPage = 20;
+
         // Fullscreen Toggle
         window.toggleFullscreen = function() {
             if (!document.fullscreenElement) {
                 if (document.documentElement.requestFullscreen) {
                     document.documentElement.requestFullscreen().catch((err) => {
-                        console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                        console.log(`Error attempting to enable fullscreen: ${err.message}`);
                     });
                 }
             } else {
@@ -551,7 +573,7 @@
             window.onReportTypeChange();
             
             // Render awal saat aplikasi dimuat
-            window.renderMembers();
+            window.processData(true);
             window.processReport();
         };
 
@@ -717,7 +739,9 @@
             const titles = { 'list': 'Database Member', 'add': editingMemberId ? 'Edit Member' : 'Tambah Member', 'data': 'Laporan Penjualan & Komisi' };
             document.getElementById('desktop-page-title').innerText = titles[tabId];
 
-            if(tabId === 'list') window.renderMembers();
+            if(tabId === 'list') {
+                window.processData(true); // render saat tab list dibuka
+            }
         }
 
         window.toggleCustomDuration = function() {
@@ -732,7 +756,7 @@
 
         window.toggleCardExpand = function(id) {
             expandedCards[id] = !expandedCards[id];
-            window.renderMembers();
+            window.renderPage(); // Hanya merender ulang halaman saat ini
         }
 
         // PANEL FILTER SPESIFIK
@@ -757,7 +781,7 @@
             currentFilters.duration = document.getElementById('filter-duration').value;
             currentFilters.source = document.getElementById('filter-source').value;
             window.toggleFilterPanel(); 
-            window.renderMembers();
+            window.processData(false); // Proses filter dan reset ke halaman 1
         }
 
         window.resetFilters = function() {
@@ -767,8 +791,16 @@
             document.getElementById('filter-tnc').value = 'all';
             document.getElementById('filter-duration').value = 'all';
             document.getElementById('filter-source').value = 'all';
+            document.getElementById('search-input').value = '';
             window.toggleFilterPanel(); 
-            window.renderMembers();
+            window.processData(false);
+        }
+
+        // PENCARIAN DENGAN ENTER
+        window.handleSearchEnter = function(event) {
+            if (event.key === 'Enter') {
+                window.processData(false);
+            }
         }
 
         // CRUD (LOKAL)
@@ -861,7 +893,7 @@
                 showToast('Data diperbarui!');
                 window.cancelEditMode(); 
             } else {
-                const newId = Date.now(); // Gunakan timestamp integer untuk ID lokal
+                const newId = Date.now(); 
                 const newMember = { id: newId, ...memberData, lastChat: null, lastChatTime: null };
                 members.push(newMember);
                 saveDataLocal();
@@ -875,7 +907,7 @@
                 window.switchTab('list');
             }
 
-            window.renderMembers();
+            window.processData(true); // Refresh data di list
             window.processReport();
 
             btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -890,7 +922,7 @@
                 members[index].lastChatTime = now.getTime(); 
                 
                 saveDataLocal();
-                window.renderMembers();
+                window.processData(true); // Update chat date & biarkan di page yang sama
                 
                 let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
                 if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
@@ -903,7 +935,7 @@
             if(confirmDelete) {
                 members = members.filter(m => m.id !== id);
                 saveDataLocal();
-                window.renderMembers();
+                window.processData(true); // Render ulang
                 window.processReport();
                 showToast('Data dihapus!');
             }
@@ -913,41 +945,44 @@
             localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
         }
 
-        // RENDER LIST, SORT, & FILTER
+        // ==========================================
+        // PROSES DATA (SEARCH, SORT, FILTER) & PAGINATION
+        // ==========================================
         function applyDefaultSortDirection() {
+            // Kita tidak panggil render otomatis, biarkan user tekan 'Proses'
+            // Hanya memastikan arah panah sesuai dengan default logika dropdown
             const sortVal = document.getElementById('sort-select').value;
+            const arrow = document.getElementById('sort-arrow');
             if (sortVal === 'birthday-date' || sortVal === 'membership-expiry') {
-                sortOrder = 'asc'; document.getElementById('sort-arrow').classList.add('rotate-180');
+                sortOrder = 'asc'; arrow.classList.add('rotate-180');
             } else {
-                sortOrder = 'desc'; document.getElementById('sort-arrow').classList.remove('rotate-180');
+                sortOrder = 'desc'; arrow.classList.remove('rotate-180');
             }
         }
-
-        window.applySortChange = function() { applyDefaultSortDirection(); window.renderMembers(); }
 
         window.toggleSortOrder = function() {
             sortOrder = (sortOrder === 'desc') ? 'asc' : 'desc';
             const arrow = document.getElementById('sort-arrow');
             if (sortOrder === 'asc') arrow.classList.add('rotate-180');
             else arrow.classList.remove('rotate-180');
-            window.renderMembers();
+            window.processData(true); // Mengganti sort direction lgsg merender
         }
 
-        window.renderMembers = function() {
-            const container = document.getElementById('member-container');
+        // 1. Eksekusi Pencarian & Penyaringan
+        window.processData = function(preservePage = false) {
             const search = document.getElementById('search-input').value.toLowerCase();
-            const birthdayAnnounce = document.getElementById('birthday-announcement');
             const sortVal = document.getElementById('sort-select').value;
             const filterIndicator = document.getElementById('active-filter-indicator');
-            container.innerHTML = '';
+            const birthdayAnnounce = document.getElementById('birthday-announcement');
             
-            let hasBirthday = false;
             let sortedMembers = [...members];
-            
+            let hasBirthday = false;
+
             const isFilterActive = Object.values(currentFilters).some(val => val !== 'all');
             if (isFilterActive) { filterIndicator.classList.remove('hidden'); } 
             else { filterIndicator.classList.add('hidden'); }
 
+            // Urutkan terlebih dahulu
             sortedMembers.sort((a, b) => {
                 let comparison = 0;
                 if (sortVal === 'birthday-date') {
@@ -966,8 +1001,13 @@
                 return (sortOrder === 'asc') ? comparison : -comparison;
             });
 
-            const filtered = sortedMembers.filter(m => {
-                if (!m.name.toLowerCase().includes(search)) return false;
+            // Saring (Filter) & Cari
+            filteredMembers = sortedMembers.filter(m => {
+                const isBDay = isBirthdayToday(m.dob);
+                if(isBDay) hasBirthday = true; // Set indikator ulang tahun (walau di filter)
+
+                if (search && !m.name.toLowerCase().includes(search)) return false;
+                
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
                 let computedStatus = 'active';
@@ -997,16 +1037,55 @@
                 return true;
             });
 
-            document.getElementById('stats-badge').innerText = filtered.length;
+            document.getElementById('stats-badge').innerText = filteredMembers.length;
+            birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
 
-            if (filtered.length === 0) {
-                container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm">Tidak ada member yang ditemukan.</div>`;
+            // Tentukan Pagination
+            if (!preservePage) {
+                currentPage = 1; // Reset ke halaman 1 jika ini proses filter baru
+            } else {
+                // Cegah page melewati batas jika item di hapus dan page kosong
+                const totalPages = Math.ceil(filteredMembers.length / itemsPerPage) || 1;
+                if (currentPage > totalPages) currentPage = totalPages;
             }
 
-            filtered.forEach(m => {
-                const isBDay = isBirthdayToday(m.dob);
-                if(isBDay) hasBirthday = true;
+            // Render DOM untuk halaman tersebut
+            window.renderPage();
+        }
 
+        // 2. Ganti Halaman (Dipanggil dari tombol next/prev)
+        window.changePage = function(delta) {
+            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage) || 1;
+            currentPage += delta;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+            window.renderPage();
+            // Scroll ke atas container
+            document.getElementById('member-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // 3. Render HTML berdasarkan halaman saat ini (PAGINATION)
+        window.renderPage = function() {
+            const container = document.getElementById('member-container');
+            const paginationControls = document.getElementById('pagination-controls');
+            container.innerHTML = '';
+            
+            if (filteredMembers.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-slate-500 text-sm">Tidak ada member yang ditemukan.</div>`;
+                paginationControls.classList.add('hidden');
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+            
+            // Slice Array berdasarkan Pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageData = filteredMembers.slice(startIndex, endIndex);
+
+            // Render data per page
+            pageData.forEach(m => {
+                const isBDay = isBirthdayToday(m.dob);
                 const expiryDate = calculateExpiry(m.startDate, m.durationMonths);
                 const daysLeft = getDaysRemaining(expiryDate);
                 const showTrxDate = m.transactionDate ? formatDisplayDateDMY(m.transactionDate) : formatDisplayDateDMY(m.startDate);
@@ -1091,7 +1170,16 @@
                 row.innerHTML = headerHTML + detailHTML;
                 container.appendChild(row);
             });
-            birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
+
+            // Update UI Pagination
+            if (totalPages > 1) {
+                paginationControls.classList.remove('hidden');
+                document.getElementById('page-info').innerText = `Hal ${currentPage} / ${totalPages}`;
+                document.getElementById('btn-prev-page').disabled = (currentPage === 1);
+                document.getElementById('btn-next-page').disabled = (currentPage === totalPages);
+            } else {
+                paginationControls.classList.add('hidden');
+            }
         }
 
         // LAPORAN LOGIC
@@ -1307,7 +1395,7 @@
                 }
 
                 const normalizedData = importedData.map(m => ({
-                    id: m.id || Date.now() + Math.random(), // Pastikan selalu ada ID valid
+                    id: m.id || Date.now() + Math.random(), 
                     name: m.name || '',
                     dob: m.dob || '',
                     transactionDate: m.transactionDate || m.startDate || '',
@@ -1326,7 +1414,7 @@
                 if (await window.showCustomConfirm(`Memuat masuk ${normalizedData.length} data. Data saat ini akan diganti. Lanjut?`)) {
                     members = normalizedData; 
                     saveDataLocal(); 
-                    window.renderMembers(); 
+                    window.processData(false); // Reset ke page 1 dan render
                     window.processReport();
                     window.showCustomAlert('Cadangan berhasil diimpor dan disimpan secara lokal!', 'Selesai');
                 }
