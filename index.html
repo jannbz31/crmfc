@@ -17,6 +17,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* Warna Status Membership */
         .status-active { background-color: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
         .status-warning { background-color: rgba(245, 158, 11, 0.1); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.2); }
         .status-expired { background-color: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
@@ -51,12 +52,14 @@
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
         
+        /* Tipe Transaksi Badge */
         .type-njm { background-color: #3b82f6; color: #0f172a; } 
         .type-renewal { background-color: #a855f7; color: #ffffff; } 
     </style>
 </head>
 <body class="bg-[#020617] text-slate-100 h-screen w-full flex">
 
+    <!-- DESKTOP SIDEBAR -->
     <aside class="hidden md:flex flex-col w-[280px] bg-[#090d22] border-r border-slate-800/80 z-50 h-full shrink-0">
         <div class="p-8 border-b border-slate-800/80">
             <h1 class="text-2xl font-extrabold text-white tracking-tighter uppercase leading-none">
@@ -74,7 +77,7 @@
                 Tambah / Edit
             </button>
             <button onclick="switchTab('data')" id="desk-nav-data" class="w-full flex items-center gap-4 px-5 py-3.5 rounded-xl text-sm font-bold transition-all text-slate-400 hover:text-white hover:bg-slate-800/50 border border-transparent">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 Laporan & Keuangan
             </button>
         </div>
@@ -88,7 +91,9 @@
         </div>
     </aside>
 
+    <!-- MAIN CONTENT AREA -->
     <div class="flex-1 flex flex-col h-full relative overflow-hidden bg-[#020617]">
+        
         <header class="bg-[#090d22]/90 border-b border-slate-800/80 px-6 py-5 shadow-lg backdrop-blur-md shrink-0">
             <div class="max-w-6xl mx-auto flex justify-between items-center">
                 <div class="md:hidden flex items-center gap-2">
@@ -113,10 +118,15 @@
             </div>
         </header>
 
+        <!-- Scrollable Main Content -->
         <main class="flex-1 overflow-y-auto p-4 md:p-8 pb-28 md:pb-8">
             <div class="max-w-6xl mx-auto">
+                
+                <!-- TAB DAFTAR MEMBER -->
                 <section id="tab-list" class="tab-content active">
+                    <!-- Kontrol Pencarian, Pengurutan & Filter -->
                     <div class="flex flex-col lg:flex-row gap-3 mb-4">
+                        <!-- Kolom Pencarian -->
                         <div class="relative flex-1">
                             <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
@@ -126,6 +136,7 @@
                                 oninput="renderMembers()">
                         </div>
 
+                        <!-- Kontrol Sortir & Tombol Filter -->
                         <div class="flex items-center gap-2 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0 hide-scrollbar">
                             <div class="flex gap-2 w-full md:w-auto min-w-max">
                                 <select id="sort-select" onchange="applyDefaultSortDirection()" class="w-44 md:w-48 p-3.5 bg-[#0f172a] text-slate-200 rounded-xl border border-slate-800 focus:ring-1 focus:ring-sky-500 outline-none text-xs font-semibold cursor-pointer appearance-none">
@@ -146,11 +157,13 @@
                         </div>
                     </div>
 
+                    <!-- Panel Filter Lanjutan -->
                     <div id="filter-panel" class="hidden mb-6 p-5 bg-[#0f172a] border border-slate-800 rounded-2xl shadow-lg relative">
                         <h3 class="text-[10px] font-bold text-sky-400 uppercase tracking-widest mb-4">Filter Spesifik</h3>
                         <button onclick="toggleFilterPanel()" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                         </button>
+                        
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-5">
                             <div>
                                 <label class="text-[10px] text-slate-500 block mb-1.5 uppercase font-semibold tracking-wider">Status</label>
@@ -227,17 +240,21 @@
                         Filter Spesifik Sedang Aktif
                     </div>
 
+                    <!-- Tempat Render List View Profesional -->
                     <div id="member-container" class="flex flex-col gap-3 min-h-[300px]">
                         <!-- Diisi oleh JS -->
                     </div>
+
                 </section>
 
+                <!-- TAB TAMBAH / EDIT MEMBER -->
                 <section id="tab-add" class="tab-content">
                     <div class="bg-[#0f172a] p-6 md:p-8 rounded-2xl border border-slate-800/80 max-w-3xl mx-auto">
                         <h2 id="form-title" class="text-xl font-bold text-white mb-8 tracking-tight border-b border-slate-800 pb-4">
                             Tambah Member Baru
                         </h2>
                         <form id="member-form" class="space-y-6">
+                            
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
                                 <div>
                                     <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Nama Lengkap</label>
@@ -319,6 +336,7 @@
                                         <span class="text-sm font-bold text-slate-200">Layanan PT</span>
                                     </div>
                                 </label>
+
                                 <label class="flex items-center gap-3 cursor-pointer p-4 bg-[#020617] rounded-xl border border-slate-800 hover:bg-slate-900 transition-colors">
                                     <input type="checkbox" id="tnc_signed" class="w-5 h-5 rounded-md border-none ring-1 ring-slate-700 checked:bg-emerald-500 appearance-none cursor-pointer">
                                     <div class="flex flex-col">
@@ -339,6 +357,7 @@
                     </div>
                 </section>
 
+                <!-- TAB LAPORAN & STATISTIK -->
                 <section id="tab-data" class="tab-content">
                     <div class="space-y-6 max-w-5xl mx-auto">
                         <h2 class="text-2xl font-extrabold text-white tracking-tight">Laporan Keuangan & Leads</h2>
@@ -354,6 +373,7 @@
                                         <option value="custom">Rentang Tanggal</option>
                                     </select>
                                 </div>
+                                
                                 <div id="report-input-wrapper" class="w-full md:flex-1">
                                     <div id="input-month" class="hidden">
                                         <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5 block">Pilih Bulan</label>
@@ -370,6 +390,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <button onclick="processReport()" class="w-full md:w-auto px-6 bg-sky-500 hover:bg-sky-400 text-slate-950 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg shadow-sky-500/20">
                                     Proses
                                 </button>
@@ -381,18 +402,22 @@
                                 <span id="report-label" class="text-sm font-bold text-sky-400 uppercase tracking-widest">Laporan: Hari Ini</span>
                                 <span class="text-sm text-slate-400"><span id="report-member-count" class="font-bold text-white text-lg">0</span> Transaksi</span>
                             </div>
+
                             <div class="stat-card border-t-2 border-t-sky-500 border-x-0 border-b-0 rounded-xl">
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Rev Membership</p>
                                 <h3 id="report-membership-rev" class="text-xl font-black text-white">Rp 0</h3>
                             </div>
+
                             <div class="stat-card border-t-2 border-t-purple-500 border-x-0 border-b-0 rounded-xl">
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Rev POS (Sesi PT)</p>
                                 <h3 id="report-pos-rev" class="text-xl font-black text-white">Rp 0</h3>
                             </div>
+
                             <div class="stat-card border-t-2 border-t-emerald-500 border-x-0 border-b-0 bg-emerald-950/10 rounded-xl lg:col-span-2">
                                 <p class="text-[10px] font-bold text-emerald-500 uppercase tracking-wider mb-2">Total Pendapatan Bersih</p>
                                 <h3 id="report-total-rev" class="text-2xl font-black text-emerald-400">Rp 0</h3>
                             </div>
+
                             <div class="stat-card border-t-2 border-t-amber-500 border-x-0 border-b-0 bg-amber-950/10 rounded-xl lg:col-span-4">
                                 <div class="flex justify-between items-start">
                                     <p class="text-[10px] font-bold text-amber-500 uppercase tracking-wider mb-2">Estimasi Komisi (<span id="report-commission-pct">0%</span>)</p>
@@ -403,20 +428,21 @@
                             </div>
                         </div>
 
-                        <!-- KONTENER DAFTAR MEMBER LAPORAN (INI YANG SEBELUMNYA HILANG) -->
                         <div class="bg-[#0f172a] p-6 rounded-3xl border border-slate-800/80 mt-2">
                             <h3 class="text-xs font-bold text-slate-400 mb-4 uppercase tracking-widest border-b border-slate-800 pb-3">Daftar Transaksi Member (Berdasarkan Periode)</h3>
                             <div id="report-member-list" class="space-y-3 max-h-[350px] overflow-y-auto pr-2">
-                                <!-- Diisi oleh JS -->
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Breakdown Leads -->
                             <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800/80">
                                 <h3 class="text-xs font-bold text-slate-400 mb-5 uppercase tracking-widest border-b border-slate-800 pb-3">Breakdown Sumber Leads</h3>
                                 <div id="leads-breakdown-container" class="space-y-3">
                                 </div>
                             </div>
+
+                            <!-- Ekspor & Cadangan -->
                             <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-800/80 flex flex-col justify-between">
                                 <div>
                                     <h3 class="text-xs font-bold text-slate-400 mb-5 uppercase tracking-widest border-b border-slate-800 pb-3">Penyimpanan & Cadangan</h3>
@@ -442,10 +468,12 @@
                         </div>
                     </div>
                 </section>
+
             </div>
         </main>
     </div>
 
+    <!-- Navigasi Bawah (Mobile) -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 glass-nav border-t border-slate-800/80 flex justify-around p-3 z-50 rounded-t-3xl shadow-2xl">
         <button onclick="switchTab('list')" id="nav-list" class="flex flex-col items-center text-sky-400 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
@@ -458,11 +486,12 @@
             <span class="text-[9px] font-bold mt-1 uppercase" id="nav-add-label">Baru</span>
         </button>
         <button onclick="switchTab('data')" id="nav-data" class="flex flex-col items-center text-slate-500 transition-all">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012-2h2a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
             <span class="text-[9px] font-bold mt-1 uppercase">Laporan</span>
         </button>
     </nav>
 
+    <!-- Modal Dialog Kustom -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 hidden backdrop-blur-sm">
         <div class="bg-[#0f172a] rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-slate-800 transform transition-all scale-95 duration-200 text-slate-100">
             <h3 id="modal-title" class="text-lg font-bold text-white mb-2"></h3>
@@ -474,12 +503,17 @@
         </div>
     </div>
 
+    <!-- Notifikasi Cepat -->
     <div id="toast-notif" class="fixed top-6 right-6 bg-emerald-500 text-slate-950 px-5 py-3 rounded-xl shadow-2xl font-bold text-sm transform transition-all duration-300 translate-x-[150%] z-50 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
         <span id="toast-message">Tersimpan!</span>
     </div>
 
     <script>
+        // =========================================================================================
+        // APLIKASI VERSI LOKAL V4 (ANTI-DUPLIKAT & PERBAIKAN BUG SIMPAN/EDIT)
+        // =========================================================================================
+
         let members = JSON.parse(localStorage.getItem('jan_willfitness_v3')) || [];
         let editingMemberId = null;
         let sortOrder = 'desc'; 
@@ -526,6 +560,33 @@
             } else {
                 if (document.exitFullscreen) document.exitFullscreen();
             }
+        };
+
+        const initUI = () => {
+            let dataChanged = false;
+            members.forEach(m => {
+                const oldTx = m.transactionDate;
+                const oldSt = m.startDate;
+                m.transactionDate = sanitizeDate(m.transactionDate);
+                m.startDate = sanitizeDate(m.startDate);
+                if(m.transactionDate === '') m.transactionDate = m.startDate;
+                if(m.startDate === '') m.startDate = m.transactionDate;
+                if(!m.transactionType) m.transactionType = 'NJM'; 
+                
+                if(oldTx !== m.transactionDate || oldSt !== m.startDate) dataChanged = true;
+            });
+            if(dataChanged) saveDataLocal();
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').value = today;
+            document.getElementById('transaction_date').value = today;
+            const currentMonthStr = today.substring(0, 7);
+            document.getElementById('report-month').value = currentMonthStr;
+
+            applyDefaultSortDirection();
+            window.onReportTypeChange();
+            window.renderMembers();
+            window.processReport();
         };
 
         window.showCustomAlert = function(message, title = "Informasi") {
@@ -659,6 +720,7 @@
             return Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
         }
 
+        // TABS
         window.switchTab = function(tabId) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -711,6 +773,7 @@
             window.renderMembers();
         }
 
+        // PANEL FILTER SPESIFIK
         window.toggleFilterPanel = function() {
             const panel = document.getElementById('filter-panel');
             if (panel.classList.contains('hidden')) {
@@ -750,6 +813,7 @@
             window.renderMembers();
         }
 
+        // CRUD
         window.editMember = function(id) {
             const m = members.find(x => x.id === id);
             if (!m) return;
@@ -834,19 +898,28 @@
                 revenuePOS: parseFloat(document.getElementById('revenue_pos').value) || 0
             };
 
+            // CEK DUPLIKAT NOMOR WHATSAPP SEBELUM MENYIMPAN
             if (editingMemberId !== null) {
+                // Mode Edit: Pastikan nomor WA tidak dipakai oleh member LAIN
+                const isDuplicate = members.some(m => m.whatsapp === memberData.whatsapp && m.id !== editingMemberId);
+                if (isDuplicate) {
+                    btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btnSubmit.disabled = false;
+                    return window.showCustomAlert('Gagal: Nomor WhatsApp ini sudah terdaftar pada member lain!', 'Data Ganda');
+                }
+
                 const index = members.findIndex(m => m.id === editingMemberId);
                 if (index !== -1) members[index] = { ...members[index], ...memberData };
                 saveDataLocal();
                 showToast('Data diperbarui!');
                 window.cancelEditMode(); 
             } else {
-                // Mencegah input data ganda berdasarkan No. WhatsApp
+                // Mode Tambah Baru: Pastikan nomor WA tidak ada di database sama sekali
                 const isDuplicate = members.some(m => m.whatsapp === memberData.whatsapp);
                 if (isDuplicate) {
                     btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
                     btnSubmit.disabled = false;
-                    return window.showCustomAlert('Gagal: Member dengan No. WhatsApp ini sudah terdaftar sebelumnya!', 'Data Ganda');
+                    return window.showCustomAlert('Gagal: Member dengan No. WhatsApp ini sudah pernah ditambahkan!', 'Data Ganda');
                 }
 
                 const newId = Date.now(); 
@@ -866,6 +939,7 @@
             window.renderMembers();
             window.processReport();
 
+            // Kembalikan tombol ke keadaan normal agar bisa dipakai lagi
             btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
             btnSubmit.disabled = false;
         };
@@ -901,6 +975,7 @@
             localStorage.setItem('jan_willfitness_v3', JSON.stringify(members));
         }
 
+        // RENDER LIST, SORT, & FILTER REAL-TIME 
         function applyDefaultSortDirection() {
             const sortVal = document.getElementById('sort-select').value;
             const arrow = document.getElementById('sort-arrow');
@@ -935,6 +1010,7 @@
             if (isFilterActive) { filterIndicator.classList.remove('hidden'); } 
             else { filterIndicator.classList.add('hidden'); }
 
+            // Urutkan
             sortedMembers.sort((a, b) => {
                 let comparison = 0;
                 if (sortVal === 'birthday-date') {
@@ -957,6 +1033,7 @@
                 return (sortOrder === 'asc') ? comparison : -comparison;
             });
 
+            // Saring Data
             const filteredMembers = sortedMembers.filter(m => {
                 if (!m.name.toLowerCase().includes(search)) return false;
                 
@@ -998,6 +1075,7 @@
                 return;
             }
 
+            // Tampilkan Seluruh Data Terfilter
             filteredMembers.forEach(m => {
                 const isBDay = isBirthdayToday(m.dob);
                 if(isBDay) hasBirthday = true;
@@ -1092,6 +1170,7 @@
             birthdayAnnounce.classList.toggle('hidden', !hasBirthday);
         }
 
+        // LAPORAN LOGIC
         window.onReportTypeChange = function() {
             const reportType = document.getElementById('report-type').value;
             const inputMonth = document.getElementById('input-month');
@@ -1141,9 +1220,13 @@
                 const monthVal = document.getElementById('report-month').value;
                 if (!monthVal) return window.showCustomAlert('Pilih bulan terlebih dahulu!');
                 const [y, m] = monthVal.split('-');
+                
+                // MENCARI TANGGAL AWAL & AKHIR DARI BULAN YANG DIPILIH
                 startDate = new Date(parseInt(y), parseInt(m) - 1, 1);
+                startDate.setHours(0,0,0,0);
                 endDate = new Date(parseInt(y), parseInt(m), 0); 
                 endDate.setHours(23,59,59,999);
+                
                 const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
                 labelText = `Laporan: Bulan ${monthNames[parseInt(m)-1]} ${y}`;
             } else if (reportType === 'custom') {
