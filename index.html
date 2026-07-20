@@ -821,7 +821,6 @@
             document.getElementById('dob').value = m.dob;
             document.getElementById('transaction_date').value = m.transactionDate || m.startDate;
             document.getElementById('start_date').value = m.startDate;
-            document.getElementById('transaction_type').value = m.transactionType || 'NJM';
             document.getElementById('whatsapp').value = m.whatsapp;
             document.getElementById('use_pt').checked = m.usePT;
             document.getElementById('tnc_signed').checked = m.tncSigned || false;
@@ -842,8 +841,10 @@
             }
 
             document.getElementById('form-title').innerText = "Edit Member";
-            document.getElementById('btn-submit').innerText = "Perbarui Data";
-            document.getElementById('btn-submit').classList.remove('opacity-50');
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.innerText = "Perbarui Data";
+            btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnSubmit.disabled = false;
             document.getElementById('btn-cancel-edit').classList.remove('hidden');
             document.getElementById('nav-add-label').innerText = "Edit";
             window.switchTab('add');
@@ -853,7 +854,10 @@
             editingMemberId = null;
             document.getElementById('member-form').reset();
             document.getElementById('form-title').innerText = "Tambah Member Baru";
-            document.getElementById('btn-submit').innerText = "Simpan Member";
+            const btnSubmit = document.getElementById('btn-submit');
+            btnSubmit.innerText = "Simpan Member";
+            btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+            btnSubmit.disabled = false;
             document.getElementById('btn-cancel-edit').classList.add('hidden');
             document.getElementById('custom_duration').classList.add('hidden');
             document.getElementById('nav-add-label').innerText = "Baru";
@@ -863,92 +867,89 @@
             window.switchTab('list');
         }
 
-        document.getElementById('member-form').onsubmit = (e) => {
+        document.getElementById('member-form').onsubmit = async (e) => {
             e.preventDefault();
 
             const btnSubmit = document.getElementById('btn-submit');
             btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
             btnSubmit.disabled = true;
 
-            const selectDuration = document.getElementById('duration').value;
-            let finalDuration = selectDuration;
-            if (selectDuration === 'custom') {
-                const customVal = document.getElementById('custom_duration').value;
-                if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) {
-                    btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
-                    btnSubmit.disabled = false;
-                    return window.showCustomAlert('Jumlah bulan kustom tidak valid!', 'Data Gagal');
+            try {
+                const selectDuration = document.getElementById('duration').value;
+                let finalDuration = selectDuration;
+                if (selectDuration === 'custom') {
+                    const customVal = document.getElementById('custom_duration').value;
+                    if (!customVal || isNaN(customVal) || parseInt(customVal) < 1) {
+                        window.showCustomAlert('Jumlah bulan kustom tidak valid!', 'Data Gagal');
+                        return; 
+                    }
+                    finalDuration = parseInt(customVal);
                 }
-                finalDuration = parseInt(customVal);
+
+                const memberData = {
+                    name: document.getElementById('name').value,
+                    dob: document.getElementById('dob').value,
+                    transactionDate: document.getElementById('transaction_date').value,
+                    startDate: document.getElementById('start_date').value,
+                    durationMonths: finalDuration,
+                    whatsapp: document.getElementById('whatsapp').value,
+                    usePT: document.getElementById('use_pt').checked,
+                    tncSigned: document.getElementById('tnc_signed').checked,
+                    source: document.getElementById('source').value,
+                    revenueMembership: parseFloat(document.getElementById('revenue_membership').value) || 0,
+                    revenuePOS: parseFloat(document.getElementById('revenue_pos').value) || 0
+                };
+
+                const isCloudActive = (auth && currentUser && !currentUser.isAnonymous && db);
+
+                if (editingMemberId !== null) {
+                    if (isCloudActive) {
+                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', editingMemberId.toString());
+                        await setDoc(docRef, memberData, { merge: true });
+                    } else {
+                        const index = members.findIndex(m => m.id === editingMemberId);
+                        if (index !== -1) members[index] = { ...members[index], ...memberData };
+                        saveDataLocal();
+                    }
+                    showToast('Data diperbarui!');
+                    window.cancelEditMode(); 
+                } else {
+                    const newId = Date.now().toString();
+                    const newMember = { id: parseInt(newId), ...memberData, lastChat: null, lastChatTime: null };
+                    
+                    if (isCloudActive) {
+                        const docRef = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'members', newId);
+                        await setDoc(docRef, newMember);
+                    } else {
+                        members.push(newMember);
+                        saveDataLocal();
+                    }
+                    
+                    showToast('Member disimpan!');
+                    e.target.reset();
+                    document.getElementById('custom_duration').classList.add('hidden');
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('start_date').value = today;
+                    document.getElementById('transaction_date').value = today;
+                    window.switchTab('list');
+                }
+
+                if (!isCloudActive) {
+                    window.renderMembers();
+                    window.processReport();
+                }
+
+            } catch (error) {
+                console.error("Save error", error);
+                window.showCustomAlert('Gagal menyimpan data.', 'Error');
+            } finally {
+                // Selalu kembalikan fungsi tombol walaupun ada error
+                btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                btnSubmit.disabled = false;
             }
-
-            const memberData = {
-                name: document.getElementById('name').value,
-                dob: document.getElementById('dob').value,
-                transactionDate: document.getElementById('transaction_date').value,
-                startDate: document.getElementById('start_date').value,
-                durationMonths: finalDuration,
-                transactionType: document.getElementById('transaction_type').value,
-                whatsapp: document.getElementById('whatsapp').value,
-                usePT: document.getElementById('use_pt').checked,
-                tncSigned: document.getElementById('tnc_signed').checked,
-                source: document.getElementById('source').value,
-                revenueMembership: parseFloat(document.getElementById('revenue_membership').value) || 0,
-                revenuePOS: parseFloat(document.getElementById('revenue_pos').value) || 0
-            };
-
-            if (editingMemberId !== null) {
-                const index = members.findIndex(m => m.id === editingMemberId);
-                if (index !== -1) members[index] = { ...members[index], ...memberData };
-                saveDataLocal();
-                showToast('Data diperbarui!');
-                window.cancelEditMode(); 
-            } else {
-                const newId = Date.now(); 
-                const newMember = { id: newId, ...memberData, lastChat: null, lastChatTime: null };
-                members.push(newMember);
-                saveDataLocal();
-                
-                showToast('Member disimpan!');
-                e.target.reset();
-                document.getElementById('custom_duration').classList.add('hidden');
-                const today = new Date().toISOString().split('T')[0];
-                document.getElementById('start_date').value = today;
-                document.getElementById('transaction_date').value = today;
-                window.switchTab('list');
-            }
-
-            window.renderMembers();
-            window.processReport();
-
-            btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
-            btnSubmit.disabled = false;
         };
 
-        window.contactWhatsApp = function(id) {
-            const index = members.findIndex(m => m.id === id);
-            if (index !== -1) {
-                const now = new Date();
-                members[index].lastChat = formatDisplayTimestamp(now.getTime());
-                members[index].lastChatTime = now.getTime(); 
-                
-                saveDataLocal();
-                window.renderMembers();
-                
-                let rawPhone = members[index].whatsapp.replace(/[^0-9]/g, '');
-                if (rawPhone.startsWith('0')) rawPhone = '62' + rawPhone.slice(1);
-                window.open(`https://wa.me/${rawPhone}`, '_blank');
-            }
-        }
-
-        window.deleteMember = async function(id) {
-            const confirmDelete = await window.showCustomConfirm('Hapus data member ini secara permanen?');
-            if(confirmDelete) {
-                members = members.filter(m => m.id !== id);
-                saveDataLocal();
-                window.renderMembers();
-                window.processReport();
-                showToast('Data dihapus!');
+        window.contactWhatsApp = async function(id) {
             }
         }
 
@@ -1420,5 +1421,3 @@
     </script>
 </body>
 </html>
-
-
