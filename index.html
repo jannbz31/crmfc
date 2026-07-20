@@ -841,6 +841,14 @@
                 showToast('Data diperbarui!');
                 window.cancelEditMode(); 
             } else {
+                // Mencegah input data ganda berdasarkan No. WhatsApp
+                const isDuplicate = members.some(m => m.whatsapp === memberData.whatsapp);
+                if (isDuplicate) {
+                    btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
+                    btnSubmit.disabled = false;
+                    return window.showCustomAlert('Gagal: Member dengan No. WhatsApp ini sudah terdaftar sebelumnya!', 'Data Ganda');
+                }
+
                 const newId = Date.now(); 
                 const newMember = { id: newId, ...memberData, lastChat: null, lastChatTime: null };
                 members.push(newMember);
@@ -1133,11 +1141,11 @@
                 const monthVal = document.getElementById('report-month').value;
                 if (!monthVal) return window.showCustomAlert('Pilih bulan terlebih dahulu!');
                 const [y, m] = monthVal.split('-');
-                startDate = new Date(y, m - 1, 1);
-                endDate = new Date(y, m, 0); 
+                startDate = new Date(parseInt(y), parseInt(m) - 1, 1);
+                endDate = new Date(parseInt(y), parseInt(m), 0); 
                 endDate.setHours(23,59,59,999);
                 const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-                labelText = `Laporan: Bulan ${monthNames[m-1]} ${y}`;
+                labelText = `Laporan: Bulan ${monthNames[parseInt(m)-1]} ${y}`;
             } else if (reportType === 'custom') {
                 const startVal = document.getElementById('report-start').value;
                 const endVal = document.getElementById('report-end').value;
